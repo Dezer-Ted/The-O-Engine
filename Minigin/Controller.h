@@ -1,10 +1,7 @@
 #pragma once
-#define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
 #include <memory>
-#include <Xinput.h>
+#include <glm/vec2.hpp>
 
-#pragma comment(lib, "xinput.lib")
 namespace dae
 {
 	class Controller {
@@ -21,8 +18,10 @@ namespace dae
 		Controller& operator=(Controller&&) = delete;
 		~Controller();
 
-		bool IsDownThisFrame(unsigned int button);
-		bool IsUpThisFrame(unsigned int button);
-		bool IsPressed(unsigned int button);
+		bool IsDownThisFrame(unsigned int button) const;
+		bool IsUpThisFrame(unsigned int button) const;
+		bool IsPressed(unsigned int button) const;
+		glm::vec2 GetLeftAnalogStick() const;
+		glm::vec2 GetRightAnalogStick() const;
 	};
 }
