@@ -70,6 +70,10 @@ namespace dae
 
 		bool ProcessInput();
 		void ProcessControllerActions() const;
+		void WASDKeyUp(const SDL_Event& e);
+		void WASDKeyDown(const SDL_Event& e);
+		void HandlKeyboardButtonActions(const SDL_Event& e);
+		void HandleWASDActions();
 		bool ProcessKeyboardActions();
 		InputManager();
 		~InputManager() override;

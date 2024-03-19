@@ -6,11 +6,7 @@
 
 #include "Controller.h"
 #include "../imgui-1.89.5/backends/imgui_impl_sdl2.h"
-#define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
-#include <Xinput.h>
 
-#pragma comment(lib, "XInput.lib")
 
 bool dae::InputManager::ProcessInput()
 {
@@ -40,6 +36,68 @@ void dae::InputManager::ProcessControllerActions() const
 	}
 }
 
+void dae::InputManager::WASDKeyUp(const SDL_Event& e)
+{
+	switch(e.key.keysym.scancode)
+	{
+	case SDL_SCANCODE_W:
+		wasdInput.wButton = false;
+		break;
+	case SDL_SCANCODE_A:
+		wasdInput.aButton = false;
+		break;
+	case SDL_SCANCODE_S:
+		wasdInput.sButton = false;
+		break;
+	case SDL_SCANCODE_D:
+		wasdInput.dButton = false;
+		break;
+	}
+}
+
+void dae::InputManager::WASDKeyDown(const SDL_Event& e)
+{
+	switch(e.key.keysym.scancode)
+	{
+	case SDL_SCANCODE_W:
+		wasdInput.wButton = true;
+		break;
+	case SDL_SCANCODE_A:
+		wasdInput.aButton = true;
+		break;
+	case SDL_SCANCODE_S:
+		wasdInput.sButton = true;
+		break;
+	case SDL_SCANCODE_D:
+		wasdInput.dButton = true;
+		break;
+	}
+}
+
+void dae::InputManager::HandlKeyboardButtonActions(const SDL_Event& e)
+{
+	for(auto& action : m_KeyBoardActions)
+	{
+		if(action->GetType() != KeyboardAction::ActionType::ButtonMap) break;
+		if(e.key.keysym.scancode == action->GetButtonMap())
+		{
+			action->GetCommand()->Execute();
+		}
+
+	}
+}
+
+void dae::InputManager::HandleWASDActions()
+{
+	for(auto& action : m_KeyBoardActions)
+	{
+		if(action->GetType() == KeyboardAction::ActionType::WASDMovement)
+		{
+			action->GetCommand()->ExecuteMovement(m_WASDInput);
+		}
+	}
+}
+
 bool dae::InputManager::ProcessKeyboardActions()
 {
 	SDL_Event e;
@@ -51,48 +109,12 @@ bool dae::InputManager::ProcessKeyboardActions()
 		}
 		if(e.type == SDL_KEYDOWN)
 		{
-			switch(e.key.keysym.scancode)
-			{
-			case SDL_SCANCODE_W:
-				wasdInput.wButton = true;
-				break;
-			case SDL_SCANCODE_A:
-				wasdInput.aButton = true;
-				break;
-			case SDL_SCANCODE_S:
-				wasdInput.sButton = true;
-				break;
-			case SDL_SCANCODE_D:
-				wasdInput.dButton = true;
-				break;
-			}
-			for(auto& action : m_KeyBoardActions)
-			{
-				if(action->GetType() != KeyboardAction::ActionType::ButtonMap) break;
-				if(e.key.keysym.scancode == action->GetButtonMap())
-				{
-					action->GetCommand()->Execute();
-				}
-
-			}
+			WASDKeyDown(e);
+			HandlKeyboardButtonActions(e);
 		}
 		if(e.type == SDL_KEYUP)
 		{
-			switch(e.key.keysym.scancode)
-			{
-			case SDL_SCANCODE_W:
-				wasdInput.wButton = false;
-				break;
-			case SDL_SCANCODE_A:
-				wasdInput.aButton = false;
-				break;
-			case SDL_SCANCODE_S:
-				wasdInput.sButton = false;
-				break;
-			case SDL_SCANCODE_D:
-				wasdInput.dButton = false;
-				break;
-			}
+			WASDKeyUp(e);
 		}
 		if(e.type == SDL_MOUSEBUTTONDOWN)
 		{
@@ -102,13 +124,7 @@ bool dae::InputManager::ProcessKeyboardActions()
 		ImGui_ImplSDL2_ProcessEvent(&e);
 	}
 	ProcessWASDInput();
-	for(auto& action : m_KeyBoardActions)
-	{
-		if(action->GetType() == KeyboardAction::ActionType::WASDMovement)
-		{
-			action->GetCommand()->ExecuteMovement(m_WASDInput);
-		}
-	}
+	HandleWASDActions();
 	return true;
 }
 

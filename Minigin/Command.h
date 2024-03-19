@@ -1,12 +1,15 @@
 ﻿#pragma once
 #include <glm/glm.hpp>
 
+
 namespace dae
 {
 	class GameObject;
-
+	class MovementComponent;
+	
 	class Command {
 		#pragma warning(disable : 4100)
+
 	public:
 		virtual ~Command() = default;
 
@@ -35,5 +38,8 @@ namespace dae
 	public:
 		void ExecuteMovement(const glm::vec2& input) override;
 		Move(GameObject* gameObject);
+
+	private:
+		MovementComponent* m_pMovementComp{nullptr};
 	};
 }

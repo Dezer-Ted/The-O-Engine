@@ -3,10 +3,13 @@
 #include <memory>
 #include <vector>
 
+#include "Command.h"
+#include "Command.h"
 #include "Transform.h"
 #include "Components/BaseComponent.h"
 #include "Components/TextureComponent.h"
 #include "Components/EncircleComponent.h"
+#include "Components/MovementComponent.h"
 
 namespace dae
 {
@@ -90,8 +93,8 @@ namespace dae
 		GameObject*                     GetParent() const;
 		void                            SetParent(GameObject* pParent, bool keepWorldPosition = true);
 		const std::vector<GameObject*>& GetChildren();
-		void                            ProcessMovement(const glm::vec2& input);
-		const float                     m_MovementSpeed{100.f};
+		void                            Translate(const glm::vec2& input);
+		void                            FixedUpdate();
 
 	private:
 		std::vector<GameObject*>                    m_Children;

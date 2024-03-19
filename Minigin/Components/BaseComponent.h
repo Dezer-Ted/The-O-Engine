@@ -9,6 +9,7 @@ namespace dae
 		virtual void Update(){}
 		virtual void LateUpdate(){}
 		virtual void Render(){}
+		virtual void FixedUpdate(){}
 		BaseComponent(const BaseComponent& baseComponent) = delete;
 		BaseComponent(BaseComponent&& baseComponent) = delete;
 		explicit       BaseComponent(GameObject* pParent);

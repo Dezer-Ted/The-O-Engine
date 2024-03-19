@@ -73,7 +73,7 @@ glm::vec2 dae::Controller::XInputImpl::GetLeftAnalogStick() const
 {
 	const float normalX = RemapAnalogStick(static_cast<float>(m_CurrentState.Gamepad.sThumbLX));
 	const float normalY = -RemapAnalogStick(static_cast<float>(m_CurrentState.Gamepad.sThumbLY));
-	return CheckDeadZones(normalX,normalY);
+	return CheckDeadZones(normalX, normalY);
 }
 
 glm::vec2 dae::Controller::XInputImpl::GetRightAnalogStick() const
@@ -111,19 +111,51 @@ glm::vec2 dae::Controller::GetRightAnalogStick() const
 	return m_pImpl->GetRightAnalogStick();
 }
 
-bool dae::Controller::IsDownThisFrame(unsigned button) const
+unsigned dae::Controller::TranslateToXInput(ButtonInputs button) const
 {
-	return m_pImpl->IsDownThisFrame(button);
+	switch(button)
+	{
+	case ButtonInputs::AButton:
+		return XINPUT_GAMEPAD_A;
+	case ButtonInputs::BButton:
+		return XINPUT_GAMEPAD_B;
+	case ButtonInputs::XButton:
+		return XINPUT_GAMEPAD_X;
+	case ButtonInputs::YButton:
+		return XINPUT_GAMEPAD_Y;
+	case ButtonInputs::RBButton:
+		return XINPUT_GAMEPAD_RIGHT_SHOULDER;
+	case ButtonInputs::LBButton:
+		return XINPUT_GAMEPAD_LEFT_SHOULDER;
+	case ButtonInputs::DPadUp:
+		return XINPUT_GAMEPAD_DPAD_UP;
+	case ButtonInputs::DPadDown:
+		return XINPUT_GAMEPAD_DPAD_DOWN;
+	case ButtonInputs::DPadLeft:
+		return XINPUT_GAMEPAD_DPAD_LEFT;
+	case ButtonInputs::DPadRight:
+		return XINPUT_GAMEPAD_DPAD_RIGHT;
+	case ButtonInputs::SelectButton:
+		return XINPUT_GAMEPAD_BACK;
+	case ButtonInputs::StartButton:
+		return XINPUT_GAMEPAD_START;
+	}
+	return 0;
 }
 
-bool dae::Controller::IsUpThisFrame(unsigned button) const
+bool dae::Controller::IsDownThisFrame(ButtonInputs button) const
 {
-	return m_pImpl->IsUpThisFrame(button);
+	return m_pImpl->IsDownThisFrame(TranslateToXInput(button));
 }
 
-bool dae::Controller::IsPressed(unsigned button) const
+bool dae::Controller::IsUpThisFrame(ButtonInputs button) const
 {
-	return m_pImpl->IsPressed(button);
+	return m_pImpl->IsUpThisFrame(TranslateToXInput(button));
+}
+
+bool dae::Controller::IsPressed(ButtonInputs button) const
+{
+	return m_pImpl->IsPressed(TranslateToXInput(button));
 }
 
 glm::vec2 dae::Controller::GetLeftAnalogStick() const

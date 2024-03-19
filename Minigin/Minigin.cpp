@@ -22,34 +22,34 @@ void PrintSDLVersion()
 	SDL_version version{};
 	SDL_VERSION(&version);
 	printf("We compiled against SDL version %u.%u.%u ...\n",
-		version.major, version.minor, version.patch);
+	       version.major, version.minor, version.patch);
 
 	SDL_GetVersion(&version);
 	printf("We are linking against SDL version %u.%u.%u.\n",
-		version.major, version.minor, version.patch);
+	       version.major, version.minor, version.patch);
 
 	SDL_IMAGE_VERSION(&version);
 	printf("We compiled against SDL_image version %u.%u.%u ...\n",
-		version.major, version.minor, version.patch);
+	       version.major, version.minor, version.patch);
 
 	version = *IMG_Linked_Version();
 	printf("We are linking against SDL_image version %u.%u.%u.\n",
-		version.major, version.minor, version.patch);
+	       version.major, version.minor, version.patch);
 
 	SDL_TTF_VERSION(&version)
 	printf("We compiled against SDL_ttf version %u.%u.%u ...\n",
-		version.major, version.minor, version.patch);
+	       version.major, version.minor, version.patch);
 
 	version = *TTF_Linked_Version();
 	printf("We are linking against SDL_ttf version %u.%u.%u.\n",
-		version.major, version.minor, version.patch);
+	       version.major, version.minor, version.patch);
 }
 
-dae::Minigin::Minigin(const std::string &dataPath)
+dae::Minigin::Minigin(const std::string& dataPath)
 {
 	PrintSDLVersion();
-	
-	if (SDL_Init(SDL_INIT_VIDEO) != 0) 
+
+	if(SDL_Init(SDL_INIT_VIDEO) != 0)
 	{
 		throw std::runtime_error(std::string("SDL_Init Error: ") + SDL_GetError());
 	}
@@ -62,7 +62,7 @@ dae::Minigin::Minigin(const std::string &dataPath)
 		480,
 		SDL_WINDOW_OPENGL
 	);
-	if (g_window == nullptr) 
+	if(g_window == nullptr)
 	{
 		throw std::runtime_error(std::string("SDL_CreateWindow Error: ") + SDL_GetError());
 	}
@@ -88,30 +88,30 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	auto& sceneManager = SceneManager::GetInstance();
 	auto& input = InputManager::GetInstance();
 
-	// todo: this update loop could use some work.
-	
-	bool doContinue = true;
-	auto last_time {std::chrono::high_resolution_clock::now()};
-	float lag {0.f};
-	while (doContinue)
+
+	bool  doContinue = true;
+	auto  last_time{std::chrono::high_resolution_clock::now()};
+	float lag{0.f};
+	while(doContinue)
 	{
-		const auto current_time {std::chrono::high_resolution_clock::now()};
-		Singleton<Time>::GetInstance().SetDeltaTime(std::chrono::duration<float>(current_time -last_time).count());
+		const auto current_time{std::chrono::high_resolution_clock::now()};
+		Singleton<Time>::GetInstance().SetDeltaTime(std::chrono::duration<float>(current_time - last_time).count());
 		lag += Singleton<Time>::GetInstance().GetDeltaTime();
 		last_time = current_time;
 		doContinue = input.ProcessInput();
-		
+
 		while(lag >= m_Fixed_Time_Step)
 		{
-			sceneManager.LateUpdate();
-			lag-= m_Fixed_Time_Step;
+			sceneManager.FixedUpdate();
+			lag -= m_Fixed_Time_Step;
 		}
-		
+
 		sceneManager.Update();
+		sceneManager.LateUpdate();
 		renderer.Render();
 		sceneManager.CleanUp();
-		const auto sleep_time = current_time +  Utils::floatToDuration(m_Ms_per_frame) - std::chrono::high_resolution_clock::now();
-		
+		const auto sleep_time = current_time + Utils::floatToDuration(m_Ms_per_frame) - std::chrono::high_resolution_clock::now();
+
 		std::this_thread::sleep_for(sleep_time);
 	}
 }

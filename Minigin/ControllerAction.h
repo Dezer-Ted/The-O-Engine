@@ -6,6 +6,7 @@
 
 #pragma comment(lib, "XInput.lib")
 #include "Command.h"
+#include "Controller.h"
 
 namespace dae
 {
@@ -17,14 +18,15 @@ namespace dae
 			LeftAnalogStick,
 		};
 
-		ControllerAction(ActionType type, std::unique_ptr<dae::Command> command, unsigned int buttonMap = 0);
-		dae::Command* GetCommand() const;
-		unsigned int  GetButtonMapping() const;
-		ActionType    GetType() const;
+		ControllerAction(ActionType type, std::unique_ptr<dae::Command> command, Controller::ButtonInputs button);
+		ControllerAction(ActionType type, std::unique_ptr<dae::Command> command);
+		dae::Command*            GetCommand() const;
+		Controller::ButtonInputs GetButtonMapping() const;
+		ActionType               GetType() const;
 
 	private:
 		std::unique_ptr<dae::Command> m_Command;
-		unsigned int                  m_ButtonMap;
+		Controller::ButtonInputs      m_ButtonMap{0};
 		ActionType                    m_Type;
 	};
 }

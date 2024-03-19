@@ -39,3 +39,11 @@ dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
 	m_scenes.push_back(scene);
 	return *scene;
 }
+
+void dae::SceneManager::FixedUpdate()
+{
+	for(auto& scene : m_scenes)
+	{
+		scene->FixedUpdate();
+	}
+}

@@ -7,6 +7,13 @@ dae::KeyboardAction::KeyboardAction(ActionType type, std::unique_ptr<Command> co
 {
 }
 
+dae::KeyboardAction::KeyboardAction(ActionType type, std::unique_ptr<Command> command) :
+	m_Command(std::move(command)),
+	m_Type(type)
+{
+	
+}
+
 dae::Command* dae::KeyboardAction::GetCommand() const
 {
 	return m_Command.get();

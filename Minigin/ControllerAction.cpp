@@ -3,12 +3,18 @@
 #include <Windows.h>
 
 #pragma comment(lib, "XInput.lib")
-dae::ControllerAction::ControllerAction(ActionType type, std::unique_ptr<dae::Command> command, unsigned buttonMap) :
+dae::ControllerAction::ControllerAction(ActionType type, std::unique_ptr<dae::Command> command,Controller::ButtonInputs button ) :
 	m_Command{std::move(command)},
-	m_ButtonMap{buttonMap},
+	m_ButtonMap{button},
 	m_Type{type}
 {
 	
+}
+
+dae::ControllerAction::ControllerAction(ActionType type, std::unique_ptr<dae::Command> command) :
+	m_Command(std::move(command)),
+	m_Type(type)
+{
 }
 
 dae::Command* dae::ControllerAction::GetCommand() const
@@ -16,7 +22,7 @@ dae::Command* dae::ControllerAction::GetCommand() const
 	return m_Command.get();
 }
 
-unsigned dae::ControllerAction::GetButtonMapping() const
+dae::Controller::ButtonInputs dae::ControllerAction::GetButtonMapping() const
 {
 	return m_ButtonMap;
 }

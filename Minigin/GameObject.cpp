@@ -94,17 +94,17 @@ const std::vector<dae::GameObject*>& dae::GameObject::GetChildren()
 	return m_Children;
 }
 
-void dae::GameObject::ProcessMovement(const glm::vec2& input)
+void dae::GameObject::Translate(const glm::vec2& input)
 {
-	m_Transform.SetLocalPosition
-	(
-		glm::vec3
-		{
-			input.x * (m_MovementSpeed * Singleton<Time>::GetInstance().GetDeltaTime()),
-			input.y * (m_MovementSpeed * Singleton<Time>::GetInstance().GetDeltaTime()),
-			0
-		} + m_Transform.GetLocalPosition()
-	);
+	m_Transform.SetLocalPosition(glm::vec3{input.x, input.y, 0} + m_Transform.GetLocalPosition());
+}
+
+void dae::GameObject::FixedUpdate()
+{
+	for(const auto& component : m_ComponentList)
+	{
+		component->FixedUpdate();
+	}
 }
 
 void dae::GameObject::SetPosition(float x, float y)

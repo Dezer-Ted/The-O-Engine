@@ -13,6 +13,7 @@ namespace dae
 		void Remove(std::shared_ptr<GameObject> object);
 		void RemoveAll();
 
+		void FixedUpdate();
 		void Update();
 		void Render() const;
 		void LateUpdate();
