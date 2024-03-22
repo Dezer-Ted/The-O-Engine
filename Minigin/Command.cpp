@@ -1,4 +1,6 @@
 ﻿#include "Command.h"
+#include "Command.h"
+#include "Command.h"
 
 #include "GameObject.h"
 #include "Components/MovementComponent.h"
@@ -14,7 +16,7 @@ dae::GameObjectCommand::GameObjectCommand(GameObject* gameObject) :
 	
 }
 
-void dae::Move::ExecuteMovement(const glm::vec2& input)
+void dae::Move::Execute2DAxis(const glm::vec2& input)
 {
 	m_pMovementComp->ApplyMovement(input);
 }

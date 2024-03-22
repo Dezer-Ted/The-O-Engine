@@ -2,6 +2,7 @@
 #include <memory>
 #include <vector>
 
+#include "CompoundKeyboardAction.h"
 #include "ControllerAction.h"
 #include "GameObject.h"
 #include "KeyboardAction.h"
@@ -14,12 +15,15 @@ namespace dae
 
 	class InputManager final : public Singleton<InputManager> {
 	private:
-		std::unique_ptr<Controller>                    m_Controller;
-		std::vector<std::unique_ptr<ControllerAction>> m_ControllerActions;
-		std::vector<std::unique_ptr<KeyboardAction>>   m_KeyBoardActions;
-		glm::vec2                                      m_WASDInput{};
+		std::unique_ptr<Controller>                          m_Controller;
+		std::vector<std::unique_ptr<ControllerAction>>       m_ControllerActions;
+		std::vector<std::unique_ptr<KeyboardAction>>         m_KeyBoardActions;
+		glm::vec2                                            m_WASDInput{};
+		std::vector<std::unique_ptr<CompoundKeyboardAction>> m_CompoundKeyboardActions;
 
 	public:
+		void AddCompoundKeyboardAction(SDL_Scancode up, SDL_Scancode down, SDL_Scancode left, SDL_Scancode right, GameObject* pOwner);
+
 		template <typename T>
 		void AddControllerActionMapping(ControllerAction::ActionType type, GameObject* gameObject, unsigned int buttonMap = 0)
 		{
@@ -72,11 +76,13 @@ namespace dae
 		void ProcessControllerActions() const;
 		void WASDKeyUp(const SDL_Event& e);
 		void WASDKeyDown(const SDL_Event& e);
-		void HandlKeyboardButtonActions(const SDL_Event& e);
+		void HandlKeyboardButtonActions(const SDL_Event& e, KeyboardAction::InputType input);
 		void HandleWASDActions();
 		bool ProcessKeyboardActions();
 		InputManager();
 		~InputManager() override;
+		void HandleIsPressedInputs(bool IsButtonDown, const SDL_Event& e) const;
+		void ExecuteIsPressedInputs();
 
 		struct WASD {
 			bool wButton{};

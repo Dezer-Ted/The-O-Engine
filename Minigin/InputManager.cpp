@@ -8,6 +8,11 @@
 #include "../imgui-1.89.5/backends/imgui_impl_sdl2.h"
 
 
+void dae::InputManager::AddCompoundKeyboardAction(SDL_Scancode up, SDL_Scancode down, SDL_Scancode left, SDL_Scancode right, GameObject* pOwner)
+{
+	m_CompoundKeyboardActions.push_back(std::make_unique<CompoundKeyboardAction>(up, down, right, left, std::move(std::make_unique<Move>(pOwner))));
+}
+
 bool dae::InputManager::ProcessInput()
 {
 
@@ -27,10 +32,10 @@ void dae::InputManager::ProcessControllerActions() const
 			if(m_Controller->IsDownThisFrame(action->GetButtonMapping())) action->GetCommand()->Execute();
 			break;
 		case ControllerAction::ActionType::LeftAnalogStick:
-			action->GetCommand()->ExecuteMovement(m_Controller->GetLeftAnalogStick());
+			action->GetCommand()->Execute2DAxis(m_Controller->GetLeftAnalogStick());
 			break;
 		case ControllerAction::ActionType::RightAnalogStick:
-			action->GetCommand()->ExecuteMovement(m_Controller->GetRightAnalogStick());
+			action->GetCommand()->Execute2DAxis(m_Controller->GetRightAnalogStick());
 			break;
 		}
 	}
@@ -74,26 +79,29 @@ void dae::InputManager::WASDKeyDown(const SDL_Event& e)
 	}
 }
 
-void dae::InputManager::HandlKeyboardButtonActions(const SDL_Event& e)
+void dae::InputManager::HandlKeyboardButtonActions(const SDL_Event& e, dae::KeyboardAction::InputType input)
 {
 	for(auto& action : m_KeyBoardActions)
 	{
-		if(action->GetType() != KeyboardAction::ActionType::ButtonMap) break;
+		if(action->GetInputType() != input) continue;
+		if(action->GetActionType() != KeyboardAction::ActionType::ButtonMap) continue;
 		if(e.key.keysym.scancode == action->GetButtonMap())
 		{
+
 			action->GetCommand()->Execute();
 		}
 
 	}
 }
 
+
 void dae::InputManager::HandleWASDActions()
 {
 	for(auto& action : m_KeyBoardActions)
 	{
-		if(action->GetType() == KeyboardAction::ActionType::WASDMovement)
+		if(action->GetActionType() == KeyboardAction::ActionType::WASDMovement)
 		{
-			action->GetCommand()->ExecuteMovement(m_WASDInput);
+			action->GetCommand()->Execute2DAxis(m_WASDInput);
 		}
 	}
 }
@@ -110,11 +118,22 @@ bool dae::InputManager::ProcessKeyboardActions()
 		if(e.type == SDL_KEYDOWN)
 		{
 			WASDKeyDown(e);
-			HandlKeyboardButtonActions(e);
+			HandlKeyboardButtonActions(e, KeyboardAction::InputType::OnButtonDown);
+			HandleIsPressedInputs(true, e);
+			for(auto& compoundkeyboardAction : m_CompoundKeyboardActions)
+			{
+				compoundkeyboardAction->HandleKeyDown(e);
+			}
 		}
 		if(e.type == SDL_KEYUP)
 		{
+			for(auto& compoundkeyboardAction : m_CompoundKeyboardActions)
+			{
+				compoundkeyboardAction->HandleKeyUp(e);
+			}
 			WASDKeyUp(e);
+			HandlKeyboardButtonActions(e, KeyboardAction::InputType::OnButtonDown);
+			HandleIsPressedInputs(false, e);
 		}
 		if(e.type == SDL_MOUSEBUTTONDOWN)
 		{
@@ -122,6 +141,10 @@ bool dae::InputManager::ProcessKeyboardActions()
 		}
 		// etc...
 		ImGui_ImplSDL2_ProcessEvent(&e);
+	}
+	for(auto& compoundkeyboardAction : m_CompoundKeyboardActions)
+	{
+		compoundkeyboardAction->ExecuteCommand();
 	}
 	ProcessWASDInput();
 	HandleWASDActions();
@@ -137,6 +160,37 @@ dae::InputManager::InputManager()
 dae::InputManager::~InputManager()
 {
 
+}
+
+void dae::InputManager::HandleIsPressedInputs(bool IsButtonDown, const SDL_Event& e) const
+{
+	for(auto& action : m_KeyBoardActions)
+	{
+		if(action->GetInputType() != KeyboardAction::InputType::WhilePressed) continue;
+		if(e.key.keysym.scancode == action->GetButtonMap())
+		{
+			if(IsButtonDown)
+			{
+				action->SetIsPressed(true);
+			}
+			else
+			{
+				action->SetIsPressed(false);
+			}
+		}
+	}
+}
+
+void dae::InputManager::ExecuteIsPressedInputs()
+{
+	for(auto& action : m_KeyBoardActions)
+	{
+		if(action->GetInputType() != KeyboardAction::InputType::WhilePressed) continue;
+		if(action->GetIsPressed())
+		{
+			action->GetCommand()->Execute();
+		}
+	}
 }
 
 void dae::InputManager::ProcessWASDInput()

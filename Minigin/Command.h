@@ -1,6 +1,9 @@
 ﻿#pragma once
 #include <glm/glm.hpp>
 
+#include "Command.h"
+#include "Command.h"
+
 
 namespace dae
 {
@@ -17,7 +20,7 @@ namespace dae
 		{
 		}
 
-		virtual void ExecuteMovement(const glm::vec2& input)
+		virtual void Execute2DAxis(const glm::vec2& input)
 		{
 		}
 	};
@@ -36,7 +39,7 @@ namespace dae
 
 	class Move : public GameObjectCommand {
 	public:
-		void ExecuteMovement(const glm::vec2& input) override;
+		void Execute2DAxis(const glm::vec2& input) override;
 		Move(GameObject* gameObject);
 
 	private:

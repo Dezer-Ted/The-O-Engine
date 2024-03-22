@@ -185,6 +185,7 @@
     <ClInclude Include="..\3rdParty\imgui-1.89.5\imstb_textedit.h" />
     <ClInclude Include="..\3rdParty\imgui-1.89.5\imstb_truetype.h" />
     <ClInclude Include="Components\MovementComponent.h" />
+    <ClInclude Include="CompoundKeyboardAction.h" />
     <ClInclude Include="ControllerAction.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="Components\BaseComponent.h" />
@@ -220,6 +221,7 @@
     <ClCompile Include="..\3rdParty\imgui-1.89.5\imgui_tables.cpp" />
     <ClCompile Include="..\3rdParty\imgui-1.89.5\imgui_widgets.cpp" />
     <ClCompile Include="Components\MovementComponent.cpp" />
+    <ClCompile Include="CompoundKeyboardAction.cpp" />
     <ClCompile Include="ControllerAction.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="Components\BaseComponent.cpp" />
