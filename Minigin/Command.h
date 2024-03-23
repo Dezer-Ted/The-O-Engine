@@ -3,6 +3,7 @@
 
 #include "Command.h"
 #include "Command.h"
+#include "GameObject.h"
 
 
 namespace dae
@@ -44,5 +45,20 @@ namespace dae
 
 	private:
 		MovementComponent* m_pMovementComp{nullptr};
+	};
+	class PlayerComponent;
+	class Die final : public GameObjectCommand {
+	public:
+		void Execute() override;
+		Die(GameObject* pOwner);
+	private:
+		PlayerComponent* m_pPlayerLifeComp{nullptr};
+	};
+	class GainPoints final : public GameObjectCommand {
+	public:
+		void Execute() override;
+		GainPoints(GameObject* pOwner);
+	private:
+		PlayerComponent* m_pPlayerComp{nullptr};
 	};
 }

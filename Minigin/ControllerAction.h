@@ -1,10 +1,6 @@
 ﻿#pragma once
 #include <memory>
-#define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
-#include <Xinput.h>
 
-#pragma comment(lib, "XInput.lib")
 #include "Command.h"
 #include "Controller.h"
 
@@ -18,15 +14,23 @@ namespace dae
 			LeftAnalogStick,
 		};
 
-		ControllerAction(ActionType type, std::unique_ptr<dae::Command> command, Controller::ButtonInputs button);
+		enum class InputType {
+			ButtonDown,
+			ButtonUp,
+			ButtonPressed
+		};
+
+		ControllerAction(ActionType actionType, std::unique_ptr<dae::Command> command, Controller::ButtonInputs button, InputType inputType);
 		ControllerAction(ActionType type, std::unique_ptr<dae::Command> command);
 		dae::Command*            GetCommand() const;
 		Controller::ButtonInputs GetButtonMapping() const;
 		ActionType               GetType() const;
+		InputType                GetInpuType() const;
 
 	private:
 		std::unique_ptr<dae::Command> m_Command;
 		Controller::ButtonInputs      m_ButtonMap{0};
 		ActionType                    m_Type;
+		InputType                     m_InputType{};
 	};
 }

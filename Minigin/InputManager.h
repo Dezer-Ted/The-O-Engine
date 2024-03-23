@@ -7,7 +7,7 @@
 #include "GameObject.h"
 #include "KeyboardAction.h"
 #include "Singleton.h"
-
+#include "ControllerCompoundAction.h"
 
 namespace dae
 {
@@ -18,16 +18,17 @@ namespace dae
 		std::unique_ptr<Controller>                          m_Controller;
 		std::vector<std::unique_ptr<ControllerAction>>       m_ControllerActions;
 		std::vector<std::unique_ptr<KeyboardAction>>         m_KeyBoardActions;
-		glm::vec2                                            m_WASDInput{};
 		std::vector<std::unique_ptr<CompoundKeyboardAction>> m_CompoundKeyboardActions;
+		std::vector<std::unique_ptr<ControllerCompoundAction>> m_CompoundControllerActions;
 
 	public:
+		void AddControllerCompoundAction(Controller::ButtonInputs upInput,Controller::ButtonInputs downInput,Controller::ButtonInputs leftInput,Controller::ButtonInputs rightInput, GameObject* go);
 		void AddCompoundKeyboardAction(SDL_Scancode up, SDL_Scancode down, SDL_Scancode left, SDL_Scancode right, GameObject* pOwner);
 
 		template <typename T>
-		void AddControllerActionMapping(ControllerAction::ActionType type, GameObject* gameObject, unsigned int buttonMap = 0)
+		void AddControllerActionMapping(ControllerAction::ActionType type, GameObject* gameObject, Controller::ButtonInputs buttonMap, ControllerAction::InputType inputType)
 		{
-			m_ControllerActions.push_back(std::make_unique<ControllerAction>(type, std::move(std::make_unique<T>(gameObject))));
+			m_ControllerActions.push_back(std::make_unique<ControllerAction>(type, std::move(std::make_unique<T>(gameObject)),buttonMap,inputType));
 		}
 
 		template <typename T>
@@ -73,24 +74,14 @@ namespace dae
 		}
 
 		bool ProcessInput();
+		void ControllerProcessInputType(const std::vector<std::unique_ptr<dae::ControllerAction>>::value_type& action) const;
 		void ProcessControllerActions() const;
-		void WASDKeyUp(const SDL_Event& e);
-		void WASDKeyDown(const SDL_Event& e);
 		void HandlKeyboardButtonActions(const SDL_Event& e, KeyboardAction::InputType input);
-		void HandleWASDActions();
 		bool ProcessKeyboardActions();
 		InputManager();
 		~InputManager() override;
 		void HandleIsPressedInputs(bool IsButtonDown, const SDL_Event& e) const;
 		void ExecuteIsPressedInputs();
-
-		struct WASD {
-			bool wButton{};
-			bool aButton{};
-			bool sButton{};
-			bool dButton{};
-		}        wasdInput;
-
-		void ProcessWASDInput();
+		void ProcessControllerCompoundActions() const;
 	};
 }

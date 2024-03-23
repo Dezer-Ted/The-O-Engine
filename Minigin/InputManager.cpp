@@ -13,13 +13,38 @@ void dae::InputManager::AddCompoundKeyboardAction(SDL_Scancode up, SDL_Scancode 
 	m_CompoundKeyboardActions.push_back(std::make_unique<CompoundKeyboardAction>(up, down, right, left, std::move(std::make_unique<Move>(pOwner))));
 }
 
+void dae::InputManager::AddControllerCompoundAction(Controller::ButtonInputs upInput, Controller::ButtonInputs   downInput,
+                                                    Controller::ButtonInputs leftInput, Controller::ButtonInputs rightInput, GameObject* go)
+{
+	m_CompoundControllerActions.push_back(
+		std::make_unique<ControllerCompoundAction>(upInput, downInput, leftInput, rightInput, std::move(std::make_unique<Move>(go)),
+		                                           m_Controller.get()));
+}
+
 bool dae::InputManager::ProcessInput()
 {
 
 
 	m_Controller->ProcessInput();
 	ProcessControllerActions();
+	ProcessControllerCompoundActions();
 	return ProcessKeyboardActions();
+}
+
+void dae::InputManager::ControllerProcessInputType(const std::vector<std::unique_ptr<dae::ControllerAction>>::value_type& action) const
+{
+	switch(action->GetInpuType())
+	{
+	case ControllerAction::InputType::ButtonDown:
+		if(m_Controller->IsDownThisFrame(action->GetButtonMapping())) action->GetCommand()->Execute();
+		break;
+	case ControllerAction::InputType::ButtonUp:
+		if(m_Controller->IsUpThisFrame(action->GetButtonMapping())) action->GetCommand()->Execute();
+		break;
+	case ControllerAction::InputType::ButtonPressed:
+		if(m_Controller->IsPressed(action->GetButtonMapping())) action->GetCommand()->Execute();
+		break;
+	}
 }
 
 void dae::InputManager::ProcessControllerActions() const
@@ -29,8 +54,7 @@ void dae::InputManager::ProcessControllerActions() const
 		switch(action->GetType())
 		{
 		case ControllerAction::ActionType::ButtonMap:
-			if(m_Controller->IsDownThisFrame(action->GetButtonMapping())) action->GetCommand()->Execute();
-			break;
+			ControllerProcessInputType(action);
 		case ControllerAction::ActionType::LeftAnalogStick:
 			action->GetCommand()->Execute2DAxis(m_Controller->GetLeftAnalogStick());
 			break;
@@ -40,45 +64,6 @@ void dae::InputManager::ProcessControllerActions() const
 		}
 	}
 }
-
-void dae::InputManager::WASDKeyUp(const SDL_Event& e)
-{
-	switch(e.key.keysym.scancode)
-	{
-	case SDL_SCANCODE_W:
-		wasdInput.wButton = false;
-		break;
-	case SDL_SCANCODE_A:
-		wasdInput.aButton = false;
-		break;
-	case SDL_SCANCODE_S:
-		wasdInput.sButton = false;
-		break;
-	case SDL_SCANCODE_D:
-		wasdInput.dButton = false;
-		break;
-	}
-}
-
-void dae::InputManager::WASDKeyDown(const SDL_Event& e)
-{
-	switch(e.key.keysym.scancode)
-	{
-	case SDL_SCANCODE_W:
-		wasdInput.wButton = true;
-		break;
-	case SDL_SCANCODE_A:
-		wasdInput.aButton = true;
-		break;
-	case SDL_SCANCODE_S:
-		wasdInput.sButton = true;
-		break;
-	case SDL_SCANCODE_D:
-		wasdInput.dButton = true;
-		break;
-	}
-}
-
 void dae::InputManager::HandlKeyboardButtonActions(const SDL_Event& e, dae::KeyboardAction::InputType input)
 {
 	for(auto& action : m_KeyBoardActions)
@@ -95,16 +80,7 @@ void dae::InputManager::HandlKeyboardButtonActions(const SDL_Event& e, dae::Keyb
 }
 
 
-void dae::InputManager::HandleWASDActions()
-{
-	for(auto& action : m_KeyBoardActions)
-	{
-		if(action->GetActionType() == KeyboardAction::ActionType::WASDMovement)
-		{
-			action->GetCommand()->Execute2DAxis(m_WASDInput);
-		}
-	}
-}
+
 
 bool dae::InputManager::ProcessKeyboardActions()
 {
@@ -117,7 +93,6 @@ bool dae::InputManager::ProcessKeyboardActions()
 		}
 		if(e.type == SDL_KEYDOWN)
 		{
-			WASDKeyDown(e);
 			HandlKeyboardButtonActions(e, KeyboardAction::InputType::OnButtonDown);
 			HandleIsPressedInputs(true, e);
 			for(auto& compoundkeyboardAction : m_CompoundKeyboardActions)
@@ -131,7 +106,6 @@ bool dae::InputManager::ProcessKeyboardActions()
 			{
 				compoundkeyboardAction->HandleKeyUp(e);
 			}
-			WASDKeyUp(e);
 			HandlKeyboardButtonActions(e, KeyboardAction::InputType::OnButtonDown);
 			HandleIsPressedInputs(false, e);
 		}
@@ -146,8 +120,6 @@ bool dae::InputManager::ProcessKeyboardActions()
 	{
 		compoundkeyboardAction->ExecuteCommand();
 	}
-	ProcessWASDInput();
-	HandleWASDActions();
 	return true;
 }
 
@@ -193,11 +165,10 @@ void dae::InputManager::ExecuteIsPressedInputs()
 	}
 }
 
-void dae::InputManager::ProcessWASDInput()
+void dae::InputManager::ProcessControllerCompoundActions() const
 {
-	m_WASDInput = glm::vec2{};
-	if(wasdInput.aButton) m_WASDInput.x -= 1.f;
-	if(wasdInput.dButton) m_WASDInput.x += 1.f;
-	if(wasdInput.wButton) m_WASDInput.y -= 1.f;
-	if(wasdInput.sButton) m_WASDInput.y += 1.f;
+	for(auto& compoundAction : m_CompoundControllerActions)
+	{
+		compoundAction->HandleButtonInput();
+	}
 }
