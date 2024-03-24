@@ -32,9 +32,9 @@ namespace dae
 		}
 
 		template <typename T>
-		void AddKeyBoardActionMapping(KeyboardAction::ActionType type, GameObject* gameObject, SDL_Scancode = SDL_SCANCODE_F)
+		void AddKeyBoardActionMapping(KeyboardAction::ActionType type,KeyboardAction::InputType inputType, GameObject* gameObject, SDL_Scancode button = SDL_SCANCODE_F)
 		{
-			m_KeyBoardActions.push_back(std::make_unique<KeyboardAction>(type, std::move(std::make_unique<T>(gameObject))));
+			m_KeyBoardActions.push_back(std::make_unique<KeyboardAction>(inputType, type, std::move(std::make_unique<T>(gameObject)),button));
 		}
 
 		template <typename T>

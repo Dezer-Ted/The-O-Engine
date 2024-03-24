@@ -5,13 +5,20 @@
 #include "Time.h"
 #include "Singleton.h"
 #include <math.h>
+#include <../steamworks/public/steam/steam_api.h>
 
+#include "CSteamAchievements.h"
+#ifndef STEAM_ACHIEVEMENTS
+#define STEAM_ACHIEVEMENTS
+inline CSteamAchievements* g_SteamAChievements = NULL;
+#endif
 namespace Utils
 {
-	enum class GameEvent {
+	enum GameEvent {
 		PlayerDied,
 		PlayerGainedPoints
 	};
+
 
 	const double PI{3.1415926535f};
 

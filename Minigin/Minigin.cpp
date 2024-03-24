@@ -15,6 +15,7 @@
 #include "ResourceManager.h"
 #include "Time.h"
 #include "Utils.h"
+#include <../steamworks/public/steam/steam_api.h>
 SDL_Window* g_window{};
 
 void PrintSDLVersion()
@@ -94,6 +95,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 	float lag{0.f};
 	while(doContinue)
 	{
+		SteamAPI_RunCallbacks();
 		const auto current_time{std::chrono::high_resolution_clock::now()};
 		Singleton<Time>::GetInstance().SetDeltaTime(std::chrono::duration<float>(current_time - last_time).count());
 		lag += Singleton<Time>::GetInstance().GetDeltaTime();
