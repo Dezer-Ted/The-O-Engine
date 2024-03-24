@@ -36,7 +36,7 @@ void dae::GameObject::LateUpdate()
 
 void dae::GameObject::DestroyComponents()
 {
-	for(int index = 0; index < m_ComponentList.size(); ++index)
+	for(unsigned int index = 0; index < m_ComponentList.size(); ++index)
 	{
 		if(m_ComponentList[index]->m_DestructionFlag)
 		{
@@ -69,7 +69,7 @@ void dae::GameObject::SetParent(GameObject* pParent, bool keepWorldPosition)
 	}
 	if(m_Parent != nullptr)
 	{
-		for(int index = 0; index < m_Children.size(); ++index)
+		for(unsigned int index = 0; index < m_Children.size(); ++index)
 		{
 			if(m_Parent->m_Children[index] == this) m_Parent->m_Children.erase(m_Parent->m_Children.begin() + index);
 		}

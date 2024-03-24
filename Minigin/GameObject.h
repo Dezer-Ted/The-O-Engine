@@ -73,7 +73,7 @@ namespace dae
 		{
 			try
 			{
-				for(int i = 0; i < m_ComponentList.size(); ++i)
+				for(unsigned int i = 0; i < m_ComponentList.size(); ++i)
 				{
 					T* castedComp = dynamic_cast<T*>(m_ComponentList[i].get());
 					if(castedComp != nullptr)

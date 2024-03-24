@@ -35,7 +35,7 @@ namespace Utils
 		return static_cast<float>(value) / 100.f;
 	}
 
-	inline std::string TruncateString(const std::string& inputString, int length)
+	inline std::string TruncateString(const std::string& inputString, unsigned int length)
 	{
 		if(inputString.length() < length) return inputString;
 		return inputString.substr(0, length);

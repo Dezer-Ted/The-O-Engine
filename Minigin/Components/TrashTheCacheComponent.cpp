@@ -50,7 +50,7 @@ std::vector<long long> TrashTheCacheComponent::TrashTheCacheWithInts()
 	while(step <= 1024)
 	{
 		const auto startTime{std::chrono::high_resolution_clock::now()};
-		for(int i = 0; i < m_IntegerList.size(); i += step)
+		for(unsigned int i = 0; i < m_IntegerList.size(); i += step)
 		{
 			m_IntegerList[i] *= 2;
 		}
@@ -70,7 +70,7 @@ std::vector<long long> TrashTheCacheComponent::TrashTheCacheWithGameObjects()
 	while(step <= 1024)
 	{
 		const auto startTime{std::chrono::high_resolution_clock::now()};
-		for(int i = 0; i < m_GameObject3DList.size(); i += step)
+		for(unsigned int i = 0; i < m_GameObject3DList.size(); i += step)
 		{
 			m_GameObject3DList[i].ID *= 2;
 		}
@@ -211,7 +211,7 @@ std::vector<long long> TrashTheCacheComponent::TrashTheCacheWithAltGameObjects()
 	while(step <= 1024)
 	{
 		const auto startTime{std::chrono::high_resolution_clock::now()};
-		for(int i = 0; i < m_GameObject3DAltList.size(); i += step)
+		for(unsigned int i = 0; i < m_GameObject3DAltList.size(); i += step)
 		{
 			m_GameObject3DAltList[i].ID *= 2;
 		}
@@ -226,10 +226,10 @@ std::vector<long long> TrashTheCacheComponent::TrashTheCacheWithAltGameObjects()
 std::unique_ptr<float[]> TrashTheCacheComponent::GetAverage(const std::vector<std::vector<long long>>& times)
 {
 	std::unique_ptr<float[]> averageTimes = std::make_unique<float[]>(times[0].size());
-	for(int i = 0; i < times[0].size(); ++i)
+	for(unsigned int i = 0; i < times[0].size(); ++i)
 	{
 		float total{};
-		for(int j = 0; j < times.size(); ++j)
+		for(unsigned int j = 0; j < times.size(); ++j)
 		{
 			total += static_cast<float>(times[j][i]);
 		}

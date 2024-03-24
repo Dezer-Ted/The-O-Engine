@@ -60,7 +60,7 @@ void Scene::LateUpdate()
 
 void Scene::CleanUp()
 {
-	for (int index = 0; index < m_objects.size(); ++index)
+	for (unsigned int index = 0; index < m_objects.size(); ++index)
 	{
 		if(m_objects[index]->GetDestructionFlag())
 		{
