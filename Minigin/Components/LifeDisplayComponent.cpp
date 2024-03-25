@@ -15,6 +15,7 @@ void dae::LifeDisplayComponent::Notify(Utils::GameEvent event, BaseComponent* co
 {
 	switch(event)
 	{
+	case Utils::PlayerSpawn:
 	case Utils::GameEvent::PlayerDied:
 		const PlayerComponent* lifeComp{dynamic_cast<PlayerComponent*>(components)};
 		if(lifeComp)

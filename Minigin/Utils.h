@@ -16,7 +16,8 @@ namespace Utils
 {
 	enum GameEvent {
 		PlayerDied,
-		PlayerGainedPoints
+		PlayerGainedPoints,
+		PlayerSpawn
 	};
 
 

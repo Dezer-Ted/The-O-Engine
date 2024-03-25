@@ -7,13 +7,13 @@ dae::PlayerComponent::PlayerComponent(GameObject* pParent) : BaseComponent(pPare
 void dae::PlayerComponent::AddObserver(Observer* pObserver)
 {
 	Observable::AddObserver(pObserver);
-	NotifyObservers(Utils::GameEvent::PlayerDied,this);
+	NotifyObservers(Utils::GameEvent::PlayerDied, this);
 }
 
 void dae::PlayerComponent::AddHP(int amount)
 {
-	m_CurrentHp+=amount;
-	NotifyObservers(Utils::GameEvent::PlayerDied,this);
+	m_CurrentHp += amount;
+	NotifyObservers(Utils::GameEvent::PlayerSpawn, this);
 }
 
 int dae::PlayerComponent::GetHP() const
@@ -28,6 +28,6 @@ int dae::PlayerComponent::GetScore() const
 
 void dae::PlayerComponent::AddScore(int value)
 {
-	m_Score+=value;
-	NotifyObservers(Utils::GameEvent::PlayerGainedPoints,this);
+	m_Score += value;
+	NotifyObservers(Utils::GameEvent::PlayerGainedPoints, this);
 }
