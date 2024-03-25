@@ -29,7 +29,7 @@ namespace dae
 
 	private:
 		std::unique_ptr<dae::Command> m_Command;
-		Controller::ButtonInputs      m_ButtonMap{0};
+		Controller::ButtonInputs      m_ButtonMap{};
 		ActionType                    m_Type;
 		InputType                     m_InputType{};
 	};

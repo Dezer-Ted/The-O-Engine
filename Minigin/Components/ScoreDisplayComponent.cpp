@@ -19,7 +19,6 @@ void dae::ScoreDisplayComponent::Notify(Utils::GameEvent event, BaseComponent* c
 		if(playerComp)
 			UpdateText(playerComp);
 		if(playerComp->GetScore()>= 500)
-			g_SteamAChievements->SetAchievement("ACH_WIN_ONE_GAME");
 		break;
 	}
 }

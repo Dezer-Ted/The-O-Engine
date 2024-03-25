@@ -1,7 +1,7 @@
 ﻿#include "MovementComponent.h"
 
 #include "../Singleton.h"
-#include "../Time.h"
+#include "../DeltaTime.h"
 
 dae::MovementComponent::MovementComponent(GameObject* pParent) :
 	BaseComponent{pParent}
@@ -10,5 +10,5 @@ dae::MovementComponent::MovementComponent(GameObject* pParent) :
 
 void dae::MovementComponent::ApplyMovement(const glm::vec2& direction)
 {
-	GetParent()->Translate(direction * (m_MovementSpeed * Singleton<Time>::GetInstance().GetDeltaTime()));
+	GetParent()->Translate(direction * (m_MovementSpeed * Singleton<DeltaTime>::GetInstance().GetDeltaTime()));
 }

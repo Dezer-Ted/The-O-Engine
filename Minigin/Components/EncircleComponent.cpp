@@ -1,7 +1,7 @@
 #include "EncircleComponent.h"
 #include "../GameObject.h"
 #include "../Singleton.h"
-#include "../Time.h"
+#include "../DeltaTime.h"
 #include "../Utils.h"
 
 dae::EncircleComponent::EncircleComponent(GameObject* pParent): BaseComponent(pParent)
@@ -13,7 +13,7 @@ dae::EncircleComponent::EncircleComponent(GameObject* pParent): BaseComponent(pP
 void dae::EncircleComponent::Update()
 {
 	if(GetParent()->GetParent() != nullptr) SetPivot(GetParent()->GetParent()->GetTransform().GetWorldPosition());
-	m_CurrentRotationDEG += m_DegreesPerSecond * Singleton<Time>::GetInstance().GetDeltaTime();
+	m_CurrentRotationDEG += m_DegreesPerSecond * Singleton<DeltaTime>::GetInstance().GetDeltaTime();
 	if(m_CurrentRotationDEG > 360.f) m_CurrentRotationDEG = 0.f;
 	const float rotationRad{Utils::DegToRad(m_CurrentRotationDEG)};
 	glm::vec3   offset{

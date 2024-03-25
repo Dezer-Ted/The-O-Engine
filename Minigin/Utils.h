@@ -7,11 +7,7 @@
 #include <math.h>
 #include <../steamworks/public/steam/steam_api.h>
 
-#include "CSteamAchievements.h"
-#ifndef STEAM_ACHIEVEMENTS
-#define STEAM_ACHIEVEMENTS
-inline CSteamAchievements* g_SteamAChievements = NULL;
-#endif
+
 namespace Utils
 {
 	enum GameEvent {

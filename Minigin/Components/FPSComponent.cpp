@@ -1,7 +1,7 @@
 #include "FPSComponent.h"
 
 #include "../ResourceManager.h"
-#include "../Time.h"
+#include "../DeltaTime.h"
 #include "../Utils.h"
 
 dae::FPSComponent::FPSComponent(GameObject* pParent) : BaseComponent(pParent)
@@ -13,7 +13,7 @@ dae::FPSComponent::FPSComponent(GameObject* pParent) : BaseComponent(pParent)
 
 void dae::FPSComponent::Update()
 {
-	const float deltaT{dae::Singleton<Time>::GetInstance().GetDeltaTime()};
+	const float deltaT{dae::Singleton<DeltaTime>::GetInstance().GetDeltaTime()};
 	m_ElapsedTime += deltaT;
 	++m_FPSCounter;
 	if(m_ElapsedTime >= m_TimeSpan)
