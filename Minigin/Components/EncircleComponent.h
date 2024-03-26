@@ -13,7 +13,7 @@ namespace dae
 		EncircleComponent(EncircleComponent&&) = delete;
 		EncircleComponent& operator=(const EncircleComponent&) = delete;
 		EncircleComponent& operator=(EncircleComponent&&) = delete;
-		~EncircleComponent() = default;
+		~EncircleComponent() override = default;
 		void Update() override;
 		void SetPivot(const glm::vec3& pivot);
 		void SetRadius(float radius);

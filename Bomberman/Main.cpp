@@ -12,7 +12,6 @@
 #include <SceneManager.h>
 #include <ResourceManager.h>
 #include <Scene.h>
-#include <GameObject.h>
 #include <InputManager.h>
 #include <Utils.h>
 #include <Components/EncircleComponent.h>
@@ -24,6 +23,9 @@
 #include <Command.h>
 #include <Components/LifeDisplayComponent.h>
 #include <Components/ScoreDisplayComponent.h>
+
+#include "GameObject.h"
+#include "Components/SpriteComponent.h"
 
 void load()
 {
@@ -120,6 +122,11 @@ void load()
 	scene.Add(go);
 	scene.Add(go2);
 
+	go = std::make_shared<dae::GameObject>();
+	auto sprite = go->AddComponent<dae::SpriteComponent>();
+	sprite->InitComponent(3,1,"Character/LeftWalkCycle.png");
+	go->SetPosition(150,150);
+	scene.Add(go);
 
 }
 int main(int, char* [])

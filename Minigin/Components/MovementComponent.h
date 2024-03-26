@@ -11,7 +11,7 @@ namespace dae
 		MovementComponent(MovementComponent&&) = delete;
 		MovementComponent& operator=(const MovementComponent&) = delete;
 		MovementComponent& operator=(MovementComponent&&) = delete;
-		~MovementComponent() = default;
+		~MovementComponent() override = default;
 		void ApplyMovement(const glm::vec2& direction);
 
 	private:

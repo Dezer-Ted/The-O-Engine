@@ -14,7 +14,7 @@ namespace dae
 		TextComponent(TextComponent&& textComponent) = delete;
 		TextComponent& operator=(const TextComponent& textComponent) = delete;
 		TextComponent& operator=(TextComponent&& textComponent) = delete;
-		~TextComponent();
+		~TextComponent() override;
 		void SetText(const std::string& text, std::shared_ptr<Font> font, const SDL_Color& color);
 		void SetText(const std::string& text);
 		void Render() override;

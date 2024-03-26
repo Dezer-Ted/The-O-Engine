@@ -14,7 +14,7 @@ namespace dae
 		ScoreDisplayComponent(ScoreDisplayComponent&&) = delete;
 		ScoreDisplayComponent& operator=(const ScoreDisplayComponent&) = delete;
 		ScoreDisplayComponent& operator=(ScoreDisplayComponent&&) = delete;
-		~ScoreDisplayComponent() = default;
+		~ScoreDisplayComponent() override = default;
 		void Notify(Utils::GameEvent event, BaseComponent* components) override;
 
 	private:

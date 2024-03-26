@@ -226,6 +226,7 @@ xcopy "$(SolutionDir)\3rdParty\steamworks\redistributable_bin\win64\*.dll" "$(Ou
     <ClInclude Include="Components\MovementComponent.h" />
     <ClInclude Include="Components\PlayerComponent.h" />
     <ClInclude Include="Components\ScoreDisplayComponent.h" />
+    <ClInclude Include="Components\SpriteComponent.h" />
     <ClInclude Include="CompoundKeyboardAction.h" />
     <ClInclude Include="ControllerAction.h" />
     <ClInclude Include="Command.h" />
@@ -268,6 +269,7 @@ xcopy "$(SolutionDir)\3rdParty\steamworks\redistributable_bin\win64\*.dll" "$(Ou
     <ClCompile Include="Components\MovementComponent.cpp" />
     <ClCompile Include="Components\PlayerComponent.cpp" />
     <ClCompile Include="Components\ScoreDisplayComponent.cpp" />
+    <ClCompile Include="Components\SpriteComponent.cpp" />
     <ClCompile Include="CompoundKeyboardAction.cpp" />
     <ClCompile Include="ControllerAction.cpp" />
     <ClCompile Include="Command.cpp" />
