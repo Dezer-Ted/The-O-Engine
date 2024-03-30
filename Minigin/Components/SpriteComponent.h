@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <map>
 #include <memory>
 #include <SDL_rect.h>
 #include <string>
@@ -6,8 +7,11 @@
 #include "BaseComponent.h"
 #include "../Texture2D.h"
 
+
 namespace dae
 {
+	class Sprite;
+
 	class SpriteComponent final : public BaseComponent {
 	public:
 		SpriteComponent(GameObject* pParent);
@@ -15,23 +19,22 @@ namespace dae
 		SpriteComponent(SpriteComponent&&) = delete;
 		SpriteComponent operator=(const SpriteComponent&) = delete;
 		SpriteComponent operator=(SpriteComponent&&) = delete;
-		~SpriteComponent() override = default;
+		~SpriteComponent() override;
 		void Render() override;
 		void Update() override;
-		void InitComponent(int numOfCols, int numOfRows, const std::string& filePath);
+		void AddSprite(int numOfCols, int numOfRows, const std::string& filePath, const std::string& animationName);
+		void SetScale(float scale);
+		void SwitchToSprite(const std::string& animationName);
+		void ShouldUpdate(bool updateSprite);
 
 	private:
 		void UpdateSrcRect();
 
-		int                        m_NumberOfCols{0};
-		int                        m_NumberOfRows{0};
-		int                        m_SpriteWidth{0};
-		int                        m_SpriteHeight{0};
-		int                        m_CurrentCol{0};
-		int                        m_CurrentRow{0};
-		std::shared_ptr<Texture2D> m_pTexture;
-		SDL_Rect                   m_SrcRect;
-		const float                m_RefreshRate{1.f / 12.f};
-		float                      m_CurrentTime{0};
+		bool                                           m_IsUpdating{true};
+		std::map<std::string, std::unique_ptr<Sprite>> m_SpriteMap;
+		float                                          m_Scale{1};
+		Sprite*                                        m_pCurrentSprite;
+		const float                                    m_RefreshRate{1.f / 6.f};
+		float                                          m_CurrentTime{0};
 	};
 }

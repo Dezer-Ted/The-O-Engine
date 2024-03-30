@@ -7,6 +7,8 @@
 
 namespace dae
 {
+	class TextureComponent;
+
 	class TextComponent final : public dae::BaseComponent {
 	public:
 		TextComponent(GameObject* parent);

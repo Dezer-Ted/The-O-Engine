@@ -3,13 +3,8 @@
 #include <memory>
 #include <vector>
 
-#include "Command.h"
-#include "Command.h"
 #include "Transform.h"
 #include "Components/BaseComponent.h"
-#include "Components/TextureComponent.h"
-#include "Components/EncircleComponent.h"
-#include "Components/MovementComponent.h"
 
 namespace dae
 {

@@ -2,14 +2,11 @@
 #include <glm/glm.hpp>
 
 #include "Command.h"
-#include "Command.h"
 #include "GameObject.h"
-
 
 namespace dae
 {
 	class GameObject;
-	class MovementComponent;
 	
 	class Command {
 		#pragma warning(disable : 4100)
@@ -37,7 +34,7 @@ namespace dae
 		GameObjectCommand(GameObject* gameObject);
 		virtual ~GameObjectCommand() = default;
 	};
-
+	class MovementComponent;
 	class Move : public GameObjectCommand {
 	public:
 		void Execute2DAxis(const glm::vec2& input) override;

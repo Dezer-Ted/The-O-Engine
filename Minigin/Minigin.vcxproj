@@ -222,10 +222,7 @@ xcopy "$(SolutionDir)\3rdParty\steamworks\redistributable_bin\win64\*.dll" "$(Ou
     <ClInclude Include="..\3rdParty\imgui-1.89.5\imstb_rectpack.h" />
     <ClInclude Include="..\3rdParty\imgui-1.89.5\imstb_textedit.h" />
     <ClInclude Include="..\3rdParty\imgui-1.89.5\imstb_truetype.h" />
-    <ClInclude Include="Components\LifeDisplayComponent.h" />
     <ClInclude Include="Components\MovementComponent.h" />
-    <ClInclude Include="Components\PlayerComponent.h" />
-    <ClInclude Include="Components\ScoreDisplayComponent.h" />
     <ClInclude Include="Components\SpriteComponent.h" />
     <ClInclude Include="CompoundKeyboardAction.h" />
     <ClInclude Include="ControllerAction.h" />
@@ -251,6 +248,7 @@ xcopy "$(SolutionDir)\3rdParty\steamworks\redistributable_bin\win64\*.dll" "$(Ou
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="Sprite.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="DeltaTime.h" />
     <ClInclude Include="Transform.h" />
@@ -265,10 +263,7 @@ xcopy "$(SolutionDir)\3rdParty\steamworks\redistributable_bin\win64\*.dll" "$(Ou
     <ClCompile Include="..\3rdParty\imgui-1.89.5\imgui_plot.cpp" />
     <ClCompile Include="..\3rdParty\imgui-1.89.5\imgui_tables.cpp" />
     <ClCompile Include="..\3rdParty\imgui-1.89.5\imgui_widgets.cpp" />
-    <ClCompile Include="Components\LifeDisplayComponent.cpp" />
     <ClCompile Include="Components\MovementComponent.cpp" />
-    <ClCompile Include="Components\PlayerComponent.cpp" />
-    <ClCompile Include="Components\ScoreDisplayComponent.cpp" />
     <ClCompile Include="Components\SpriteComponent.cpp" />
     <ClCompile Include="CompoundKeyboardAction.cpp" />
     <ClCompile Include="ControllerAction.cpp" />
@@ -292,6 +287,7 @@ xcopy "$(SolutionDir)\3rdParty\steamworks\redistributable_bin\win64\*.dll" "$(Ou
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="DeltaTime.cpp" />
     <ClCompile Include="Transform.cpp" />

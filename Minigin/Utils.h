@@ -13,7 +13,10 @@ namespace Utils
 	enum GameEvent {
 		PlayerDied,
 		PlayerGainedPoints,
-		PlayerSpawn
+		PlayerSpawn,
+		DirectionChanged,
+		MovementStopped,
+		MovementStarted
 	};
 
 
