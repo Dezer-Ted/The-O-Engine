@@ -40,6 +40,7 @@ void Scene::Update()
 	{
 		object->Update();
 	}
+	m_pCollisionCheck->CheckAllColliders();
 }
 
 void Scene::Render() const
@@ -74,6 +75,12 @@ void Scene::DestroyScene()
 {
 	m_DestructionFlag = true;
 }
+
+void Scene::AddCollider(ColliderComponent* collider) const
+{
+	m_pCollisionCheck->AddCollider(collider);
+}
+
 bool Scene::GetDestructionFlag() const
 {
 	return m_DestructionFlag;

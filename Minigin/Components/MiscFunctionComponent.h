@@ -1,7 +1,8 @@
 #pragma once
 #include <functional>
 
-#include "../GameObject.h"
+#include "BaseComponent.h"
+#include "../SceneObjects/GameObject.h"
 
 namespace dae
 {

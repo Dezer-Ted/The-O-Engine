@@ -2,8 +2,8 @@
 #include "Command.h"
 #include "Command.h"
 
-#include "GameObject.h"
-#include "Components/MovementComponent.h"
+#include "../../SceneObjects/GameObject.h"
+#include "../../Components/MovementComponent.h"
 
 dae::GameObject* dae::GameObjectCommand::GetGameObject() const
 {

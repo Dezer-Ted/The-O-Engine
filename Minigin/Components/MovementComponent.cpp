@@ -1,7 +1,8 @@
 ﻿#include "MovementComponent.h"
 
-#include "../Singleton.h"
-#include "../DeltaTime.h"
+#include "../Engine/DesignPatterns/Singleton.h"
+#include "../Engine/DeltaTime.h"
+#include "../Engine/DesignPatterns/Blackboard.h"
 
 
 dae::MovementComponent::MovementComponent(GameObject* pParent) :
@@ -11,32 +12,45 @@ dae::MovementComponent::MovementComponent(GameObject* pParent) :
 
 void dae::MovementComponent::ApplyMovement(const glm::vec2& input)
 {
+	const auto lastPos = GetParent()->GetTransform().GetLocalPosition();
+	if(m_LastPosition != lastPos) m_LastPosition = lastPos;
+	
 	GetParent()->Translate(input * (m_MovementSpeed * Singleton<DeltaTime>::GetInstance().GetDeltaTime()));
 
 	MovementDirection newDirection{DetermineDirection(input)};
 	if(newDirection != m_Direction)
 	{
 		m_Direction = newDirection;
-		NotifyObservers(Utils::DirectionChanged, this);
+		NotifyObservers(Utils::DirectionChanged, this, std::make_unique<Blackboard>());
 	}
 	if(m_LastDirection != input)
 	{
 		if(input == glm::vec2{0, 0})
 		{
-			NotifyObservers(Utils::MovementStopped, this);
+			NotifyObservers(Utils::MovementStopped, this, std::make_unique<Blackboard>());
 		}
 		if(m_LastDirection == glm::vec2{0, 0})
 		{
-			NotifyObservers(Utils::MovementStarted, this);
+			NotifyObservers(Utils::MovementStarted, this, std::make_unique<Blackboard>());
 		}
 	}
 
 	m_LastDirection = input;
 }
 
-dae::MovementComponent::MovementDirection dae::MovementComponent::GetDirection()
+dae::MovementComponent::MovementDirection dae::MovementComponent::GetDirection() const
 {
 	return m_Direction;
+}
+
+void dae::MovementComponent::UndoMovement()
+{
+	GetParent()->GetTransform().SetLocalPosition(m_LastPosition);
+}
+
+void dae::MovementComponent::Update()
+{
+
 }
 
 ::dae::MovementComponent::MovementDirection dae::MovementComponent::DetermineDirection(const glm::vec2& input)

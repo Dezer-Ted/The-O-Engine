@@ -5,7 +5,7 @@
 
 #include "../imgui-1.89.5/imgui.h"
 #include "../imgui-1.89.5/imgui_internal.h"
-#include "SceneManager.h"
+#include "../SceneObjects/SceneManager.h"
 #include "Texture2D.h"
 #include "../imgui-1.89.5/backends/imgui_impl_opengl3.h"
 #include "../imgui-1.89.5/backends/imgui_impl_sdl2.h"

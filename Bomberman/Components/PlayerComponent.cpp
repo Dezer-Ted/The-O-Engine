@@ -1,21 +1,23 @@
 ﻿#include "PlayerComponent.h"
 
+#include "Components/ColliderComponent.h"
 #include "Components/SpriteComponent.h"
+#include "Engine/DesignPatterns/Blackboard.h"
 
 dae::PlayerComponent::PlayerComponent(GameObject* pParent)
 	: BaseComponent(pParent)
 {
 	m_pSpriteComponent = GetParent()->GetComponentByClass<SpriteComponent>();
+	m_pMoveComp = GetParent()->GetComponentByClass<MovementComponent>();
 }
 
-void dae::PlayerComponent::Notify(Utils::GameEvent event, BaseComponent* components)
+void dae::PlayerComponent::Notify(Utils::GameEvent event, BaseComponent* components, std::unique_ptr<Blackboard> pBlackboard)
 {
 	switch(event)
 	{
 	case Utils::DirectionChanged:
 		{
-			const auto moveComp = dynamic_cast<MovementComponent*>(components);
-			if(moveComp) ChangeAnimation(moveComp->GetDirection());
+			ChangeAnimation(m_pMoveComp->GetDirection());
 		}
 		break;
 	case Utils::MovementStopped:
@@ -28,6 +30,15 @@ void dae::PlayerComponent::Notify(Utils::GameEvent event, BaseComponent* compone
 			m_pSpriteComponent->ShouldUpdate(true);
 		}
 		break;
+	case Utils::Collision:
+		{
+			ColliderComponent* pCollider {nullptr};
+			pBlackboard->GetData("OtherCollider",pCollider);
+			if(pCollider->GetParentTag() == "Wall")
+			{
+				m_pMoveComp->UndoMovement();
+			}
+		}
 	}
 }
 

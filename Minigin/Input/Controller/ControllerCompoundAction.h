@@ -1,5 +1,5 @@
 ﻿#pragma once
-#include "Command.h"
+#include "../../Engine/DesignPatterns/Command.h"
 #include "Controller.h"
 
 namespace dae

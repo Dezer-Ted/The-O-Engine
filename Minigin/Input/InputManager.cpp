@@ -4,7 +4,7 @@
 #include <iostream>
 #include <SDL_syswm.h>
 
-#include "Controller.h"
+#include "Controller/Controller.h"
 #include "../imgui-1.89.5/backends/imgui_impl_sdl2.h"
 
 

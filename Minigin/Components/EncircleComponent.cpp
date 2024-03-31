@@ -1,8 +1,8 @@
 #include "EncircleComponent.h"
-#include "../GameObject.h"
-#include "../Singleton.h"
-#include "../DeltaTime.h"
-#include "../Utils.h"
+#include "../SceneObjects/GameObject.h"
+#include "../Engine/DesignPatterns/Singleton.h"
+#include "../Engine/DeltaTime.h"
+#include "../Engine/Utils/Utils.h"
 
 dae::EncircleComponent::EncircleComponent(GameObject* pParent): BaseComponent(pParent)
 {

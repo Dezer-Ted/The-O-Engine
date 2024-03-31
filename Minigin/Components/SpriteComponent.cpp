@@ -1,11 +1,11 @@
 ﻿#include "SpriteComponent.h"
 
-#include "../DeltaTime.h"
-#include "../Renderer.h"
+#include "../Engine/DeltaTime.h"
+#include "../Rendering/Renderer.h"
 
-#include "../ResourceManager.h"
-#include "../GameObject.h"
-#include "../Sprite.h"
+#include "../Engine/ResourceManager.h"
+#include "../SceneObjects/GameObject.h"
+#include "../Rendering/Sprite.h"
 
 dae::SpriteComponent::SpriteComponent(GameObject* pParent)
 	: BaseComponent(pParent)
@@ -66,6 +66,16 @@ void dae::SpriteComponent::SwitchToSprite(const std::string& animationName)
 void dae::SpriteComponent::ShouldUpdate(bool updateSprite)
 {
 	m_IsUpdating = updateSprite;
+}
+
+dae::Sprite* dae::SpriteComponent::GetCurrentSprite() const
+{
+	return m_pCurrentSprite;
+}
+
+float dae::SpriteComponent::GetScale() const
+{
+	return m_Scale;
 }
 
 void dae::SpriteComponent::UpdateSrcRect()

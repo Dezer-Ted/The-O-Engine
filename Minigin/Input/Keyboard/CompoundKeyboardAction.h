@@ -2,7 +2,7 @@
 #include <memory>
 #include <SDL.h>
 
-#include "Command.h"
+#include "../../Engine/DesignPatterns/Command.h"
 
 namespace dae
 {

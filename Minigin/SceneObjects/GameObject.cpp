@@ -1,8 +1,8 @@
 #include "GameObject.h"
 
-#include "Singleton.h"
+#include "../Engine/DesignPatterns/Singleton.h"
 #include "Time.h"
-
+#include "Scene.h"
 dae::GameObject::~GameObject() = default;
 
 dae::Transform& dae::GameObject::GetTransform()
@@ -53,6 +53,11 @@ bool dae::GameObject::GetDestructionFlag() const
 void dae::GameObject::DestroyObject()
 {
 	m_DestructionFlag = true;
+}
+
+dae::Scene* dae::GameObject::GetParentScene()
+{
+	return m_pParentScene;
 }
 
 dae::GameObject* dae::GameObject::GetParent() const
@@ -107,11 +112,22 @@ void dae::GameObject::FixedUpdate()
 	}
 }
 
+void dae::GameObject::SetTag(const std::string& tag)
+{
+	m_Tag = tag;
+}
+
+std::string dae::GameObject::GetTag() const
+{
+	return m_Tag;
+}
+
 void dae::GameObject::SetPosition(float x, float y)
 {
 	m_Transform.SetLocalPosition(x, y, 0.0f);
 }
 
-dae::GameObject::GameObject(): m_Transform{this}
+dae::GameObject::GameObject(Scene* pParentScene): m_Transform{this}
+, m_pParentScene(pParentScene)
 {
 }

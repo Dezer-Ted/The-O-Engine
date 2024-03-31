@@ -5,7 +5,6 @@
 #include <string>
 
 #include "BaseComponent.h"
-#include "../Texture2D.h"
 
 
 namespace dae
@@ -20,12 +19,14 @@ namespace dae
 		SpriteComponent operator=(const SpriteComponent&) = delete;
 		SpriteComponent operator=(SpriteComponent&&) = delete;
 		~SpriteComponent() override;
-		void Render() override;
-		void Update() override;
-		void AddSprite(int numOfCols, int numOfRows, const std::string& filePath, const std::string& animationName);
-		void SetScale(float scale);
-		void SwitchToSprite(const std::string& animationName);
-		void ShouldUpdate(bool updateSprite);
+		void    Render() override;
+		void    Update() override;
+		void    AddSprite(int numOfCols, int numOfRows, const std::string& filePath, const std::string& animationName);
+		void    SetScale(float scale);
+		void    SwitchToSprite(const std::string& animationName);
+		void    ShouldUpdate(bool updateSprite);
+		Sprite* GetCurrentSprite() const;
+		float   GetScale() const;
 
 	private:
 		void UpdateSrcRect();

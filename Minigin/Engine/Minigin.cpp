@@ -9,11 +9,11 @@
 #include <chrono>
 #include <thread>
 
-#include "InputManager.h"
-#include "SceneManager.h"
-#include "Renderer.h"
+#include "../Input/InputManager.h"
+#include "../SceneObjects/SceneManager.h"
+#include "../Rendering/Renderer.h"
 #include "ResourceManager.h"
-#include "Utils.h"
+#include "Utils/Utils.h"
 #include "DeltaTime.h"
 SDL_Window* g_window{};
 

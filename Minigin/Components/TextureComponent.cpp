@@ -1,9 +1,9 @@
 #include "TextureComponent.h"
 
-#include "../GameObject.h"
-#include "../Renderer.h"
-#include "../ResourceManager.h"
-#include "../Texture2D.h"
+#include "../SceneObjects/GameObject.h"
+#include "../Rendering/Renderer.h"
+#include "../Engine/ResourceManager.h"
+#include "../Rendering/Texture2D.h"
 dae::TextureComponent::TextureComponent(GameObject* parentObject) : BaseComponent(parentObject)
 {
 }

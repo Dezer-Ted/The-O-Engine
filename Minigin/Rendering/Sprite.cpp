@@ -1,6 +1,6 @@
 ﻿#include "Sprite.h"
 
-#include "ResourceManager.h"
+#include "../Engine/ResourceManager.h"
 
 dae::Sprite::Sprite(const std::string& filePath, int numOfCols, int numOfRows)
 {

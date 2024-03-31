@@ -2,8 +2,8 @@
 #include <SDL_pixels.h>
 
 #include "BaseComponent.h"
-#include "../Font.h"
-#include "../GameObject.h"
+#include "../Rendering/Font.h"
+#include "../SceneObjects/GameObject.h"
 
 namespace dae
 {

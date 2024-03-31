@@ -1,8 +1,8 @@
 #include "FPSComponent.h"
 
-#include "../ResourceManager.h"
-#include "../DeltaTime.h"
-#include "../Utils.h"
+#include "../Engine/ResourceManager.h"
+#include "../Engine/DeltaTime.h"
+#include "../Engine/Utils/Utils.h"
 
 dae::FPSComponent::FPSComponent(GameObject* pParent) : BaseComponent(pParent)
 {

@@ -2,7 +2,7 @@
 #include <vector>
 #include <string>
 #include <memory>
-#include "Singleton.h"
+#include "../Engine/DesignPatterns/Singleton.h"
 
 namespace dae
 {

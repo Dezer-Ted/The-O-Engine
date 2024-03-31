@@ -4,10 +4,11 @@
 #include <vector>
 
 #include "Transform.h"
-#include "Components/BaseComponent.h"
+#include "../Components/BaseComponent.h"
 
 namespace dae
 {
+	class Scene;
 	class Texture2D;
 
 	class GameObject final {
@@ -19,7 +20,7 @@ namespace dae
 
 		void SetPosition(float x, float y);
 
-		GameObject();
+		GameObject(Scene* pParentScene);
 		~GameObject();
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
@@ -29,7 +30,7 @@ namespace dae
 		void        DestroyComponents();
 		bool        GetDestructionFlag() const;
 		void        DestroyObject();
-
+		Scene*      GetParentScene();
 		template <typename T>
 		T* AddComponent()
 		{
@@ -90,12 +91,15 @@ namespace dae
 		const std::vector<GameObject*>& GetChildren();
 		void                            Translate(const glm::vec2& input);
 		void                            FixedUpdate();
-
+		void SetTag(const std::string& tag );
+		std::string GetTag() const;
 	private:
 		std::vector<GameObject*>                    m_Children;
 		GameObject*                                 m_Parent{nullptr};
 		Transform                                   m_Transform;
 		std::vector<std::unique_ptr<BaseComponent>> m_ComponentList;
 		bool                                        m_DestructionFlag{false};
+		Scene*                                      m_pParentScene{nullptr};
+		std::string m_Tag{"untagged"};
 	};
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include "SceneManager.h"
+#include "../Engine/CollisionCheck.h"
 
 namespace dae
 {
@@ -26,10 +27,10 @@ namespace dae
 		Scene& operator=(Scene&& other) = delete;
 		bool   GetDestructionFlag() const;
 		void   DestroyScene();
-
+		void AddCollider(ColliderComponent* collider) const;
 	private:
 		explicit Scene(const std::string& name);
-
+		std::unique_ptr<CollisionCheck> m_pCollisionCheck = std::make_unique<CollisionCheck>();
 		std::string                              m_name;
 		std::vector<std::shared_ptr<GameObject>> m_objects{};
 		bool                                     m_DestructionFlag{false};

@@ -1,9 +1,9 @@
 #include "TextComponent.h"
-#include "../Renderer.h"
+#include "../Rendering/Renderer.h"
 
 #include <SDL_ttf.h>
 #include <utility>
-#include "../Texture2D.h"
+#include "../Rendering/Texture2D.h"
 #include "TextureComponent.h"
 
 dae::TextComponent::TextComponent(GameObject* pParent): BaseComponent(pParent),

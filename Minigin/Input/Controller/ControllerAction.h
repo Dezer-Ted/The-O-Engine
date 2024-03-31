@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include <memory>
 
-#include "Command.h"
+#include "../../Engine/DesignPatterns/Command.h"
 #include "Controller.h"
 
 namespace dae

@@ -1,11 +1,8 @@
 #pragma once
 #include <chrono>
 
-#include "GameObject.h"
-#include "Time.h"
-#include "Singleton.h"
+#include "../../SceneObjects/GameObject.h"
 #include <math.h>
-#include <../steamworks/public/steam/steam_api.h>
 
 
 namespace Utils
@@ -16,7 +13,8 @@ namespace Utils
 		PlayerSpawn,
 		DirectionChanged,
 		MovementStopped,
-		MovementStarted
+		MovementStarted,
+		Collision
 	};
 
 

@@ -1,8 +1,8 @@
 ﻿#pragma once
 
-#include "../Observable.h"
+#include "../Engine/DesignPatterns/Observable.h"
 #include "BaseComponent.h"
-#include "../GameObject.h"
+#include "../SceneObjects/GameObject.h"
 
 namespace dae
 {
@@ -14,6 +14,7 @@ namespace dae
 			Left,
 			Right
 		};
+
 		MovementComponent(GameObject* pParent);
 		MovementComponent(const MovementComponent&) = delete;
 		MovementComponent(MovementComponent&&) = delete;
@@ -21,7 +22,9 @@ namespace dae
 		MovementComponent& operator=(MovementComponent&&) = delete;
 		~MovementComponent() override = default;
 		void              ApplyMovement(const glm::vec2& input);
-		MovementDirection GetDirection();
+		MovementDirection GetDirection() const;
+		void              UndoMovement();
+		void              Update() override;
 
 	private:
 		MovementDirection DetermineDirection(const glm::vec2& input);
@@ -29,5 +32,6 @@ namespace dae
 		float             m_MovementSpeed{50};
 		glm::vec2         m_LastDirection{};
 		MovementDirection m_Direction{};
+		glm::vec3         m_LastPosition{};
 	};
 }

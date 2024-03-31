@@ -2,7 +2,7 @@
 #include <glm/glm.hpp>
 
 #include "Command.h"
-#include "GameObject.h"
+#include "../../SceneObjects/GameObject.h"
 
 namespace dae
 {
