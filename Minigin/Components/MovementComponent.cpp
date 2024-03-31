@@ -13,8 +13,9 @@ dae::MovementComponent::MovementComponent(GameObject* pParent) :
 void dae::MovementComponent::ApplyMovement(const glm::vec2& input)
 {
 	const auto lastPos = GetParent()->GetTransform().GetLocalPosition();
-	if(m_LastPosition != lastPos) m_LastPosition = lastPos;
-	
+	if(m_LastPosition != lastPos)
+		m_LastPosition = lastPos;
+
 	GetParent()->Translate(input * (m_MovementSpeed * Singleton<DeltaTime>::GetInstance().GetDeltaTime()));
 
 	MovementDirection newDirection{DetermineDirection(input)};
@@ -55,9 +56,13 @@ void dae::MovementComponent::Update()
 
 ::dae::MovementComponent::MovementDirection dae::MovementComponent::DetermineDirection(const glm::vec2& input)
 {
-	if(input.x > 0) return MovementDirection::Right;
-	if(input.x < 0) return MovementDirection::Left;
-	if(input.y < 0) return MovementDirection::Up;
-	if(input.y > 0) return MovementDirection::Down;
+	if(input.x > 0)
+		return MovementDirection::Right;
+	if(input.x < 0)
+		return MovementDirection::Left;
+	if(input.y < 0)
+		return MovementDirection::Up;
+	if(input.y > 0)
+		return MovementDirection::Down;
 	return MovementDirection::Down;
 }
