@@ -1,14 +1,12 @@
-﻿#pragma once
-/*=============================================================================*/
+﻿/*=============================================================================*/
 // Copyright 2021-2022 Elite Engine
-// Authors: Matthieu Delaere
+// Authors: Matthieu Delaere 
 /*=============================================================================*/
 // EBlackboard.h: Blackboard implementation
 /*=============================================================================*/
 #pragma once
 
 //Includes
-#include <iostream>
 #include <memory>
 #include <unordered_map>
 #include <string>
@@ -47,12 +45,7 @@ namespace dae
 	{
 	public:
 		Blackboard() = default;
-		~Blackboard()
-		{
-			for (auto el : m_BlackboardData)
-				delete el.second;
-			m_BlackboardData.clear();
-		}
+		~Blackboard() = default;
 
 		Blackboard(const Blackboard& other) = delete;
 		Blackboard& operator=(const Blackboard& other) = delete;
@@ -65,7 +58,7 @@ namespace dae
 			auto it = m_BlackboardData.find(name);
 			if (it == m_BlackboardData.end())
 			{
-				m_BlackboardData[name] = new BlackboardField<T>(data);
+				m_BlackboardData[name] = std::make_unique<BlackboardField<T>>(data);
 				return true;
 			}
 			printf("WARNING: Data '%s' of type '%s' already in Blackboard \n", name.c_str(), typeid(T).name());
@@ -78,7 +71,7 @@ namespace dae
 			auto it = m_BlackboardData.find(name);
 			if (it != m_BlackboardData.end())
 			{
-				BlackboardField<T>* p = dynamic_cast<BlackboardField<T>*>(m_BlackboardData[name]);
+				BlackboardField<T>* p = dynamic_cast<BlackboardField<T>*>(m_BlackboardData[name].get());
 				if (p)
 				{
 					p->SetData(data);
@@ -92,7 +85,7 @@ namespace dae
 		//Get the data from the blackboard
 		template<typename T> bool GetData(const std::string& name, T& data)
 		{
-			BlackboardField<T>* p = dynamic_cast<BlackboardField<T>*>(m_BlackboardData[name]);
+			BlackboardField<T>* p = dynamic_cast<BlackboardField<T>*>(m_BlackboardData[name].get());
 			if (p != nullptr)
 			{
 				data = p->GetData();
@@ -103,6 +96,6 @@ namespace dae
 		}
 
 	private:
-		std::unordered_map<std::string, IBlackBoardField*> m_BlackboardData;
+		std::unordered_map<std::string, std::unique_ptr<IBlackBoardField>> m_BlackboardData;
 	};
 }

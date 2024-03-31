@@ -23,13 +23,13 @@ namespace dae
 		~MovementComponent() override = default;
 		void              ApplyMovement(const glm::vec2& input);
 		MovementDirection GetDirection() const;
-		void              UndoMovement();
+		void              UndoMovement() const;
 		void              Update() override;
 
 	private:
 		MovementDirection DetermineDirection(const glm::vec2& input);
 
-		float             m_MovementSpeed{50};
+		float             m_MovementSpeed{100.f};
 		glm::vec2         m_LastDirection{};
 		MovementDirection m_Direction{};
 		glm::vec3         m_LastPosition{};

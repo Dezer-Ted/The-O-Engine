@@ -43,7 +43,7 @@ dae::MovementComponent::MovementDirection dae::MovementComponent::GetDirection()
 	return m_Direction;
 }
 
-void dae::MovementComponent::UndoMovement()
+void dae::MovementComponent::UndoMovement() const
 {
 	GetParent()->GetTransform().SetLocalPosition(m_LastPosition);
 }

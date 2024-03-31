@@ -18,15 +18,16 @@
 #include "Components/MovementComponent.h"
 #include <Engine/DesignPatterns/Command.h>
 #include "../Bomberman/Components/PlayerComponent.h"
+#include "Components/CameraComponent.h"
 #include "Components/ColliderComponent.h"
 #include "Components/SpriteComponent.h"
 
 void load()
 {
-	auto& scene = dae::SceneManager::GetInstance().CreateScene("Demo");
-
-	auto go = std::make_shared<dae::GameObject>(&scene);
-	auto sprite = go->AddComponent<dae::SpriteComponent>();
+	auto&    scene = dae::SceneManager::GetInstance().CreateScene("Demo");
+	SDL_Rect levelBounds{0, 0, 1280, 480};
+	auto     go = std::make_shared<dae::GameObject>(&scene);
+	auto     sprite = go->AddComponent<dae::SpriteComponent>();
 	sprite->AddSprite(3, 1, "Character/LeftWalkCycle.png", "WalkLeft");
 	sprite->AddSprite(3, 1, "Character/DownWalkCycle.png", "WalkDown");
 	sprite->AddSprite(3, 1, "Character/UpWalkCycle.png", "WalkUp");
@@ -34,7 +35,7 @@ void load()
 	sprite->AddSprite(7, 1, "Character/DeathAnimation.png", "DeathAnimation");
 	sprite->SwitchToSprite("WalkDown");
 	sprite->SetScale(5);
-	go->SetPosition(150, 150);
+	go->SetPosition(100,100);
 	auto moveComp = go->AddComponent<dae::MovementComponent>();
 	dae::Singleton<dae::InputManager>::GetInstance().AddControllerCompoundAction(
 		dae::Controller::ButtonInputs::DPadUp,
@@ -47,7 +48,11 @@ void load()
 	auto collider = go->AddComponent<dae::ColliderComponent>();
 	collider->AddObserver(playerComp);
 	collider->AdjustBoundsToSpriteSize();
+	auto cam = go->AddComponent<dae::CameraComponent>();
+	cam->SetBounds(levelBounds);
 	scene.Add(go);
+
+
 	go = std::make_shared<dae::GameObject>(&scene);
 	go->SetPosition(250.f, 250.f);
 	go->SetTag("Wall");

@@ -7,6 +7,7 @@
 #include "../imgui-1.89.5/imgui_internal.h"
 #include "../SceneObjects/SceneManager.h"
 #include "Texture2D.h"
+#include "../Components/CameraComponent.h"
 #include "../imgui-1.89.5/backends/imgui_impl_opengl3.h"
 #include "../imgui-1.89.5/backends/imgui_impl_sdl2.h"
 
@@ -68,9 +69,10 @@ void dae::Renderer::Destroy()
 
 void dae::Renderer::RenderTexture(const Texture2D& texture, float x, float y) const
 {
-	SDL_Rect dst{};
-	dst.x = static_cast<int>(x);
-	dst.y = static_cast<int>(y);
+	SDL_Rect        dst{};
+	const glm::vec2 offSet{m_pCurrentCamera->GetOffSet()};
+	dst.x = static_cast<int>(x - offSet.x);
+	dst.y = static_cast<int>(y - offSet.y);
 
 	SDL_QueryTexture(texture.GetSDLTexture(), nullptr, nullptr, &dst.w, &dst.h);
 	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
@@ -78,9 +80,10 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, float x, float y) co
 
 void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y, const SDL_Rect* sourceRect) const
 {
-	SDL_Rect dst{};
-	dst.x = static_cast<int>(x);
-	dst.y = static_cast<int>(y);
+	SDL_Rect        dst{};
+	const glm::vec2 offSet{m_pCurrentCamera->GetOffSet()};
+	dst.x = static_cast<int>(x - offSet.x);
+	dst.y = static_cast<int>(y - offSet.y);
 	dst.h = sourceRect->h;
 	dst.w = sourceRect->w;
 
@@ -95,12 +98,18 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, float x, float y, fl
 void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y, const float width, const float height,
                                   const SDL_Rect*  sourceRect) const
 {
-	SDL_Rect dst{};
-	dst.x = static_cast<int>(x);
-	dst.y = static_cast<int>(y);
+	SDL_Rect        dst{};
+	const glm::vec2 offSet{m_pCurrentCamera->GetOffSet()};
+	dst.x = static_cast<int>(x - offSet.x);
+	dst.y = static_cast<int>(y - offSet.y);
 	dst.w = static_cast<int>(width);
 	dst.h = static_cast<int>(height);
 	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), sourceRect, &dst);
+}
+
+void dae::Renderer::SetCamera(CameraComponent* cam)
+{
+	if(cam != nullptr) m_pCurrentCamera = cam;
 }
 
 
