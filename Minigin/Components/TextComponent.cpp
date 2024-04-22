@@ -6,8 +6,9 @@
 #include "../Rendering/Texture2D.h"
 #include "TextureComponent.h"
 
-dae::TextComponent::TextComponent(GameObject* pParent): BaseComponent(pParent),
-                                                        m_Color{SDL_Color{255, 255, 255, 255}}
+dae::TextComponent::TextComponent(GameObject* pParent):
+	BaseComponent(pParent),
+	m_Color{SDL_Color{255, 255, 255, 255}}
 {
 	m_TextureComponent = pParent->AddComponent<TextureComponent>();
 }
@@ -43,7 +44,8 @@ void dae::TextComponent::Render()
 
 void dae::TextComponent::Update()
 {
-	if(m_TextDirtyFlag) UpdateText();
+	if(m_TextDirtyFlag)
+		UpdateText();
 }
 
 void dae::TextComponent::UpdateText()

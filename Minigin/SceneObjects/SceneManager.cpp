@@ -14,6 +14,7 @@ void dae::SceneManager::Render()
 	for (const auto& scene : m_scenes)
 	{
 		scene->Render();
+		
 	}
 }
 

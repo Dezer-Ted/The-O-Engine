@@ -1,7 +1,6 @@
 #pragma once
 #include <memory>
 #include "Minigin.h"
-
 class DeltaTime {
 public:
 	DeltaTime();
