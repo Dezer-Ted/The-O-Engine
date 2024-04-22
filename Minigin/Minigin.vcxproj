@@ -241,7 +241,9 @@ xcopy "$(SolutionDir)\3rdParty\steamworks\redistributable_bin\win64\*.dll" "$(Ou
     <ClInclude Include="Engine\DesignPatterns\Observer.h" />
     <ClInclude Include="Engine\DesignPatterns\Singleton.h" />
     <ClInclude Include="Engine\Minigin.h" />
+    <ClInclude Include="Engine\ObserverEventData.h" />
     <ClInclude Include="Engine\ResourceManager.h" />
+    <ClInclude Include="Engine\Sound\SoundSystem.h" />
     <ClInclude Include="Engine\Utils\Utils.h" />
     <ClInclude Include="Input\Controller\Controller.h" />
     <ClInclude Include="Input\Controller\ControllerAction.h" />
@@ -283,7 +285,9 @@ xcopy "$(SolutionDir)\3rdParty\steamworks\redistributable_bin\win64\*.dll" "$(Ou
     <ClCompile Include="Engine\DesignPatterns\Command.cpp" />
     <ClCompile Include="Engine\DesignPatterns\Observable.cpp" />
     <ClCompile Include="Engine\Minigin.cpp" />
+    <ClCompile Include="Engine\ObserverEventData.cpp" />
     <ClCompile Include="Engine\ResourceManager.cpp" />
+    <ClCompile Include="Engine\Sound\SoundSystem.cpp" />
     <ClCompile Include="Input\Controller\Controller.cpp" />
     <ClCompile Include="Input\Controller\ControllerAction.cpp" />
     <ClCompile Include="Input\Controller\ControllerCompoundAction.cpp" />

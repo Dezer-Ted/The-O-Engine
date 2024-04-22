@@ -29,9 +29,7 @@ void dae::ColliderComponent::AdjustBoundsToSpriteSize()
 
 void dae::ColliderComponent::CollidedWith(ColliderComponent* other)
 {
-	std::unique_ptr<Blackboard> pBlackboard = std::make_unique<Blackboard>();
-	pBlackboard->AddData("OtherCollider", other);
-	NotifyObservers(Utils::Collision, this, std::move(pBlackboard));
+	NotifyObservers(Utils::Collision,std::make_unique<CollisionEventData>(this,other));
 }
 
 void dae::ColliderComponent::Update()

@@ -59,7 +59,7 @@
     </option>
   </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="Toolset" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7
@@ -241,7 +241,8 @@
       <workItem from="1712934128999" duration="104000" />
       <workItem from="1712934247295" duration="423000" />
       <workItem from="1712935400090" duration="3599000" />
-      <workItem from="1713793731272" duration="1285000" />
+      <workItem from="1713793731272" duration="2383000" />
+      <workItem from="1713798004518" duration="5442000" />
     </task>
     <servers />
   </component>
@@ -260,7 +261,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/Bomberman/Components/PlayerComponent.cpp</url>
-          <line>38</line>
+          <line>37</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
@@ -272,6 +273,10 @@
           <url>file://$PROJECT_DIR$/Minigin/Components/CameraComponent.cpp</url>
           <line>35</line>
           <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/Minigin/Rendering/Texture2D.cpp</url>
+          <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -16,12 +16,12 @@ namespace dae
 		PlayerComponent& operator=(const PlayerComponent&) = delete;
 		PlayerComponent& operator=(PlayerComponent&&) = delete;
 		~PlayerComponent() override = default;
-		void Notify(Utils::GameEvent event, BaseComponent* components, std::unique_ptr<Blackboard> pBlackboard) override;
+		void Notify(Utils::GameEvent event, std::unique_ptr<ObserverEventData> eventData) override;
 
 	private:
 		void ChangeAnimation(MovementComponent::MovementDirection direction);
 
-		MovementComponent* m_pMoveComp {nullptr};
-		SpriteComponent* m_pSpriteComponent {nullptr};
+		MovementComponent* m_pMoveComp{nullptr};
+		SpriteComponent*   m_pSpriteComponent{nullptr};
 	};
 }

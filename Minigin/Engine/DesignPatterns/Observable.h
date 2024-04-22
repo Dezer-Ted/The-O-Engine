@@ -2,6 +2,7 @@
 #include <any>
 #include <vector>
 
+#include "../ObserverEventData.h"
 #include "../Utils/Utils.h"
 
 
@@ -17,7 +18,7 @@ namespace dae
 		virtual void AddObserver(Observer* pObserver);
 		void RemoveObserver(Observer* pObserver);
 	protected:
-		void NotifyObservers(Utils::GameEvent event, BaseComponent* component,std::unique_ptr<Blackboard> pBlackboard) const;
+		void NotifyObservers(Utils::GameEvent event,std::unique_ptr<ObserverEventData> eventData) const;
 	private:
 		std::vector<Observer*> m_Observers;
 	};

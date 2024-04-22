@@ -22,17 +22,17 @@ void dae::MovementComponent::ApplyMovement(const glm::vec2& input)
 	if(newDirection != m_Direction)
 	{
 		m_Direction = newDirection;
-		NotifyObservers(Utils::DirectionChanged, this, std::make_unique<Blackboard>());
+		NotifyObservers(Utils::DirectionChanged,std::make_unique<ObserverEventData>(this));
 	}
 	if(m_LastDirection != input)
 	{
 		if(input == glm::vec2{0, 0})
 		{
-			NotifyObservers(Utils::MovementStopped, this, std::make_unique<Blackboard>());
+			NotifyObservers(Utils::MovementStopped, std::make_unique<ObserverEventData>(this));
 		}
 		if(m_LastDirection == glm::vec2{0, 0})
 		{
-			NotifyObservers(Utils::MovementStarted, this, std::make_unique<Blackboard>());
+			NotifyObservers(Utils::MovementStarted, std::make_unique<ObserverEventData>(this));
 		}
 	}
 

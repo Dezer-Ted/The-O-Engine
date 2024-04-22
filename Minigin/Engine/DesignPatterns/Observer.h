@@ -6,13 +6,11 @@
 
 namespace dae
 {
-
-
 	class BaseComponent;
 
 	class Observer {
 	public:
 		virtual      ~Observer() = default;
-		virtual void Notify(Utils::GameEvent event, BaseComponent* components,std::unique_ptr<Blackboard> pBlackboard) = 0;
+		virtual void Notify(Utils::GameEvent event, std::unique_ptr<ObserverEventData> eventData) = 0;
 	};
 }

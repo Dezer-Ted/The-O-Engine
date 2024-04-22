@@ -11,7 +11,7 @@ dae::PlayerComponent::PlayerComponent(GameObject* pParent)
 	m_pMoveComp = GetParent()->GetComponentByClass<MovementComponent>();
 }
 
-void dae::PlayerComponent::Notify(Utils::GameEvent event, BaseComponent* components, std::unique_ptr<Blackboard> pBlackboard)
+void dae::PlayerComponent::Notify(Utils::GameEvent event, std::unique_ptr<ObserverEventData> eventData)
 {
 	switch(event)
 	{
@@ -32,9 +32,8 @@ void dae::PlayerComponent::Notify(Utils::GameEvent event, BaseComponent* compone
 		break;
 	case Utils::Collision:
 		{
-			ColliderComponent* pCollider {nullptr};
-			pBlackboard->GetData("OtherCollider",pCollider);
-			if(pCollider->GetParentTag() == "Wall")
+			auto pCollisionEvent{dynamic_cast<CollisionEventData*>(eventData.get())};
+			if(pCollisionEvent->m_OtherCollider->GetParentTag() == "Wall")
 			{
 				m_pMoveComp->UndoMovement();
 			}
