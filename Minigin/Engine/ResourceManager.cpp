@@ -10,7 +10,7 @@ void dae::ResourceManager::Init(const std::string& dataPath)
 {
 	m_dataPath = dataPath;
 
-	if (TTF_Init() != 0)
+	if(TTF_Init() != 0)
 	{
 		throw std::runtime_error(std::string("Failed to load support for fonts: ") + SDL_GetError());
 	}
@@ -19,8 +19,8 @@ void dae::ResourceManager::Init(const std::string& dataPath)
 std::shared_ptr<dae::Texture2D> dae::ResourceManager::LoadTexture(const std::string& file) const
 {
 	const auto fullPath = m_dataPath + file;
-	auto texture = IMG_LoadTexture(Renderer::GetInstance().GetSDLRenderer(), fullPath.c_str());
-	if (texture == nullptr)
+	auto       texture = IMG_LoadTexture(Renderer::GetInstance().GetSDLRenderer(), fullPath.c_str());
+	if(texture == nullptr)
 	{
 		throw std::runtime_error(std::string("Failed to load texture: ") + SDL_GetError());
 	}
@@ -30,4 +30,10 @@ std::shared_ptr<dae::Texture2D> dae::ResourceManager::LoadTexture(const std::str
 std::shared_ptr<dae::Font> dae::ResourceManager::LoadFont(const std::string& file, unsigned int size) const
 {
 	return std::make_shared<Font>(m_dataPath + file, size);
+}
+
+std::unique_ptr<dae::SoundEffect> dae::ResourceManager::LoadSound(const std::string& file) const
+{
+	std::string fullFile{m_dataPath + "Sound/" + file + ".wav"};
+	return std::make_unique<SoundEffect>(Mix_LoadWAV(file.c_str()));
 }

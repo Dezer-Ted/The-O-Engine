@@ -35,7 +35,7 @@ void load()
 	sprite->AddSprite(7, 1, "Character/DeathAnimation.png", "DeathAnimation");
 	sprite->SwitchToSprite("WalkDown");
 	sprite->SetScale(5);
-	go->SetPosition(100,100);
+	go->SetPosition(100, 100);
 	auto moveComp = go->AddComponent<dae::MovementComponent>();
 	dae::Singleton<dae::InputManager>::GetInstance().AddControllerCompoundAction(
 		dae::Controller::ButtonInputs::DPadUp,
@@ -43,6 +43,8 @@ void load()
 		dae::Controller::ButtonInputs::DPadLeft,
 		dae::Controller::ButtonInputs::DPadRight,
 		go.get());
+	dae::Singleton<dae::InputManager>::GetInstance().AddControllerActionMapping<dae::PlaySound>(
+		dae::ControllerAction::ActionType::ButtonMap, go.get(), dae::Controller::ButtonInputs::XButton, dae::ControllerAction::InputType::ButtonUp);
 	auto playerComp = go->AddComponent<dae::PlayerComponent>();
 	moveComp->AddObserver(playerComp);
 	auto collider = go->AddComponent<dae::ColliderComponent>();

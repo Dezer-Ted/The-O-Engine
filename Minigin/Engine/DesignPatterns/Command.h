@@ -7,7 +7,7 @@
 namespace dae
 {
 	class GameObject;
-	
+
 	class Command {
 		#pragma warning(disable : 4100)
 
@@ -32,30 +32,50 @@ namespace dae
 
 	public:
 		GameObjectCommand(GameObject* gameObject);
-		virtual ~GameObjectCommand() = default;
+		virtual ~GameObjectCommand() override = default;
 	};
+
 	class MovementComponent;
-	class Move : public GameObjectCommand {
+
+	class Move final : public GameObjectCommand {
 	public:
 		void Execute2DAxis(const glm::vec2& input) override;
 		Move(GameObject* gameObject);
+		virtual ~Move() override = default;
 
 	private:
 		MovementComponent* m_pMovementComp{nullptr};
 	};
+
 	class PlayerComponent;
+
 	class Die final : public GameObjectCommand {
 	public:
 		void Execute() override;
 		Die(GameObject* pOwner);
+		virtual ~Die() override = default;
+
 	private:
 		PlayerComponent* m_pPlayerLifeComp{nullptr};
 	};
+
 	class GainPoints final : public GameObjectCommand {
 	public:
 		void Execute() override;
 		GainPoints(GameObject* pOwner);
+		virtual ~GainPoints() override = default;
+
 	private:
 		PlayerComponent* m_pPlayerComp{nullptr};
+	};
+
+	//ONLY FOR TESTING PURPOSES
+	class PlaySound final : public GameObjectCommand {
+	public:
+		void Execute() override;
+		PlaySound(GameObject* pOwner);
+		virtual ~PlaySound() override = default;
+
+	private:
 	};
 }
