@@ -2,6 +2,7 @@
 #include "Command.h"
 #include "Command.h"
 
+#include "ServiceLocator.h"
 #include "../../SceneObjects/GameObject.h"
 #include "../../Components/MovementComponent.h"
 #include "../Sound/SDLSoundSystem.h"
@@ -46,7 +47,7 @@ dae::GainPoints::GainPoints(GameObject* pOwner) : GameObjectCommand(pOwner)
 
 void dae::PlaySound::Execute()
 {
-	SDLSoundSystem::GetInstance().Play("BombExplodes", 64);
+	ServiceLocator::GetSoundSystem()->Play("BombExplodes", 64);
 }
 
 dae::PlaySound::PlaySound(GameObject* pOwner) : GameObjectCommand(pOwner)

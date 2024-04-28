@@ -17,6 +17,11 @@ dae::ControllerAction::ControllerAction(ActionType type, std::unique_ptr<dae::Co
 {
 }
 
+dae::ControllerAction::~ControllerAction()
+{
+	
+}
+
 dae::Command* dae::ControllerAction::GetCommand() const
 {
 	return m_Command.get();

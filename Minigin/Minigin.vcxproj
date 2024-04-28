@@ -219,10 +219,12 @@
     <ClInclude Include="Engine\DesignPatterns\Command.h" />
     <ClInclude Include="Engine\DesignPatterns\Observable.h" />
     <ClInclude Include="Engine\DesignPatterns\Observer.h" />
+    <ClInclude Include="Engine\DesignPatterns\ServiceLocator.h" />
     <ClInclude Include="Engine\DesignPatterns\Singleton.h" />
     <ClInclude Include="Engine\Minigin.h" />
     <ClInclude Include="Engine\ObserverEventData.h" />
     <ClInclude Include="Engine\ResourceManager.h" />
+    <ClInclude Include="Engine\Sound\DebugSoundSystem.h" />
     <ClInclude Include="Engine\Sound\SDLSoundSystem.h" />
     <ClInclude Include="Engine\Sound\SoundEffect.h" />
     <ClInclude Include="Engine\Sound\SoundSystem.h" />
@@ -266,9 +268,11 @@
     <ClCompile Include="Engine\DeltaTime.cpp" />
     <ClCompile Include="Engine\DesignPatterns\Command.cpp" />
     <ClCompile Include="Engine\DesignPatterns\Observable.cpp" />
+    <ClCompile Include="Engine\DesignPatterns\ServiceLocator.cpp" />
     <ClCompile Include="Engine\Minigin.cpp" />
     <ClCompile Include="Engine\ObserverEventData.cpp" />
     <ClCompile Include="Engine\ResourceManager.cpp" />
+    <ClCompile Include="Engine\Sound\DebugSoundSystem.cpp" />
     <ClCompile Include="Engine\Sound\SDLSoundSystem.cpp" />
     <ClCompile Include="Engine\Sound\SoundEffect.cpp" />
     <ClCompile Include="Engine\Sound\SoundSystem.cpp" />

@@ -2,24 +2,41 @@
 #include <memory>
 #include <SDL_mixer.h>
 #include <unordered_map>
+#include <mutex>
 
 #include "SoundEffect.h"
 #include "SoundSystem.h"
 
 namespace dae
 {
-	class SDLSoundSystem final : public SoundSystem, public Singleton<SDLSoundSystem> {
+	struct PlayMessage {
+		std::string soundName;
+		int         volume;
+	};
+
+	class SDLSoundSystem final : public SoundSystem {
 	public:
+		SDLSoundSystem();
 		SDLSoundSystem(const SDLSoundSystem& other) = delete;
 		SDLSoundSystem(SDLSoundSystem&& other) noexcept = delete;
 		SDLSoundSystem& operator=(const SDLSoundSystem& other) = delete;
 		SDLSoundSystem& operator=(SDLSoundSystem&& other) noexcept = delete;
 		~SDLSoundSystem() override;
 		void Play(const std::string& soundName, int volume) override;
+		void Update();
 
 	private:
-		SDLSoundSystem();
+		void ExecuteSound(const std::string& soundName, int volume);
 		std::unordered_map<std::string, std::unique_ptr<SoundEffect>> m_SoundMap;
 		friend class Singleton<SDLSoundSystem>;
+		static const int        MAX_PENDING{16};
+		PlayMessage             m_Pending[MAX_PENDING];
+		int                     m_NumPending{};
+		int                     m_Head{};
+		int                     m_Tail{};
+		std::mutex              m_QueueMutex{};
+		std::condition_variable m_Queue{};
+		std::thread m_AudioThread;
+		bool m_IsRunning = true;
 	};
 }

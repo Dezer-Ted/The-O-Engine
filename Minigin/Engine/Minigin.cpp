@@ -15,6 +15,7 @@
 #include "ResourceManager.h"
 #include "Utils/Utils.h"
 #include "DeltaTime.h"
+#include "Sound/SDLSoundSystem.h"
 SDL_Window* g_window{};
 
 void PrintSDLVersion()
@@ -107,6 +108,7 @@ void dae::Minigin::Run(const std::function<void()>& load)
 		}
 
 		sceneManager.Update();
+		//SDLSoundSystem::GetInstance().Update();
 		sceneManager.LateUpdate();
 		renderer.Render();
 		sceneManager.CleanUp();

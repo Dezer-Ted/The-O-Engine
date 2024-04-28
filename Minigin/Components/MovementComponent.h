@@ -25,7 +25,7 @@ namespace dae
 		MovementDirection GetDirection() const;
 		void              UndoMovement() const;
 		void              Update() override;
-
+		void SetSpeed(float movementSpeed);
 	private:
 		MovementDirection DetermineDirection(const glm::vec2& input);
 

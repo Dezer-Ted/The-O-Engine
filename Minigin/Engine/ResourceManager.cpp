@@ -35,5 +35,5 @@ std::shared_ptr<dae::Font> dae::ResourceManager::LoadFont(const std::string& fil
 std::unique_ptr<dae::SoundEffect> dae::ResourceManager::LoadSound(const std::string& file) const
 {
 	std::string fullFile{m_dataPath + "Sound/" + file + ".wav"};
-	return std::make_unique<SoundEffect>(Mix_LoadWAV(file.c_str()));
+	return std::make_unique<SoundEffect>(Mix_LoadWAV(fullFile.c_str()));
 }

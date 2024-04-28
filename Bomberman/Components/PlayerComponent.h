@@ -6,6 +6,7 @@
 
 namespace dae
 {
+	class Grid;
 	class SpriteComponent;
 
 	class PlayerComponent final : public BaseComponent, public Observer {
@@ -17,10 +18,12 @@ namespace dae
 		PlayerComponent& operator=(PlayerComponent&&) = delete;
 		~PlayerComponent() override = default;
 		void Notify(Utils::GameEvent event, std::unique_ptr<ObserverEventData> eventData) override;
+		void DropBomb();
+		void SetGrid(Grid* pGrid);
 
 	private:
-		void ChangeAnimation(MovementComponent::MovementDirection direction);
-
+		void               ChangeAnimation(MovementComponent::MovementDirection direction);
+		Grid*              m_pGrid{nullptr};
 		MovementComponent* m_pMoveComp{nullptr};
 		SpriteComponent*   m_pSpriteComponent{nullptr};
 	};

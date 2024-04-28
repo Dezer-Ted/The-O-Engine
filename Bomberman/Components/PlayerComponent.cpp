@@ -1,8 +1,10 @@
 ﻿#include "PlayerComponent.h"
 
+#include "BombComponent.h"
 #include "Components/ColliderComponent.h"
 #include "Components/SpriteComponent.h"
 #include "Engine/DesignPatterns/Blackboard.h"
+#include "../Grid.h"
 
 dae::PlayerComponent::PlayerComponent(GameObject* pParent)
 	: BaseComponent(pParent)
@@ -39,6 +41,27 @@ void dae::PlayerComponent::Notify(Utils::GameEvent event, std::unique_ptr<Observ
 			}
 		}
 	}
+}
+
+void dae::PlayerComponent::DropBomb()
+{
+	glm::vec2 pos = GetParent()->GetTransform().GetWorldPosition();
+	auto      gridCenter = m_pGrid->GetGridCellPosition(pos);
+	auto      go = std::make_shared<GameObject>(GetParent()->GetParentScene());
+	go->SetTag("Bomb");
+	go->SetPosition(pos.x, pos.y);
+	auto spriteComp = go->AddComponent<SpriteComponent>();
+	spriteComp->AddSprite(3, 1, "Character/BombAnimation.png", "BombAnim");
+	spriteComp->SetScale(3.f);
+	auto collisionComp = go->AddComponent<ColliderComponent>();
+	collisionComp->AdjustBoundsToSpriteSize();
+	//go->AddComponent<BombComponent>();
+	GetParent()->GetParentScene()->Add(go);
+}
+
+void dae::PlayerComponent::SetGrid(Grid* pGrid)
+{
+	m_pGrid = pGrid;
 }
 
 void dae::PlayerComponent::ChangeAnimation(MovementComponent::MovementDirection direction)

@@ -22,6 +22,7 @@ namespace dae
 
 		ControllerAction(ActionType actionType, std::unique_ptr<dae::Command> command, Controller::ButtonInputs button, InputType inputType);
 		ControllerAction(ActionType type, std::unique_ptr<dae::Command> command);
+		~ControllerAction();
 		dae::Command*            GetCommand() const;
 		Controller::ButtonInputs GetButtonMapping() const;
 		ActionType               GetType() const;

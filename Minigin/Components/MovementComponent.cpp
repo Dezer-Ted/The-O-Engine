@@ -22,7 +22,7 @@ void dae::MovementComponent::ApplyMovement(const glm::vec2& input)
 	if(newDirection != m_Direction)
 	{
 		m_Direction = newDirection;
-		NotifyObservers(Utils::DirectionChanged,std::make_unique<ObserverEventData>(this));
+		NotifyObservers(Utils::DirectionChanged, std::make_unique<ObserverEventData>(this));
 	}
 	if(m_LastDirection != input)
 	{
@@ -52,6 +52,11 @@ void dae::MovementComponent::UndoMovement() const
 void dae::MovementComponent::Update()
 {
 
+}
+
+void dae::MovementComponent::SetSpeed(float movementSpeed)
+{
+	m_MovementSpeed = movementSpeed;
 }
 
 ::dae::MovementComponent::MovementDirection dae::MovementComponent::DetermineDirection(const glm::vec2& input)

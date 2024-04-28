@@ -16,7 +16,7 @@ dae::SoundEffect::~SoundEffect()
 void dae::SoundEffect::PlaySoundEffect(int volume) const
 {
 	Mix_VolumeChunk(m_SoundChunk, volume);
-	if(Mix_PlayChannel(-1, m_SoundChunk, 0))
+	if(Mix_PlayChannel(-1, m_SoundChunk, 0) == -1)
 	{
 		std::cout << "FailedToPlaySoundEffect\n";
 	}
