@@ -26,8 +26,9 @@ namespace dae
 		void Update();
 
 	private:
-		void ExecuteSound(const std::string& soundName, int volume);
-		std::unordered_map<std::string, std::unique_ptr<SoundEffect>> m_SoundMap;
+		void ExecuteSound(std::string soundName, std::unique_lock<std::mutex>& lock, int volume = 64);
+
+		std::unordered_map<std::string, const std::unique_ptr<const SoundEffect>> m_SoundMap;
 		friend class Singleton<SDLSoundSystem>;
 		static const int        MAX_PENDING{16};
 		PlayMessage             m_Pending[MAX_PENDING];
@@ -36,7 +37,7 @@ namespace dae
 		int                     m_Tail{};
 		std::mutex              m_QueueMutex{};
 		std::condition_variable m_Queue{};
-		std::thread m_AudioThread;
-		bool m_IsRunning = true;
+		std::thread             m_AudioThread;
+		bool                    m_IsRunning = true;
 	};
 }

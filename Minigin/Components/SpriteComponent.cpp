@@ -20,10 +20,12 @@ dae::SpriteComponent::~SpriteComponent()
 
 void dae::SpriteComponent::Render()
 {
-	if(m_pCurrentSprite->GetTexture() == nullptr) return;
+	if(m_pCurrentSprite->GetTexture() == nullptr)
+		return;
 
 	const auto& pos{GetParent()->GetTransform().GetWorldPosition()};
-	Renderer::GetInstance().RenderTexture(*m_pCurrentSprite->GetTexture(), pos.x, pos.y, static_cast<float>(m_pCurrentSprite->m_SpriteWidth) * m_Scale,
+	Renderer::GetInstance().RenderTexture(*m_pCurrentSprite->GetTexture(), pos.x, pos.y, GetParent()->GetTransform().GetAngle(),
+	                                      static_cast<float>(m_pCurrentSprite->m_SpriteWidth) * m_Scale,
 	                                      static_cast<float>(m_pCurrentSprite->m_SpriteHeight) * m_Scale, &m_pCurrentSprite->m_SrcRect);
 }
 
@@ -39,7 +41,7 @@ void dae::SpriteComponent::Update()
 	}
 }
 
-void dae::SpriteComponent::AddSprite(int numOfCols, int numOfRows, const std::string& filePath,const std::string& animationName)
+void dae::SpriteComponent::AddSprite(int numOfCols, int numOfRows, const std::string& filePath, const std::string& animationName)
 {
 	m_SpriteMap.insert(std::make_pair(animationName, std::make_unique<Sprite>(filePath, numOfCols, numOfRows)));
 	SwitchToSprite(animationName);
@@ -60,7 +62,7 @@ void dae::SpriteComponent::SwitchToSprite(const std::string& animationName)
 	}
 
 	m_pCurrentSprite = newAnimation->second.get();
-	
+
 }
 
 void dae::SpriteComponent::ShouldUpdate(bool updateSprite)
@@ -89,6 +91,7 @@ void dae::SpriteComponent::UpdateSrcRect()
 	if(m_pCurrentSprite->m_CurrentRow + 1 > m_pCurrentSprite->m_NumberOfRows)
 	{
 		m_pCurrentSprite->m_CurrentRow = 0;
+		NotifyObservers(Utils::GameEvent::AnimationEnded, nullptr);
 	}
 	m_pCurrentSprite->m_SrcRect.x = m_pCurrentSprite->m_SpriteWidth * m_pCurrentSprite->m_CurrentCol;
 	m_pCurrentSprite->m_SrcRect.y = m_pCurrentSprite->m_SpriteHeight * m_pCurrentSprite->m_CurrentRow;

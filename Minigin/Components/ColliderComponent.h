@@ -13,7 +13,7 @@ namespace dae
 		ColliderComponent(ColliderComponent&&) = delete;
 		ColliderComponent& operator=(const ColliderComponent&) = delete;
 		ColliderComponent& operator=(ColliderComponent&&) = delete;
-		~ColliderComponent() override = default;
+		~ColliderComponent() override;
 
 		SDL_Rect GetBounds() const;
 		void     SetBounds(const SDL_Rect& bounds);

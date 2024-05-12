@@ -3,7 +3,6 @@
 #include "../Engine/DesignPatterns/Singleton.h"
 
 
-
 namespace dae
 {
 	class CameraComponent;
@@ -12,19 +11,20 @@ namespace dae
 	 * Simple RAII wrapper for the SDL renderer
 	 */
 	class Renderer final : public Singleton<Renderer> {
-		SDL_Renderer* m_renderer{};
-		SDL_Window*   m_window{};
-		SDL_Color     m_clearColor{};
+		SDL_Renderer*    m_renderer{};
+		SDL_Window*      m_window{};
+		SDL_Color        m_clearColor{};
 		CameraComponent* m_pCurrentCamera{nullptr};
+
 	public:
 		void Init(SDL_Window* window);
 		void Render() const;
 		void Destroy();
 
-		void RenderTexture(const Texture2D& texture, float x, float y) const;
-		void RenderTexture(const Texture2D& texture, float x, float y, const SDL_Rect* sourceRect) const;
-		void RenderTexture(const Texture2D& texture, float x, float y, float width, float height) const;
-		void RenderTexture(const Texture2D& texture, float x, float y, float width, float height,const SDL_Rect* sourceRect) const;
+		void RenderTexture(const Texture2D& texture, float x, float y, double angle) const;
+		void RenderTexture(const Texture2D& texture, float x, float y, double angle, const SDL_Rect* sourceRect) const;
+		void RenderTexture(const Texture2D& texture, float x, float y, double angle, float width, float height) const;
+		void RenderTexture(const Texture2D& texture, float x, float y, double angle, float width, float height, const SDL_Rect* sourceRect) const;
 		void SetCamera(CameraComponent* cam);
 		SDL_Renderer* GetSDLRenderer() const;
 

@@ -1,25 +1,12 @@
 #include <SDL.h>
 #include "InputManager.h"
 
-#include <iostream>
-#include <SDL_syswm.h>
 
 #include "Controller/Controller.h"
 #include "../imgui-1.89.5/backends/imgui_impl_sdl2.h"
 
 
-void dae::InputManager::AddCompoundKeyboardAction(SDL_Scancode up, SDL_Scancode down, SDL_Scancode left, SDL_Scancode right, GameObject* pOwner)
-{
-	m_CompoundKeyboardActions.push_back(std::make_unique<CompoundKeyboardAction>(up, down, right, left, std::move(std::make_unique<Move>(pOwner))));
-}
 
-void dae::InputManager::AddControllerCompoundAction(Controller::ButtonInputs upInput, Controller::ButtonInputs   downInput,
-                                                    Controller::ButtonInputs leftInput, Controller::ButtonInputs rightInput, GameObject* go)
-{
-	m_CompoundControllerActions.push_back(
-		std::make_unique<ControllerCompoundAction>(upInput, downInput, leftInput, rightInput, std::move(std::make_unique<Move>(go)),
-		                                           m_Controller.get()));
-}
 
 bool dae::InputManager::ProcessInput()
 {

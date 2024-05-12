@@ -22,9 +22,14 @@ namespace dae
 		std::vector<std::unique_ptr<ControllerCompoundAction>> m_CompoundControllerActions;
 
 	public:
-		void AddControllerCompoundAction(Controller::ButtonInputs upInput, Controller::ButtonInputs downInput, Controller::ButtonInputs leftInput,
-		                                 Controller::ButtonInputs rightInput, GameObject*           go);
-		void AddCompoundKeyboardAction(SDL_Scancode up, SDL_Scancode down, SDL_Scancode left, SDL_Scancode right, GameObject* pOwner);
+		template <typename T>
+		void AddControllerCompoundAction(Controller::ButtonInputs upInput, Controller::ButtonInputs   downInput,
+		                                                    Controller::ButtonInputs leftInput, Controller::ButtonInputs rightInput, GameObject* go)
+		{
+			m_CompoundControllerActions.push_back(
+				std::make_unique<ControllerCompoundAction>(upInput, downInput, leftInput, rightInput, std::move(std::make_unique<T>(go)),
+				                                           m_Controller.get()));
+		}
 
 		template <typename T>
 		void AddControllerActionMapping(ControllerAction::ActionType type, GameObject* gameObject, Controller::ButtonInputs buttonMap,
@@ -48,7 +53,8 @@ namespace dae
 				for(int i = 0; i < m_KeyBoardActions.size(); ++i)
 				{
 					T* castedAction = dynamic_cast<T*>(m_KeyBoardActions[i].get());
-					if(castedAction != nullptr) m_KeyBoardActions.erase(m_KeyBoardActions.begin() + i);
+					if(castedAction != nullptr)
+						m_KeyBoardActions.erase(m_KeyBoardActions.begin() + i);
 				}
 			}
 			catch(...)
@@ -66,7 +72,8 @@ namespace dae
 				for(int i = 0; i < m_ControllerActions.size(); ++i)
 				{
 					T* castedAction = dynamic_cast<T*>(m_ControllerActions[i].get());
-					if(castedAction != nullptr) m_ControllerActions.erase(m_ControllerActions.begin() + i);
+					if(castedAction != nullptr)
+						m_ControllerActions.erase(m_ControllerActions.begin() + i);
 				}
 			}
 			catch(...)
@@ -74,6 +81,12 @@ namespace dae
 				std::cout << "No ControllerAction of this type could be found \n";
 			}
 
+		}
+
+		template <typename T>
+		void AddCompoundKeyboardAction(SDL_Scancode up, SDL_Scancode down, SDL_Scancode left, SDL_Scancode right, GameObject* pOwner)
+		{
+			m_CompoundKeyboardActions.push_back(std::make_unique<CompoundKeyboardAction>(up, down, right, left, std::move(std::make_unique<T>(pOwner))));
 		}
 
 		bool ProcessInput();

@@ -14,7 +14,9 @@ namespace Utils
 		DirectionChanged,
 		MovementStopped,
 		MovementStarted,
-		Collision
+		Collision,
+		AnimationEnded,
+		PlayerSighted
 	};
 
 
@@ -35,7 +37,8 @@ namespace Utils
 
 	inline std::string TruncateString(const std::string& inputString, unsigned int length)
 	{
-		if(inputString.length() < length) return inputString;
+		if(inputString.length() < length)
+			return inputString;
 		return inputString.substr(0, length);
 	}
 

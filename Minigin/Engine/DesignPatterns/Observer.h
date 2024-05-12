@@ -2,6 +2,7 @@
 #include <any>
 
 #include "../Utils/Utils.h"
+#include "../ObserverEventData.h"
 
 
 namespace dae
@@ -11,6 +12,6 @@ namespace dae
 	class Observer {
 	public:
 		virtual      ~Observer() = default;
-		virtual void Notify(Utils::GameEvent event, std::unique_ptr<ObserverEventData> eventData) = 0;
+		virtual void Notify(Utils::GameEvent event, ObserverEventData* eventData) = 0;
 	};
 }

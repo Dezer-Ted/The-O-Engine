@@ -7,7 +7,9 @@ using namespace dae;
 
 unsigned int Scene::m_idCounter = 0;
 
-Scene::Scene(const std::string& name) : m_name(name) {}
+Scene::Scene(const std::string& name) : m_name(name)
+{
+}
 
 Scene::~Scene() = default;
 
@@ -45,7 +47,7 @@ void Scene::Update()
 
 void Scene::Render() const
 {
-	for (const auto& object : m_objects)
+	for(const auto& object : m_objects)
 	{
 		object->Render();
 	}
@@ -53,7 +55,7 @@ void Scene::Render() const
 
 void Scene::LateUpdate()
 {
-	for (const auto& object : m_objects)
+	for(const auto& object : m_objects)
 	{
 		object->LateUpdate();
 	}
@@ -61,13 +63,13 @@ void Scene::LateUpdate()
 
 void Scene::CleanUp()
 {
-	for (unsigned int index = 0; index < m_objects.size(); ++index)
+	for(unsigned int index = 0; index < m_objects.size(); ++index)
 	{
+		m_objects[index]->DestroyComponents();
 		if(m_objects[index]->GetDestructionFlag())
 		{
 			m_objects.erase(m_objects.begin() + index);
 		}
-		m_objects[index]->DestroyComponents();
 	}
 }
 
@@ -81,10 +83,12 @@ void Scene::AddCollider(ColliderComponent* collider) const
 	m_pCollisionCheck->AddCollider(collider);
 }
 
+void Scene::RemoveCollider(ColliderComponent* collider)
+{
+	m_pCollisionCheck->RemoveCollider(collider);
+}
+
 bool Scene::GetDestructionFlag() const
 {
 	return m_DestructionFlag;
 }
-
-
-

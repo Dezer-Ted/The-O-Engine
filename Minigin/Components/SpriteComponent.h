@@ -5,13 +5,14 @@
 #include <string>
 
 #include "BaseComponent.h"
+#include "../Engine/DesignPatterns/Observable.h"
 
 
 namespace dae
 {
 	class Sprite;
 
-	class SpriteComponent final : public BaseComponent {
+	class SpriteComponent final : public BaseComponent, public Observable {
 	public:
 		SpriteComponent(GameObject* pParent);
 		SpriteComponent(const SpriteComponent&) = delete;

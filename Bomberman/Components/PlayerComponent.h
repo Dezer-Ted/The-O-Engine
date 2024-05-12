@@ -2,11 +2,11 @@
 #include "Engine/DesignPatterns/Observable.h"
 #include "Engine/DesignPatterns/Observer.h"
 #include "Components/BaseComponent.h"
-#include "Components/MovementComponent.h"
+#include "../Components/MovementComponent.h"
 
 namespace dae
 {
-	class Grid;
+	class GridComponent;
 	class SpriteComponent;
 
 	class PlayerComponent final : public BaseComponent, public Observer {
@@ -17,13 +17,13 @@ namespace dae
 		PlayerComponent& operator=(const PlayerComponent&) = delete;
 		PlayerComponent& operator=(PlayerComponent&&) = delete;
 		~PlayerComponent() override = default;
-		void Notify(Utils::GameEvent event, std::unique_ptr<ObserverEventData> eventData) override;
+		void Notify(Utils::GameEvent event, ObserverEventData* eventData) override;
 		void DropBomb();
-		void SetGrid(Grid* pGrid);
+		void SetGrid(GridComponent* pGrid);
 
 	private:
 		void               ChangeAnimation(MovementComponent::MovementDirection direction);
-		Grid*              m_pGrid{nullptr};
+		GridComponent*              m_pGrid{nullptr};
 		MovementComponent* m_pMoveComp{nullptr};
 		SpriteComponent*   m_pSpriteComponent{nullptr};
 	};

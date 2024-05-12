@@ -28,6 +28,7 @@ namespace dae
 		bool   GetDestructionFlag() const;
 		void   DestroyScene();
 		void AddCollider(ColliderComponent* collider) const;
+		void RemoveCollider(ColliderComponent* collider);
 	private:
 		explicit Scene(const std::string& name);
 		std::unique_ptr<CollisionCheck> m_pCollisionCheck = std::make_unique<CollisionCheck>();

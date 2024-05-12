@@ -18,7 +18,9 @@ int GetOpenGLDriverIndex()
 	for(auto i = 0; i < driverCount; i++)
 	{
 		SDL_RendererInfo info;
-		if(!SDL_GetRenderDriverInfo(i, &info)) if(!strcmp(info.name, "opengl")) openglIndex = i;
+		if(!SDL_GetRenderDriverInfo(i, &info))
+			if(!strcmp(info.name, "opengl"))
+				openglIndex = i;
 	}
 	return openglIndex;
 }
@@ -67,18 +69,21 @@ void dae::Renderer::Destroy()
 
 }
 
-void dae::Renderer::RenderTexture(const Texture2D& texture, float x, float y) const
+void dae::Renderer::RenderTexture(const Texture2D& texture, float x, float y, double angle) const
 {
 	SDL_Rect        dst{};
 	const glm::vec2 offSet{m_pCurrentCamera->GetOffSet()};
 	dst.x = static_cast<int>(x - offSet.x);
 	dst.y = static_cast<int>(y - offSet.y);
 
+
+	SDL_Point point{(dst.w / 2), (dst.h / 2)};
+
 	SDL_QueryTexture(texture.GetSDLTexture(), nullptr, nullptr, &dst.w, &dst.h);
-	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
+	SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst, angle, &point, SDL_RendererFlip::SDL_FLIP_NONE);
 }
 
-void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y, const SDL_Rect* sourceRect) const
+void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y, double angle, const SDL_Rect* sourceRect) const
 {
 	SDL_Rect        dst{};
 	const glm::vec2 offSet{m_pCurrentCamera->GetOffSet()};
@@ -87,15 +92,17 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const
 	dst.h = sourceRect->h;
 	dst.w = sourceRect->w;
 
-	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), sourceRect, &dst);
+	SDL_Point point{(dst.w / 2), (dst.h / 2)};
+
+	SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), sourceRect, &dst, angle, &point, SDL_RendererFlip::SDL_FLIP_NONE);
 }
 
-void dae::Renderer::RenderTexture(const Texture2D& texture, float x, float y, float width, float height) const
+void dae::Renderer::RenderTexture(const Texture2D& texture, float x, float y, double angle, float width, float height) const
 {
-	RenderTexture(texture, x, y, width, height, nullptr);
+	RenderTexture(texture, x, y, angle, width, height, nullptr);
 }
 
-void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y, const float width, const float height,
+void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y, double angle, const float width, const float height,
                                   const SDL_Rect*  sourceRect) const
 {
 	SDL_Rect        dst{};
@@ -104,12 +111,16 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const
 	dst.y = static_cast<int>(y - offSet.y);
 	dst.w = static_cast<int>(width);
 	dst.h = static_cast<int>(height);
-	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), sourceRect, &dst);
+	SDL_Point point{(dst.w / 2), (dst.h / 2)};
+
+	SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), sourceRect, &dst, angle, &point, SDL_RendererFlip::SDL_FLIP_NONE);
+	//SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), sourceRect, &dst);
 }
 
 void dae::Renderer::SetCamera(CameraComponent* cam)
 {
-	if(cam != nullptr) m_pCurrentCamera = cam;
+	if(cam != nullptr)
+		m_pCurrentCamera = cam;
 }
 
 

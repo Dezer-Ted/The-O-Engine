@@ -157,17 +157,31 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Actions\BombAction.cpp" />
+    <ClCompile Include="Commands\BombCommand.cpp" />
+    <ClCompile Include="Commands\MovementCommand.cpp" />
     <ClCompile Include="Components\BombComponent.cpp" />
+    <ClCompile Include="Components\ExplosionComponent.cpp" />
+    <ClCompile Include="Components\MovementComponent.cpp" />
+    <ClCompile Include="Components\OnealComponent.cpp" />
     <ClCompile Include="Components\PlayerComponent.cpp" />
-    <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="EnemyStates\BaseState.cpp" />
+    <ClCompile Include="EnemyStates\HuntingState.cpp" />
+    <ClCompile Include="EnemyStates\RandomMovementState.cpp" />
+    <ClCompile Include="GridComponent.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Actions\BombAction.h" />
+    <ClInclude Include="Commands\BombCommand.h" />
+    <ClInclude Include="Commands\MovementCommand.h" />
     <ClInclude Include="Components\BombComponent.h" />
+    <ClInclude Include="Components\ExplosionComponent.h" />
+    <ClInclude Include="Components\MovementComponent.h" />
+    <ClInclude Include="Components\OnealComponent.h" />
     <ClInclude Include="Components\PlayerComponent.h" />
-    <ClInclude Include="Grid.h" />
+    <ClInclude Include="EnemyStates\BaseState.h" />
+    <ClInclude Include="EnemyStates\HuntingState.h" />
+    <ClInclude Include="EnemyStates\RandomMovementState.h" />
+    <ClInclude Include="GridComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

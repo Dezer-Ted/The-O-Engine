@@ -204,7 +204,6 @@
     <ClInclude Include="..\3rdParty\imgui-1.89.5\imstb_truetype.h" />
     <ClInclude Include="Components\CameraComponent.h" />
     <ClInclude Include="Components\ColliderComponent.h" />
-    <ClInclude Include="Components\MovementComponent.h" />
     <ClInclude Include="Components\SpriteComponent.h" />
     <ClInclude Include="Components\BaseComponent.h" />
     <ClInclude Include="Components\EncircleComponent.h" />
@@ -255,7 +254,6 @@
     <ClCompile Include="..\3rdParty\imgui-1.89.5\imgui_widgets.cpp" />
     <ClCompile Include="Components\CameraComponent.cpp" />
     <ClCompile Include="Components\ColliderComponent.cpp" />
-    <ClCompile Include="Components\MovementComponent.cpp" />
     <ClCompile Include="Components\SpriteComponent.cpp" />
     <ClCompile Include="Components\BaseComponent.cpp" />
     <ClCompile Include="Components\EncircleComponent.cpp" />

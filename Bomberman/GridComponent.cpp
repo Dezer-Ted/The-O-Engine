@@ -1,11 +1,16 @@
-﻿#include "Grid.h"
+﻿#include "GridComponent.h"
 
 #include "Components/ColliderComponent.h"
 #include "Components/SpriteComponent.h"
 #include "SceneObjects/GameObject.h"
 
 
-dae::Grid::Grid(int mapSizeX, int mapSizeY, int xCellCount, int yCellCount)
+dae::GridComponent::GridComponent(GameObject* pOwner) : BaseComponent(pOwner)
+{
+
+}
+
+void dae::GridComponent::InitGrid(int mapSizeX, int mapSizeY, int xCellCount, int yCellCount)
 {
 	m_CellWidth = mapSizeX / xCellCount;
 	m_CellHeight = mapSizeY / yCellCount;
@@ -24,7 +29,7 @@ dae::Grid::Grid(int mapSizeX, int mapSizeY, int xCellCount, int yCellCount)
 
 }
 
-void dae::Grid::CreateBorderWall(dae::Scene& scene, std::vector<dae::Cell>::value_type& cell)
+void dae::GridComponent::CreateBorderWall(dae::Scene& scene, std::vector<dae::Cell>::value_type& cell)
 {
 	auto go = std::make_shared<GameObject>(&scene);
 	go->SetPosition(cell.m_Position.x, cell.m_Position.y);
@@ -38,7 +43,7 @@ void dae::Grid::CreateBorderWall(dae::Scene& scene, std::vector<dae::Cell>::valu
 	scene.Add(go);
 }
 
-void dae::Grid::InitWalls(Scene& scene)
+void dae::GridComponent::InitWalls(Scene& scene)
 {
 	for(auto& row : m_Grid)
 	{
@@ -58,15 +63,37 @@ void dae::Grid::InitWalls(Scene& scene)
 	}
 }
 
-glm::vec2 dae::Grid::GetStartPosition() const
+glm::vec2 dae::GridComponent::GetPositionAtIndex(int x, int y) const
 {
-	return m_Grid[1][1].m_Position;
+	return m_Grid[y][x].m_Position;
 }
 
-glm::vec2 dae::Grid::GetGridCellPosition(const glm::vec2& currentPos) const
+glm::vec2 dae::GridComponent::GetGridCellPosition(const glm::vec2& currentPos) const
 {
 	const int xIndex = static_cast<int>(currentPos.x / static_cast<float>(m_CellWidth));
 	const int yIndex = static_cast<int>(currentPos.y / static_cast<float>(m_CellHeight));
 	glm::vec2 center{m_Grid[yIndex][xIndex].m_Position};
 	return center;
+}
+
+dae::WallState dae::GridComponent::GetWallstateAtPos(const glm::vec2& currentPos) const
+{
+	return m_Grid[static_cast<int>(currentPos.x)][static_cast<int>(currentPos.y)].m_WallState;
+}
+
+glm::vec2 dae::GridComponent::GetGridCoordinate(const glm::vec2& currentPos) const
+{
+	const int xIndex = static_cast<int>(currentPos.x / static_cast<float>(m_CellWidth));
+	const int yIndex = static_cast<int>(currentPos.y / static_cast<float>(m_CellHeight));
+	return glm::vec2{xIndex, yIndex};
+}
+
+int dae::GridComponent::GetCellWidth() const
+{
+	return m_CellWidth;
+}
+
+int dae::GridComponent::GetCellHeight() const
+{
+	return m_CellHeight;
 }

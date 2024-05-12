@@ -4,7 +4,8 @@
 #include "Components/ColliderComponent.h"
 #include "Components/SpriteComponent.h"
 #include "Engine/DesignPatterns/Blackboard.h"
-#include "../Grid.h"
+#include "../GridComponent.h"
+#include "Rendering/Sprite.h"
 
 dae::PlayerComponent::PlayerComponent(GameObject* pParent)
 	: BaseComponent(pParent)
@@ -13,7 +14,7 @@ dae::PlayerComponent::PlayerComponent(GameObject* pParent)
 	m_pMoveComp = GetParent()->GetComponentByClass<MovementComponent>();
 }
 
-void dae::PlayerComponent::Notify(Utils::GameEvent event, std::unique_ptr<ObserverEventData> eventData)
+void dae::PlayerComponent::Notify(Utils::GameEvent event, ObserverEventData* eventData)
 {
 	switch(event)
 	{
@@ -34,10 +35,13 @@ void dae::PlayerComponent::Notify(Utils::GameEvent event, std::unique_ptr<Observ
 		break;
 	case Utils::Collision:
 		{
-			auto pCollisionEvent{dynamic_cast<CollisionEventData*>(eventData.get())};
-			if(pCollisionEvent->m_OtherCollider->GetParentTag() == "Wall")
+			auto pCollisionEvent{dynamic_cast<CollisionEventData*>(eventData)};
+
+			if(pCollisionEvent->m_OtherCollider->GetParentTag() == "Explosion")
 			{
-				m_pMoveComp->UndoMovement();
+				#ifdef _DEBUG
+				std::cout << "Player got hit\n";
+				#endif
 			}
 		}
 	}
@@ -46,20 +50,23 @@ void dae::PlayerComponent::Notify(Utils::GameEvent event, std::unique_ptr<Observ
 void dae::PlayerComponent::DropBomb()
 {
 	glm::vec2 pos = GetParent()->GetTransform().GetWorldPosition();
-	auto      gridCenter = m_pGrid->GetGridCellPosition(pos);
-	auto      go = std::make_shared<GameObject>(GetParent()->GetParentScene());
+	pos.x += static_cast<float>(m_pSpriteComponent->GetCurrentSprite()->m_TargetWidth);
+	pos.y += static_cast<float>(m_pSpriteComponent->GetCurrentSprite()->m_TargetHeight);
+	auto gridCenter = m_pGrid->GetGridCellPosition(pos);
+	auto go = std::make_shared<GameObject>(GetParent()->GetParentScene());
 	go->SetTag("Bomb");
-	go->SetPosition(pos.x, pos.y);
+	go->SetPosition(gridCenter.x, gridCenter.y);
 	auto spriteComp = go->AddComponent<SpriteComponent>();
 	spriteComp->AddSprite(3, 1, "Character/BombAnimation.png", "BombAnim");
 	spriteComp->SetScale(3.f);
 	auto collisionComp = go->AddComponent<ColliderComponent>();
 	collisionComp->AdjustBoundsToSpriteSize();
-	//go->AddComponent<BombComponent>();
+	auto bombComp{go->AddComponent<BombComponent>()};
+	bombComp->Init(m_pGrid, m_pGrid->GetGridCoordinate(pos));
 	GetParent()->GetParentScene()->Add(go);
 }
 
-void dae::PlayerComponent::SetGrid(Grid* pGrid)
+void dae::PlayerComponent::SetGrid(GridComponent* pGrid)
 {
 	m_pGrid = pGrid;
 }

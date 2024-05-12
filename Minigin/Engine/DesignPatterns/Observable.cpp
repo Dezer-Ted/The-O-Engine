@@ -20,6 +20,6 @@ void dae::Observable::NotifyObservers(Utils::GameEvent event, std::unique_ptr<Ob
 {
 	for(auto& observer : m_Observers)
 	{
-		observer->Notify(event, std::move(eventData));
+		observer->Notify(event, eventData.get());
 	}
 }

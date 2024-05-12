@@ -53,6 +53,10 @@ bool dae::GameObject::GetDestructionFlag() const
 void dae::GameObject::DestroyObject()
 {
 	m_DestructionFlag = true;
+	for(auto child : m_Children)
+	{
+		child->DestroyObject();
+	}
 }
 
 dae::Scene* dae::GameObject::GetParentScene()
@@ -67,26 +71,31 @@ dae::GameObject* dae::GameObject::GetParent() const
 
 void dae::GameObject::SetParent(GameObject* pParent, bool keepWorldPosition)
 {
-	if(pParent == m_Parent) return;
+	if(pParent == m_Parent)
+		return;
 	for(const auto& child : m_Children)
 	{
-		if(child == pParent) return;
+		if(child == pParent)
+			return;
 	}
-	if(m_Parent != nullptr)
+	if(pParent != nullptr)
 	{
 		for(unsigned int index = 0; index < m_Children.size(); ++index)
 		{
-			if(m_Parent->m_Children[index] == this) m_Parent->m_Children.erase(m_Parent->m_Children.begin() + index);
+			if(m_Parent->m_Children[index] == this)
+				m_Parent->m_Children.erase(m_Parent->m_Children.begin() + index);
 		}
 		m_Parent = pParent;
 		m_Parent->m_Children.push_back(this);
 
-		if(keepWorldPosition) m_Transform.SetLocalPosition(m_Transform.GetLocalPosition() - m_Parent->GetTransform().GetWorldPosition());
+		if(keepWorldPosition)
+			m_Transform.SetLocalPosition(m_Transform.GetLocalPosition() - m_Parent->GetTransform().GetWorldPosition());
 
 	}
 	else
 	{
-		if(keepWorldPosition) m_Transform.SetLocalPosition(m_Transform.GetWorldPosition());
+		if(keepWorldPosition)
+			m_Transform.SetLocalPosition(m_Transform.GetWorldPosition());
 
 		m_Parent = pParent;
 
@@ -128,6 +137,6 @@ void dae::GameObject::SetPosition(float x, float y)
 }
 
 dae::GameObject::GameObject(Scene* pParentScene): m_Transform{this}
-, m_pParentScene(pParentScene)
+                                                  , m_pParentScene(pParentScene)
 {
 }

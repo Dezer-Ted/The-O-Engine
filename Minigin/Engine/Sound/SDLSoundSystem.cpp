@@ -2,8 +2,9 @@
 
 #include <cassert>
 #include <iostream>
-
+#include <algorithm>
 #include "../ResourceManager.h"
+#include "../../Components/TextureComponent.h"
 
 dae::SDLSoundSystem::~SDLSoundSystem()
 {
@@ -20,7 +21,7 @@ void dae::SDLSoundSystem::Play(const std::string& soundName, int volume)
 	{
 		if(m_Pending[i].soundName == soundName)
 		{
-			m_Pending[i].volume = std::max(volume, m_Pending[i].volume);
+			m_Pending[i].volume = max(volume, m_Pending[i].volume);
 			return;
 		}
 	}
@@ -39,23 +40,30 @@ void dae::SDLSoundSystem::Update()
 		m_Queue.wait(lock, [this] { return m_Head != m_Tail || !m_IsRunning; });
 		if(!m_IsRunning)
 			return;
-		ExecuteSound(m_Pending[m_Head].soundName, m_Pending[m_Head].volume);
+		ExecuteSound(m_Pending[m_Head].soundName, lock, m_Pending[m_Head].volume);
 		m_Head = (m_Head + 1) % MAX_PENDING;
 	}
 
 }
 
-void dae::SDLSoundSystem::ExecuteSound(const std::string& soundName, int volume = 64)
+void dae::SDLSoundSystem::ExecuteSound(std::string soundName, std::unique_lock<std::mutex>& lock, int volume)
 {
 
 	if(m_SoundMap.contains(soundName))
 	{
+		lock.unlock();
 		m_SoundMap[soundName]->PlaySoundEffect(volume);
+		lock.lock();
 	}
 	else
 	{
-		m_SoundMap[soundName] = ResourceManager::GetInstance().LoadSound(soundName);
+		std::string name = soundName;
+		auto        entry{std::make_pair<std::string, std::unique_ptr<const SoundEffect>>(
+			std::move(name), ResourceManager::GetInstance().LoadSound(soundName))};
+		m_SoundMap.insert(std::move(entry));
+		lock.unlock();
 		m_SoundMap[soundName]->PlaySoundEffect(volume);
+		lock.lock();
 	}
 }
 

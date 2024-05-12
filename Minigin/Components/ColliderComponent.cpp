@@ -10,6 +10,11 @@ dae::ColliderComponent::ColliderComponent(GameObject* pParent) : BaseComponent(p
 	pParent->GetParentScene()->AddCollider(this);
 }
 
+dae::ColliderComponent::~ColliderComponent()
+{
+	GetParent()->GetParentScene()->RemoveCollider(this);
+}
+
 SDL_Rect dae::ColliderComponent::GetBounds() const
 {
 	return m_Bounds;
@@ -29,7 +34,7 @@ void dae::ColliderComponent::AdjustBoundsToSpriteSize()
 
 void dae::ColliderComponent::CollidedWith(ColliderComponent* other)
 {
-	NotifyObservers(Utils::Collision,std::make_unique<CollisionEventData>(this,other));
+	NotifyObservers(Utils::Collision, std::make_unique<CollisionEventData>(this, other));
 }
 
 void dae::ColliderComponent::Update()

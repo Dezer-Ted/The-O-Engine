@@ -35,17 +35,7 @@ namespace dae
 		virtual ~GameObjectCommand() override = default;
 	};
 
-	class MovementComponent;
 
-	class Move final : public GameObjectCommand {
-	public:
-		void Execute2DAxis(const glm::vec2& input) override;
-		Move(GameObject* gameObject);
-		virtual ~Move() override = default;
-
-	private:
-		MovementComponent* m_pMovementComp{nullptr};
-	};
 
 	class PlayerComponent;
 
@@ -67,15 +57,5 @@ namespace dae
 
 	private:
 		PlayerComponent* m_pPlayerComp{nullptr};
-	};
-
-	//ONLY FOR TESTING PURPOSES
-	class PlaySound final : public GameObjectCommand {
-	public:
-		void Execute() override;
-		PlaySound(GameObject* pOwner);
-		virtual ~PlaySound() override = default;
-
-	private:
 	};
 }
