@@ -34,14 +34,18 @@ namespace dae
 	private:
 		MovementDirection DetermineDirection(const glm::vec2& input);
 		void              DodgeWalls(const glm::vec2& input);
-		void              DodgeYCheck(const SDL_Rect& bounds,const glm::vec2& playerCenter,float bufferRange);
-		void              DodgeXCheck(const SDL_Rect& bounds,const glm::vec2& playerCenter,float bufferRange);
+		void              DodgeYCheck(const SDL_Rect& bounds, const glm::vec2& playerCenter, float bufferRange);
+		void              DodgeXCheck(const SDL_Rect& bounds, const glm::vec2& playerCenter, float bufferRange);
 		void              HandleCollision(dae::ObserverEventData* eventData);
+		void              CheckMovementState(const glm::vec2& input);
+		void              ExecuteMovement(const glm::vec2& input);
 		float             m_MovementSpeed{100.f};
 		glm::vec2         m_LastDirection{};
 		MovementDirection m_Direction{};
 		glm::vec3         m_LastPosition{};
 		bool              m_IsDodging{};
 		glm::vec2         m_DodgeDirection{};
+		bool              m_IsMoving{false};
+		float             m_BufferScale{0.35f};
 	};
 }

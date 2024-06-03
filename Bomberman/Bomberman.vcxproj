@@ -164,6 +164,7 @@
     <ClCompile Include="Components\MovementComponent.cpp" />
     <ClCompile Include="Components\OnealComponent.cpp" />
     <ClCompile Include="Components\PlayerComponent.cpp" />
+    <ClCompile Include="Components\WallComponent.cpp" />
     <ClCompile Include="EnemyStates\BaseState.cpp" />
     <ClCompile Include="EnemyStates\HuntingState.cpp" />
     <ClCompile Include="EnemyStates\RandomMovementState.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="Components\MovementComponent.h" />
     <ClInclude Include="Components\OnealComponent.h" />
     <ClInclude Include="Components\PlayerComponent.h" />
+    <ClInclude Include="Components\WallComponent.h" />
     <ClInclude Include="EnemyStates\BaseState.h" />
     <ClInclude Include="EnemyStates\HuntingState.h" />
     <ClInclude Include="EnemyStates\RandomMovementState.h" />

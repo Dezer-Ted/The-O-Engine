@@ -16,7 +16,7 @@ namespace dae
 
 	class SightedEventData final : public ObserverEventData {
 	public:
-		SightedEventData(BaseComponent* component, const glm::vec2& playerGridPos,GridComponent* pGrid,const glm::vec2& enemyPos);
+		SightedEventData(BaseComponent* component, const glm::vec2& playerGridPos, GridComponent* pGrid, const glm::vec2& enemyPos);
 		SightedEventData(const SightedEventData& other) = delete;
 		SightedEventData(SightedEventData&& other) noexcept = delete;
 		SightedEventData& operator=(const SightedEventData& other) = delete;
@@ -24,8 +24,9 @@ namespace dae
 		~SightedEventData() override = default;
 		glm::vec2      m_Playerpos{};
 		GridComponent* m_pGrid{nullptr};
-		glm::vec2 m_EnemyPos{};
+		glm::vec2      m_EnemyPos{};
 	};
+
 	//TODO: Unhappy with the implementation but works for now Fix when turning corners works correctly
 	class OnealComponent final : public dae::BaseComponent, public Observer, public Observable {
 	public:

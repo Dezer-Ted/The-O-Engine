@@ -11,26 +11,28 @@ namespace dae
 {
 	enum class WallState {
 		BorderWall,
+		Barrier,
 		Wall,
 		open
 	};
 
 	struct Cell final {
-		glm::vec2 m_Position;
-		WallState m_WallState;
+		glm::vec2   m_Position;
+		WallState   m_WallState;
+		GameObject* m_CellObject;
 	};
 
 	class GridComponent final : public BaseComponent {
 	public:
 		GridComponent(GameObject* pOwner);
 		void InitGrid(int mapSizeX, int mapSizeY, int xCellCount, int yCellCount);
-		void CreateBorderWall(dae::Scene& scene, std::vector<dae::Cell>::value_type& cell);
 		GridComponent(const GridComponent& other) = delete;
 		GridComponent(GridComponent&& other) noexcept = delete;
 		GridComponent& operator=(const GridComponent& other) = delete;
 		GridComponent& operator=(GridComponent&& other) noexcept = delete;
 		~GridComponent() = default;
-		void      InitWalls(Scene& scene);
+
+		void      CreateWallObjects(Scene& scene);
 		glm::vec2 GetPositionAtIndex(int x, int y) const;
 		glm::vec2 GetGridCellPosition(const glm::vec2& currentPos) const;
 		WallState GetWallstateAtPos(const glm::vec2& currentPos) const;
@@ -39,8 +41,13 @@ namespace dae
 		int       GetCellHeight() const;
 
 	private:
+		void CreateBorderWall(dae::Scene& scene, Cell& cell);
+		void CreateWall(Scene& scene, Cell& cell);
+		void InitWalls();
+
 		std::vector<std::vector<Cell>> m_Grid;
 		int                            m_CellWidth;
 		int                            m_CellHeight;
+		const float                    m_FillPercentage{0.4f};
 	};
 }

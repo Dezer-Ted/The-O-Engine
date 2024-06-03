@@ -76,7 +76,7 @@ void InitGrid(dae::Scene& scene, SDL_Rect levelBounds, std::enable_if_t<true, st
 {
 	gridComp = go->AddComponent<dae::GridComponent>();
 	gridComp->InitGrid(levelBounds.w, levelBounds.h, 31, 13);
-	gridComp->InitWalls(scene);
+	gridComp->CreateWallObjects(scene);
 	scene.Add(go);
 }
 
@@ -108,7 +108,7 @@ void load()
 	auto enemy{go->AddComponent<dae::OnealComponent>()};
 	collider->AddObserver(enemy);
 	enemy->Initialize(gridComp, player);
-	scene.Add(go);
+	//scene.Add(go);
 
 
 	dae::Renderer::GetInstance().SetBackgroundColor(SDL_Color{57, 132, 0, 1});
