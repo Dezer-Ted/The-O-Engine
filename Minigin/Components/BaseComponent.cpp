@@ -24,3 +24,7 @@ dae::GameObject* dae::BaseComponent::GetParent() const
 {
 	return m_Parent;
 }
+
+
+
+

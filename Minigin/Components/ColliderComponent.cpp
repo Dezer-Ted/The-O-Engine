@@ -3,7 +3,6 @@
 #include "SpriteComponent.h"
 #include "../Rendering/Sprite.h"
 #include "../SceneObjects/Scene.h"
-#include "../Engine/DesignPatterns/Blackboard.h"
 
 dae::ColliderComponent::ColliderComponent(GameObject* pParent) : BaseComponent(pParent)
 {
@@ -34,7 +33,7 @@ void dae::ColliderComponent::AdjustBoundsToSpriteSize()
 
 void dae::ColliderComponent::CollidedWith(ColliderComponent* other)
 {
-	NotifyObservers(Utils::Collision, std::make_unique<CollisionEventData>(this, other));
+	NotifyObservers(Utils::GameEvent::Collision, std::make_unique<CollisionEventData>(this, other));
 }
 
 void dae::ColliderComponent::Update()
@@ -47,4 +46,9 @@ void dae::ColliderComponent::Update()
 std::string dae::ColliderComponent::GetParentTag() const
 {
 	return GetParent()->GetTag();
+}
+
+dae::GameObject* dae::ColliderComponent::GetParentObject() const
+{
+	return GetParent();
 }

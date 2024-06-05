@@ -131,6 +131,17 @@ std::string dae::GameObject::GetTag() const
 	return m_Tag;
 }
 
+std::string dae::GameObject::GetLayer() const
+{
+	return m_Layer;
+}
+
+void dae::GameObject::SetLayer(const std::string& layer) 
+{
+	m_Layer = layer;
+}
+
+
 void dae::GameObject::SetPosition(float x, float y)
 {
 	m_Transform.SetLocalPosition(x, y, 0.0f);

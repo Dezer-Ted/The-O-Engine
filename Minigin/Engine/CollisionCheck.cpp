@@ -29,10 +29,9 @@ void dae::CollisionCheck::CheckCollision(ColliderComponent* pFirstCollider, Coll
 {
 	const auto firstBounds = pFirstCollider->GetBounds();
 	const auto secondBounds = pSecondCollider->GetBounds();
-	if(firstBounds.x + firstBounds.w < secondBounds.x || firstBounds.x > secondBounds.x + secondBounds.w) return;
 
-	if(firstBounds.y + firstBounds.h < secondBounds.y || firstBounds.y > secondBounds.y + secondBounds.h) return;
-
+	if(SDL_HasIntersection(&firstBounds, &secondBounds) == SDL_FALSE)
+		return;
 	pFirstCollider->CollidedWith(pSecondCollider);
 	pSecondCollider->CollidedWith(pFirstCollider);
 }

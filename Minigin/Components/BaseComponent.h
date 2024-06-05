@@ -21,7 +21,6 @@ namespace dae
 	protected:
 		GameObject* GetParent() const;
 	private:
-		BaseComponent();
 		bool m_DestructionFlag {false};
 		GameObject* m_Parent;
 		friend class GameObject;

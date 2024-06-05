@@ -1,9 +1,9 @@
 ﻿#include "PlayerComponent.h"
 
 #include "BombComponent.h"
+#include "PowerUpComponent.h"
 #include "Components/ColliderComponent.h"
 #include "Components/SpriteComponent.h"
-#include "Engine/DesignPatterns/Blackboard.h"
 #include "../GridComponent.h"
 #include "Rendering/Sprite.h"
 
@@ -12,30 +12,31 @@ dae::PlayerComponent::PlayerComponent(GameObject* pParent)
 {
 	m_pSpriteComponent = GetParent()->GetComponentByClass<SpriteComponent>();
 	m_pMoveComp = GetParent()->GetComponentByClass<MovementComponent>();
+	m_pPowerUpComp = GetParent()->GetComponentByClass<PowerUpComponent>();
 }
 
 void dae::PlayerComponent::Notify(Utils::GameEvent event, ObserverEventData* eventData)
 {
 	switch(event)
 	{
-	case Utils::DirectionChanged:
+	case Utils::GameEvent::DirectionChanged:
 		{
 			ChangeAnimation(m_pMoveComp->GetDirection());
 		}
 		break;
-	case Utils::MovementStopped:
+	case Utils::GameEvent::MovementStopped:
 		{
 			m_pSpriteComponent->ShouldUpdate(false);
 		}
 		break;
-	case Utils::MovementStarted:
+	case Utils::GameEvent::MovementStarted:
 		{
 			m_pSpriteComponent->ShouldUpdate(true);
 		}
 		break;
-	case Utils::Collision:
+	case Utils::GameEvent::Collision:
 		{
-			auto pCollisionEvent{dynamic_cast<CollisionEventData*>(eventData)};
+			const auto pCollisionEvent{dynamic_cast<CollisionEventData*>(eventData)};
 
 			if(pCollisionEvent->m_OtherCollider->GetParentTag() == "Explosion")
 			{
@@ -49,10 +50,13 @@ void dae::PlayerComponent::Notify(Utils::GameEvent event, ObserverEventData* eve
 
 void dae::PlayerComponent::DropBomb()
 {
+	if(static_cast<int>(m_Bombs.size()) >= m_pPowerUpComp->GetBombUpgrade() + 1)
+		return;
+
 	glm::vec2 pos = GetParent()->GetTransform().GetWorldPosition();
 	pos.x += static_cast<float>(m_pSpriteComponent->GetCurrentSprite()->m_TargetWidth);
 	pos.y += static_cast<float>(m_pSpriteComponent->GetCurrentSprite()->m_TargetHeight);
-	auto gridCenter = m_pGrid->GetGridCellPosition(pos);
+	auto gridCenter = m_pGrid->GetGridCellPosition(m_pGrid->GetGridCoordinate(pos));
 	auto go = std::make_shared<GameObject>(GetParent()->GetParentScene());
 	go->SetTag("Bomb");
 	go->SetPosition(gridCenter.x, gridCenter.y);
@@ -62,8 +66,10 @@ void dae::PlayerComponent::DropBomb()
 	auto collisionComp = go->AddComponent<ColliderComponent>();
 	collisionComp->AdjustBoundsToSpriteSize();
 	auto bombComp{go->AddComponent<BombComponent>()};
-	bombComp->Init(m_pGrid, m_pGrid->GetGridCoordinate(pos));
+	bombComp->Init(m_pGrid, m_pGrid->GetGridCoordinate(pos), this);
 	GetParent()->GetParentScene()->Add(go);
+	m_Bombs.push_back(go.get());
+
 }
 
 void dae::PlayerComponent::SetGrid(GridComponent* pGrid)
@@ -71,7 +77,27 @@ void dae::PlayerComponent::SetGrid(GridComponent* pGrid)
 	m_pGrid = pGrid;
 }
 
-void dae::PlayerComponent::ChangeAnimation(MovementComponent::MovementDirection direction)
+void dae::PlayerComponent::DetonateBombs() const
+{
+	if(!m_pPowerUpComp->GetDetonatorUpgrade())
+		return;
+
+	for(auto bomb : m_Bombs)
+	{
+		if(bomb == nullptr)
+			continue;
+		bomb->GetComponentByClass<BombComponent>()->Explode();
+	}
+}
+
+void dae::PlayerComponent::RemoveExplodedBomb(GameObject* toBeRemoved)
+{
+	auto it = std::remove(m_Bombs.begin(), m_Bombs.end(), toBeRemoved);
+	if(it != m_Bombs.end())
+		m_Bombs.erase(it);
+}
+
+void dae::PlayerComponent::ChangeAnimation(MovementComponent::MovementDirection direction) const
 {
 	switch(direction)
 	{

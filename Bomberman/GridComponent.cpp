@@ -40,6 +40,7 @@ void dae::GridComponent::CreateBorderWall(dae::Scene& scene, Cell& cell)
 		go->SetTag("BorderWall");
 	else
 		go->SetTag("Barrier");
+	go->SetLayer("Obstacle");
 	auto spriteComp = go->AddComponent<SpriteComponent>();
 	spriteComp->AddSprite(1, 1, "Obstacles/BorderWall.png", "BaseSprite");
 	spriteComp->ShouldUpdate(false);
@@ -55,6 +56,7 @@ void dae::GridComponent::CreateWall(Scene& scene, Cell& cell)
 	auto go = std::make_shared<GameObject>(&scene);
 	go->SetPosition(cell.m_Position.x, cell.m_Position.y);
 	go->SetTag("Wall");
+	go->SetLayer("Obstacle");
 	auto spriteComp = go->AddComponent<SpriteComponent>();
 	spriteComp->AddSprite(6, 1, "Obstacles/WallCrumbling.png", "DestructionAnimation");
 	spriteComp->AddSprite(1, 1, "Obstacles/Wall.png", "BaseSprite");
@@ -84,6 +86,22 @@ void dae::GridComponent::InitWalls()
 	}
 }
 
+void dae::GridComponent::SelectUpgradeHolder()
+{
+	std::vector<Cell*> wallCells;
+	for(auto& row : m_Grid)
+	{
+		for(auto& cell : row)
+		{
+			if(cell.m_WallState == WallState::Wall)
+				wallCells.push_back(&cell);
+		}
+	}
+	const int randomPowUp{rand() % 3};
+	const int randomCell{static_cast<int>(rand() % wallCells.size())};
+	wallCells[randomCell]->m_CellObject->GetComponentByClass<WallComponent>()->SetPowerUp(static_cast<PowerUps>(randomPowUp));
+}
+
 void dae::GridComponent::CreateWallObjects(Scene& scene)
 {
 	for(auto& row : m_Grid)
@@ -104,6 +122,7 @@ void dae::GridComponent::CreateWallObjects(Scene& scene)
 			}
 		}
 	}
+	SelectUpgradeHolder();
 }
 
 glm::vec2 dae::GridComponent::GetPositionAtIndex(int x, int y) const
@@ -111,24 +130,22 @@ glm::vec2 dae::GridComponent::GetPositionAtIndex(int x, int y) const
 	return m_Grid[y][x].m_Position;
 }
 
-glm::vec2 dae::GridComponent::GetGridCellPosition(const glm::vec2& currentPos) const
+glm::vec2 dae::GridComponent::GetGridCellPosition(const dae::CellCoordinate& currentPos) const
 {
-	const int xIndex = static_cast<int>(currentPos.x / static_cast<float>(m_CellWidth));
-	const int yIndex = static_cast<int>(currentPos.y / static_cast<float>(m_CellHeight));
-	glm::vec2 center{m_Grid[yIndex][xIndex].m_Position};
+	glm::vec2 center{m_Grid[currentPos.y][currentPos.x].m_Position};
 	return center;
 }
 
-dae::WallState dae::GridComponent::GetWallstateAtPos(const glm::vec2& currentPos) const
+dae::WallState dae::GridComponent::GetWallstateAtPos(const dae::CellCoordinate& currentPos) const
 {
-	return m_Grid[static_cast<int>(currentPos.y)][static_cast<int>(currentPos.x)].m_WallState;
+	return m_Grid[currentPos.y][currentPos.x].m_WallState;
 }
 
-glm::vec2 dae::GridComponent::GetGridCoordinate(const glm::vec2& currentPos) const
+dae::CellCoordinate dae::GridComponent::GetGridCoordinate(const glm::vec2& currentPos) const
 {
-	const int xIndex = static_cast<int>(currentPos.x / static_cast<float>(m_CellWidth));
-	const int yIndex = static_cast<int>(currentPos.y / static_cast<float>(m_CellHeight));
-	return glm::vec2{xIndex, yIndex};
+	const int xIndex = static_cast<int>((currentPos.x + static_cast<float>(m_CellWidth) / 2.f) / static_cast<float>(m_CellWidth));
+	const int yIndex = static_cast<int>((currentPos.y + static_cast<float>(m_CellHeight) / 2.f) / static_cast<float>(m_CellHeight));
+	return {xIndex, yIndex};
 }
 
 int dae::GridComponent::GetCellWidth() const
@@ -139,4 +156,14 @@ int dae::GridComponent::GetCellWidth() const
 int dae::GridComponent::GetCellHeight() const
 {
 	return m_CellHeight;
+}
+
+dae::GameObject* dae::GridComponent::GetCellObject(const dae::CellCoordinate& currentPos) const
+{
+	return m_Grid[currentPos.y][currentPos.x].m_CellObject;
+}
+
+void dae::GridComponent::MarkAsDestroyed(const dae::CellCoordinate& currentPos)
+{
+	m_Grid[currentPos.y][currentPos.x].m_WallState = WallState::open;
 }

@@ -3,11 +3,13 @@
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 
+#include "../GridComponent.h"
 #include "Components/BaseComponent.h"
 
 
 namespace dae
 {
+	class PlayerComponent;
 	class GridComponent;
 	class Scene;
 
@@ -21,18 +23,19 @@ namespace dae
 		~BombComponent() override;
 		void Update() override;
 		void SetExplosionRange(int range);
-		void Init(GridComponent* pGrid, const glm::vec2& gridPos);
+		void Init(GridComponent* pGrid, const CellCoordinate& gridPos, PlayerComponent* pPlayer);
+		void Explode() const;
 
 	private:
-		void           Explode() const;
-		void           CreateExplosion() const;
-		GameObject*    CreateExplosionCenter(Scene* scene, const glm::vec3& pos, float scale) const;
-		void           CreateMidPiece(dae::Scene* scene, float scale, dae::GameObject* pParent, std::vector<int> directions, size_t i) const;
-		void           CreateExplosionArms(Scene* scene, const glm::vec3& pos, float scale, GameObject* pParent) const;
-		const float    m_FuseTime{2.f};
-		float          m_CurrentTimer{0.f};
-		int            m_ExplosionRange{};
-		GridComponent* m_pGrid{nullptr};
-		glm::vec2      m_GridPos{};
+		void             CreateExplosion() const;
+		GameObject*      CreateExplosionCenter(Scene* scene, const glm::vec3& pos, float scale) const;
+		void             CreateMidPiece(dae::Scene* scene, float scale, dae::GameObject* pParent, std::vector<int> directions, size_t i) const;
+		void             CreateExplosionArms(Scene* scene, const glm::vec3& pos, float scale, GameObject* pParent) const;
+		const float      m_FuseTime{2.f};
+		float            m_CurrentTimer{0.f};
+		int              m_ExplosionRange{};
+		GridComponent*   m_pGrid{nullptr};
+		CellCoordinate   m_GridPos{};
+		PlayerComponent* m_pPLayer{nullptr};
 	};
 }

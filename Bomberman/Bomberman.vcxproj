@@ -158,31 +158,43 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Commands\BombCommand.cpp" />
+    <ClCompile Include="Commands\DetonateCommand.cpp" />
     <ClCompile Include="Commands\MovementCommand.cpp" />
     <ClCompile Include="Components\BombComponent.cpp" />
+    <ClCompile Include="Components\EnemyComponent.cpp" />
     <ClCompile Include="Components\ExplosionComponent.cpp" />
     <ClCompile Include="Components\MovementComponent.cpp" />
-    <ClCompile Include="Components\OnealComponent.cpp" />
     <ClCompile Include="Components\PlayerComponent.cpp" />
+    <ClCompile Include="Components\PowerUpComponent.cpp" />
+    <ClCompile Include="Components\PowerUpPickUpComponent.cpp" />
     <ClCompile Include="Components\WallComponent.cpp" />
     <ClCompile Include="EnemyStates\BaseState.cpp" />
+    <ClCompile Include="EnemyStates\EnemyTransitions\BaseTransition.cpp" />
+    <ClCompile Include="EnemyStates\EnemyTransitions\CooldownTransition.cpp" />
+    <ClCompile Include="EnemyStates\EnemyTransitions\SightedTransition.cpp" />
     <ClCompile Include="EnemyStates\HuntingState.cpp" />
-    <ClCompile Include="EnemyStates\RandomMovementState.cpp" />
+    <ClCompile Include="EnemyStates\RandomWalkState.cpp" />
     <ClCompile Include="GridComponent.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Commands\BombCommand.h" />
+    <ClInclude Include="Commands\DetonateCommand.h" />
     <ClInclude Include="Commands\MovementCommand.h" />
     <ClInclude Include="Components\BombComponent.h" />
+    <ClInclude Include="Components\EnemyComponent.h" />
     <ClInclude Include="Components\ExplosionComponent.h" />
     <ClInclude Include="Components\MovementComponent.h" />
-    <ClInclude Include="Components\OnealComponent.h" />
     <ClInclude Include="Components\PlayerComponent.h" />
+    <ClInclude Include="Components\PowerUpComponent.h" />
+    <ClInclude Include="Components\PowerUpPickUpComponent.h" />
     <ClInclude Include="Components\WallComponent.h" />
-    <ClInclude Include="EnemyStates\BaseState.h" />
+    <ClInclude Include="EnemyStates\EnemyTransitions\BaseTransition.h" />
+    <ClInclude Include="EnemyStates\EnemyTransitions\CooldownTransition.h" />
+    <ClInclude Include="EnemyStates\EnemyTransitions\SightedTransition.h" />
     <ClInclude Include="EnemyStates\HuntingState.h" />
-    <ClInclude Include="EnemyStates\RandomMovementState.h" />
+    <ClInclude Include="EnemyStates\BaseState.h" />
+    <ClInclude Include="EnemyStates\RandomWalkState.h" />
     <ClInclude Include="GridComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

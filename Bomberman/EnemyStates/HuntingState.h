@@ -1,28 +1,26 @@
 ﻿#pragma once
 #include "BaseState.h"
-#include "Engine/DesignPatterns/Observer.h"
+
 
 namespace dae
 {
-	class HuntingState final : public dae::BaseState, public dae::Observer {
+	class GridComponent;
+
+	class HuntingState final : public dae::BaseState {
 	public:
-		HuntingState() = default;
+		HuntingState(GameObject* pPlayer, GridComponent* pGrid, GameObject* pParent);
 		HuntingState(const HuntingState& other) = delete;
 		HuntingState(HuntingState&& other) noexcept = delete;
 		HuntingState& operator=(const HuntingState& other) = delete;
 		HuntingState& operator=(HuntingState&& other) noexcept = delete;
+		~HuntingState() override = default;
 
-		void      HandleWallCollision() override;
-		bool      Update() override;
-		glm::vec2 GetMovementDirection() override;
-		~HuntingState() override;
-		void Notify(Utils::GameEvent event, dae::ObserverEventData* eventData) override;
+		void      Update() override;
+		void      OnEnter() override;
 
 	private:
-		void      SetDirection(const glm::vec2 direction);
-		void DetermineDirection();
-		glm::vec2 m_LastSeenPos{};
-		glm::vec2 m_Direction{};
-		bool      m_DirtyFlag{false};
+		void           DetermineWalkDirection(const glm::vec2& playerPos);
+		GridComponent* m_pGridComp{nullptr};
+		GameObject*    m_pPlayer{nullptr};
 	};
 }

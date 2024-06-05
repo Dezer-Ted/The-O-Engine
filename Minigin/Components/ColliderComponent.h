@@ -21,7 +21,7 @@ namespace dae
 		void     CollidedWith(ColliderComponent* other);
 		void     Update() override;
 		std::string GetParentTag() const;
-		
+		GameObject* GetParentObject() const;
 	private:
 		SDL_Rect m_Bounds{0, 0, 0, 0};
 	};

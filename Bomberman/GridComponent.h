@@ -5,6 +5,10 @@
 #include "Components/BaseComponent.h"
 #include "EnemyStates/BaseState.h"
 #include "EnemyStates/BaseState.h"
+#include "EnemyStates/BaseState.h"
+#include "EnemyStates/BaseState.h"
+#include "EnemyStates\BaseState.h"
+#include "EnemyStates\BaseState.h"
 #include "SceneObjects/Scene.h"
 
 namespace dae
@@ -22,6 +26,11 @@ namespace dae
 		GameObject* m_CellObject;
 	};
 
+	struct CellCoordinate final {
+		int x;
+		int y;
+	};
+
 	class GridComponent final : public BaseComponent {
 	public:
 		GridComponent(GameObject* pOwner);
@@ -32,22 +41,25 @@ namespace dae
 		GridComponent& operator=(GridComponent&& other) noexcept = delete;
 		~GridComponent() = default;
 
-		void      CreateWallObjects(Scene& scene);
-		glm::vec2 GetPositionAtIndex(int x, int y) const;
-		glm::vec2 GetGridCellPosition(const glm::vec2& currentPos) const;
-		WallState GetWallstateAtPos(const glm::vec2& currentPos) const;
-		glm::vec2 GetGridCoordinate(const glm::vec2& currentPos) const;
-		int       GetCellWidth() const;
-		int       GetCellHeight() const;
+		void                  CreateWallObjects(Scene& scene);
+		glm::vec2             GetPositionAtIndex(int x, int y) const;
+		glm::vec2             GetGridCellPosition(const CellCoordinate& currentPos) const;
+		WallState             GetWallstateAtPos(const CellCoordinate& currentPos) const;
+		::dae::CellCoordinate GetGridCoordinate(const glm::vec2& currentPos) const;
+		int                   GetCellWidth() const;
+		int                   GetCellHeight() const;
+		GameObject*           GetCellObject(const CellCoordinate& currentPos) const;
+		void                  MarkAsDestroyed(const CellCoordinate& currentPos);
 
 	private:
 		void CreateBorderWall(dae::Scene& scene, Cell& cell);
 		void CreateWall(Scene& scene, Cell& cell);
 		void InitWalls();
+		void SelectUpgradeHolder();
 
 		std::vector<std::vector<Cell>> m_Grid;
 		int                            m_CellWidth;
 		int                            m_CellHeight;
-		const float                    m_FillPercentage{0.4f};
+		const float                    m_FillPercentage{0.1f};
 	};
 }

@@ -4,14 +4,15 @@ namespace dae
 {
 	class BaseComponent;
 	class ColliderComponent;
+
 	class ObserverEventData {
 	public:
 		ObserverEventData(dae::BaseComponent* component);
 		ObserverEventData(const ObserverEventData&) = delete;
 		ObserverEventData(ObserverEventData&&) = delete;
-		ObserverEventData& operator=(const ObserverEventData&) = delete;
-		ObserverEventData& operator=(ObserverEventData&&) = delete;
-		virtual ~ObserverEventData() = default;
+		ObserverEventData&  operator=(const ObserverEventData&) = delete;
+		ObserverEventData&  operator=(ObserverEventData&&) = delete;
+		virtual             ~ObserverEventData() = default;
 		dae::BaseComponent* m_Component;
 	};
 
@@ -22,7 +23,7 @@ namespace dae
 		CollisionEventData(CollisionEventData&&) = delete;
 		CollisionEventData& operator=(const CollisionEventData&) = delete;
 		CollisionEventData& operator=(CollisionEventData&&) = delete;
-		~CollisionEventData() = default;
+		~CollisionEventData() override = default;
 		ColliderComponent* m_OtherCollider;
 	};
 }

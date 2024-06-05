@@ -31,6 +31,7 @@ namespace dae
 		bool        GetDestructionFlag() const;
 		void        DestroyObject();
 		Scene*      GetParentScene();
+
 		template <typename T>
 		T* AddComponent()
 		{
@@ -91,8 +92,11 @@ namespace dae
 		const std::vector<GameObject*>& GetChildren();
 		void                            Translate(const glm::vec2& input);
 		void                            FixedUpdate();
-		void SetTag(const std::string& tag );
-		std::string GetTag() const;
+		void                            SetTag(const std::string& tag);
+		std::string                     GetTag() const;
+		std::string                     GetLayer() const;
+		void                            SetLayer(const std::string& layer);
+
 	private:
 		std::vector<GameObject*>                    m_Children;
 		GameObject*                                 m_Parent{nullptr};
@@ -100,6 +104,7 @@ namespace dae
 		std::vector<std::unique_ptr<BaseComponent>> m_ComponentList;
 		bool                                        m_DestructionFlag{false};
 		Scene*                                      m_pParentScene{nullptr};
-		std::string m_Tag{"untagged"};
+		std::string                                 m_Tag{"untagged"};
+		std::string                                 m_Layer{"Base"};
 	};
 }

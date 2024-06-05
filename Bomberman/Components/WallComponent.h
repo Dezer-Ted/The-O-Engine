@@ -1,11 +1,13 @@
 ﻿#pragma once
+#include "PowerUpComponent.h"
 #include "Components/BaseComponent.h"
 #include "Engine/DesignPatterns/Observer.h"
 
 namespace dae
 {
 	class SpriteComponent;
-	class WallComponent : public BaseComponent, public Observer {
+
+	class WallComponent final : public BaseComponent, public Observer {
 	public:
 		WallComponent(GameObject* pOwner);
 		WallComponent(const WallComponent& other) = delete;
@@ -16,10 +18,13 @@ namespace dae
 
 		void StartDestruction();
 		void Notify(Utils::GameEvent event, ObserverEventData* eventData) override;
-		
+		void SetPowerUp(PowerUps powerUp);
 
 	private:
+		void             DropItem() const;
 		SpriteComponent* m_pSpriteComponent;
-		bool m_IsDestroyed = true;
+		bool             m_IsDestroyed{false};
+		bool             m_HoldsItem{false};
+		PowerUps         m_PowerUp{PowerUps::FireUp};
 	};
 }

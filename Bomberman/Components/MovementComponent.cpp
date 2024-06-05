@@ -16,13 +16,15 @@ void dae::MovementComponent::CheckMovementState(const glm::vec2& input)
 	{
 		if(input == glm::vec2{0, 0})
 		{
-			NotifyObservers(Utils::MovementStopped, std::make_unique<ObserverEventData>(this));
+			NotifyObservers(Utils::GameEvent::MovementStopped, std::make_unique<ObserverEventData>(this));
 			m_IsMoving = false;
 		}
 		if(m_LastDirection == glm::vec2{0, 0})
 		{
-			NotifyObservers(Utils::MovementStarted, std::make_unique<ObserverEventData>(this));
+			NotifyObservers(Utils::GameEvent::MovementStarted, std::make_unique<ObserverEventData>(this));
+			m_IsMoving = true;
 		}
+
 	}
 }
 
@@ -44,7 +46,7 @@ void dae::MovementComponent::ApplyMovement(const glm::vec2& input)
 	const MovementDirection newDirection{DetermineDirection(input)};
 	CheckMovementState(input);
 	m_LastDirection = input;
-	if(m_IsMoving)
+	if(!m_IsMoving)
 	{
 		return;
 	}
@@ -56,7 +58,7 @@ void dae::MovementComponent::ApplyMovement(const glm::vec2& input)
 	if(newDirection != m_Direction)
 	{
 		m_Direction = newDirection;
-		NotifyObservers(Utils::DirectionChanged, std::make_unique<ObserverEventData>(this));
+		NotifyObservers(Utils::GameEvent::DirectionChanged, std::make_unique<ObserverEventData>(this));
 	}
 }
 
@@ -97,8 +99,8 @@ void dae::MovementComponent::DodgeWalls(const glm::vec2& input)
 {
 	glm::vec2 adjustedInput{normalize((input + m_DodgeDirection))};
 	GetParent()->Translate(
-		input * (m_MovementSpeed * Singleton<DeltaTime>::GetInstance().GetDeltaTime()) +
-		m_DodgeDirection * (m_MovementSpeed * Singleton<DeltaTime>::GetInstance().GetDeltaTime())
+		(input * (m_MovementSpeed * Singleton<DeltaTime>::GetInstance().GetDeltaTime()) +
+			m_DodgeDirection * (m_MovementSpeed * Singleton<DeltaTime>::GetInstance().GetDeltaTime())) * 0.5f
 	);
 	m_IsDodging = false;
 
@@ -169,15 +171,19 @@ void dae::MovementComponent::HandleCollision(dae::ObserverEventData* eventData)
 			break;
 		}
 	}
-	else if(pCollisionEvent->m_OtherCollider->GetParentTag() == "BorderWall")
+	else if(pCollisionEvent->m_OtherCollider->GetParentTag() == "Wall"
+		|| pCollisionEvent->m_OtherCollider->GetParentTag() == "BorderWall"
+		|| pCollisionEvent->m_OtherCollider->GetParentTag() == "Bomb")
 	{
 		UndoMovement();
 	}
+
+
 }
 
 void dae::MovementComponent::Notify(Utils::GameEvent event, ObserverEventData* eventData)
 {
-	if(event == Utils::Collision)
+	if(event == Utils::GameEvent::Collision)
 	{
 		HandleCollision(eventData);
 	}

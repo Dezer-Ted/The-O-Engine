@@ -7,7 +7,7 @@
 
 namespace Utils
 {
-	enum GameEvent {
+	enum class GameEvent {
 		PlayerDied,
 		PlayerGainedPoints,
 		PlayerSpawn,
@@ -16,7 +16,9 @@ namespace Utils
 		MovementStarted,
 		Collision,
 		AnimationEnded,
-		PlayerSighted
+		PlayerSighted,
+		TransitionState,
+		EnemyDied
 	};
 
 
