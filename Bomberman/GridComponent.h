@@ -39,9 +39,9 @@ namespace dae
 		GridComponent(GridComponent&& other) noexcept = delete;
 		GridComponent& operator=(const GridComponent& other) = delete;
 		GridComponent& operator=(GridComponent&& other) noexcept = delete;
-		~GridComponent() = default;
+		~GridComponent() override = default;
 
-		void                  CreateWallObjects(Scene& scene);
+		void                  CreateWallObjects(Scene& scene, float fillAmount);
 		glm::vec2             GetPositionAtIndex(int x, int y) const;
 		glm::vec2             GetGridCellPosition(const CellCoordinate& currentPos) const;
 		WallState             GetWallstateAtPos(const CellCoordinate& currentPos) const;
@@ -50,16 +50,17 @@ namespace dae
 		int                   GetCellHeight() const;
 		GameObject*           GetCellObject(const CellCoordinate& currentPos) const;
 		void                  MarkAsDestroyed(const CellCoordinate& currentPos);
+		glm::vec2             GetRandomOpenCellPosition();
+		void                  GenerateUpgrades(int amount);
 
 	private:
 		void CreateBorderWall(dae::Scene& scene, Cell& cell);
 		void CreateWall(Scene& scene, Cell& cell);
 		void InitWalls();
-		void SelectUpgradeHolder();
 
 		std::vector<std::vector<Cell>> m_Grid;
 		int                            m_CellWidth;
 		int                            m_CellHeight;
-		const float                    m_FillPercentage{0.1f};
+		float                          m_FillPercentage{0.1f};
 	};
 }

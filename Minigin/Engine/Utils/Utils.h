@@ -18,7 +18,8 @@ namespace Utils
 		AnimationEnded,
 		PlayerSighted,
 		TransitionState,
-		EnemyDied
+		EnemyDied,
+		Explosion
 	};
 
 

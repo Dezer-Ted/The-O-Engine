@@ -30,6 +30,7 @@ namespace dae
 		void              Update() override;
 		void              SetSpeed(float movementSpeed);
 		void              Notify(Utils::GameEvent event, ObserverEventData* eventData) override;
+		void              EnableWalkThroughBombs();
 
 	private:
 		MovementDirection DetermineDirection(const glm::vec2& input);
@@ -39,13 +40,20 @@ namespace dae
 		void              HandleCollision(dae::ObserverEventData* eventData);
 		void              CheckMovementState(const glm::vec2& input);
 		void              ExecuteMovement(const glm::vec2& input);
-		float             m_MovementSpeed{100.f};
-		glm::vec2         m_LastDirection{};
-		MovementDirection m_Direction{};
-		glm::vec3         m_LastPosition{};
-		bool              m_IsDodging{};
-		glm::vec2         m_DodgeDirection{};
-		bool              m_IsMoving{false};
-		float             m_BufferScale{0.35f};
+		void              DisableWalkThroughBombs();
+		void              CheckIfExitedBomb();
+
+		float              m_MovementSpeed{100.f};
+		glm::vec2          m_VecDirection{0, 0};
+		glm::vec2          m_LastDirection{};
+		MovementDirection  m_Direction{};
+		glm::vec3          m_LastPosition{};
+		bool               m_IsDodging{};
+		glm::vec2          m_DodgeDirection{};
+		bool               m_IsMoving{false};
+		float              m_BufferScale{0.35f};
+		bool               m_CanPassBombs{false};
+		ColliderComponent* m_pBombCollider{nullptr};
+		ColliderComponent* m_pOwnCollider{nullptr};
 	};
 }

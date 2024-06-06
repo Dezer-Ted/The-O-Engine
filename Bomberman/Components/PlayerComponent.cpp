@@ -59,6 +59,7 @@ void dae::PlayerComponent::DropBomb()
 	auto gridCenter = m_pGrid->GetGridCellPosition(m_pGrid->GetGridCoordinate(pos));
 	auto go = std::make_shared<GameObject>(GetParent()->GetParentScene());
 	go->SetTag("Bomb");
+	go->SetLayer("Obstacle");
 	go->SetPosition(gridCenter.x, gridCenter.y);
 	auto spriteComp = go->AddComponent<SpriteComponent>();
 	spriteComp->AddSprite(3, 1, "Character/BombAnimation.png", "BombAnim");
@@ -67,9 +68,12 @@ void dae::PlayerComponent::DropBomb()
 	collisionComp->AdjustBoundsToSpriteSize();
 	auto bombComp{go->AddComponent<BombComponent>()};
 	bombComp->Init(m_pGrid, m_pGrid->GetGridCoordinate(pos), this);
+	bombComp->SetExplosionRange(m_pPowerUpComp->GetFireUpgrade());
+	m_pMoveComp->EnableWalkThroughBombs();
+	bombComp->AddObserver(m_pMoveComp);
+	collisionComp->AddObserver(bombComp);
 	GetParent()->GetParentScene()->Add(go);
 	m_Bombs.push_back(go.get());
-
 }
 
 void dae::PlayerComponent::SetGrid(GridComponent* pGrid)

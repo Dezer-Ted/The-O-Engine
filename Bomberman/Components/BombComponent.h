@@ -5,6 +5,7 @@
 
 #include "../GridComponent.h"
 #include "Components/BaseComponent.h"
+#include "Engine/DesignPatterns/Observer.h"
 
 
 namespace dae
@@ -13,7 +14,7 @@ namespace dae
 	class GridComponent;
 	class Scene;
 
-	class BombComponent final : public dae::BaseComponent {
+	class BombComponent final : public dae::BaseComponent, public Observable, public Observer {
 	public:
 		BombComponent(dae::GameObject* pOwner);
 		BombComponent(const BombComponent& other) = delete;
@@ -26,11 +27,15 @@ namespace dae
 		void Init(GridComponent* pGrid, const CellCoordinate& gridPos, PlayerComponent* pPlayer);
 		void Explode() const;
 
+		void Notify(Utils::GameEvent event, ObserverEventData* eventData) override;
+
 	private:
-		void             CreateExplosion() const;
-		GameObject*      CreateExplosionCenter(Scene* scene, const glm::vec3& pos, float scale) const;
-		void             CreateMidPiece(dae::Scene* scene, float scale, dae::GameObject* pParent, std::vector<int> directions, size_t i) const;
-		void             CreateExplosionArms(Scene* scene, const glm::vec3& pos, float scale, GameObject* pParent) const;
+		void        CreateExplosion() const;
+		GameObject* CreateExplosionCenter(Scene* scene, const glm::vec3& pos, float scale) const;
+		void        CreateMidPiece(dae::Scene* scene, float scale, dae::GameObject* pParent, std::vector<int> directions, size_t i) const;
+		void        CreateExplosionArms(Scene* scene, float scale, GameObject* pParent) const;
+
+
 		const float      m_FuseTime{2.f};
 		float            m_CurrentTimer{0.f};
 		int              m_ExplosionRange{};

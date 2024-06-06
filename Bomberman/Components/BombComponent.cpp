@@ -49,18 +49,31 @@ void dae::BombComponent::Explode() const
 {
 	ServiceLocator::GetSoundSystem()->Play("BombExplodes");
 	m_pPLayer->RemoveExplodedBomb(GetParent());
-	GetParent()->DestroyObject();
+	NotifyObservers(Utils::GameEvent::Explosion, nullptr);
 	CreateExplosion();
+	GetParent()->DestroyObject();
+}
+
+void dae::BombComponent::Notify(Utils::GameEvent event, ObserverEventData* eventData)
+{
+	if(Utils::GameEvent::Collision == event)
+	{
+		auto pCollisionEventData{dynamic_cast<CollisionEventData*>(eventData)};
+		if(pCollisionEventData->m_OtherCollider->GetParentTag() == "Explosion")
+		{
+			Explode();
+		}
+	}
 }
 
 void dae::BombComponent::CreateExplosion() const
 {
-	float scale{GetParent()->GetComponentByClass<SpriteComponent>()->GetScale()};
+	float scale{GetParent()->GetComponentByClass<SpriteComponent>()->GetScale() - 0.5f};
 	auto  scene{GetParent()->GetParentScene()};
 	auto  pos{GetParent()->GetTransform().GetWorldPosition()};
 
 	GameObject* parent{CreateExplosionCenter(scene, pos, scale)};
-	CreateExplosionArms(scene, pos, scale, parent);
+	CreateExplosionArms(scene, scale, parent);
 }
 
 ::dae::GameObject* dae::BombComponent::CreateExplosionCenter(Scene* scene, const glm::vec3& pos, float scale) const
@@ -113,6 +126,7 @@ void dae::BombComponent::CreateMidPiece(dae::Scene* scene, float scale, dae::Gam
 			auto wallComp = m_pGrid->GetCellObject(targetPos)->GetComponentByClass<WallComponent>();
 			wallComp->StartDestruction();
 			m_pGrid->MarkAsDestroyed(targetPos);
+			break;
 		}
 
 		auto midPiece{std::make_shared<GameObject>(scene)};
@@ -137,7 +151,7 @@ void dae::BombComponent::CreateMidPiece(dae::Scene* scene, float scale, dae::Gam
 	}
 }
 
-void dae::BombComponent::CreateExplosionArms(Scene* scene, const glm::vec3& pos, float scale, dae::GameObject* pParent) const
+void dae::BombComponent::CreateExplosionArms(Scene* scene, float scale, dae::GameObject* pParent) const
 {
 	std::vector<int> directions{0, 90, 180, 270};
 	for(size_t i = 0; i < directions.size(); ++i)

@@ -8,8 +8,6 @@
 #include "Engine/DesignPatterns/Observer.h"
 
 
-
-
 namespace dae
 {
 	class SpriteComponent;
@@ -17,8 +15,8 @@ namespace dae
 	class MovementComponent;
 
 	enum class EnemyType {
-		Oneal,
 		Balloom,
+		Oneal,
 		Doll,
 		Minvo
 	};

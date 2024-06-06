@@ -24,13 +24,13 @@ namespace dae
 		void SetGrid(GridComponent* pGrid);
 		void DetonateBombs() const;
 		void RemoveExplodedBomb(GameObject* toBeRemoved);
+
 	private:
 		void               ChangeAnimation(MovementComponent::MovementDirection direction) const;
-		void               RemoveExplodedBombs();
 		GridComponent*     m_pGrid{nullptr};
 		MovementComponent* m_pMoveComp{nullptr};
 		SpriteComponent*   m_pSpriteComponent{nullptr};
-		
+
 		PowerUpComponent*        m_pPowerUpComp{nullptr};
 		std::vector<GameObject*> m_Bombs;
 	};

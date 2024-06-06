@@ -19,6 +19,7 @@ namespace dae
 		void StartDestruction();
 		void Notify(Utils::GameEvent event, ObserverEventData* eventData) override;
 		void SetPowerUp(PowerUps powerUp);
+		bool HasPowerUp();
 
 	private:
 		void             DropItem() const;

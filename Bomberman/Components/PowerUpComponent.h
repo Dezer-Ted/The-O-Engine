@@ -23,6 +23,7 @@ namespace dae
 		int  GetFireUpgrade() const;
 		bool GetDetonatorUpgrade() const;
 		void Notify(Utils::GameEvent event, ObserverEventData* eventData) override;
+
 	private:
 		void ProcessUpgrade(PowerUps powerUp);
 		bool m_HasDetonator{false};

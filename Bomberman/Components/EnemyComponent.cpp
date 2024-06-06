@@ -24,6 +24,9 @@ void dae::EnemyComponent::Notify(Utils::GameEvent event, ObserverEventData* even
 	case Utils::GameEvent::DirectionChanged:
 		{
 			auto directionEvent{dynamic_cast<DirectionChangeEvent*>(eventData)};
+			#ifdef _DEBUG
+			std::cout << "Direction Changed to: " << directionEvent->m_Direction.x << " " << directionEvent->m_Direction.y << "\n";
+			#endif
 			m_Direction = directionEvent->m_Direction;
 			break;
 		}

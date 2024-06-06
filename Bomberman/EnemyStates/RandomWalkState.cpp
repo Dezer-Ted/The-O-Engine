@@ -52,7 +52,7 @@ void dae::RandomWalkState::Notify(Utils::GameEvent event, ObserverEventData* eve
 		return;
 
 	m_HasTurned = true;
-	GetParent()->Translate(-m_Direction * 3.f);
+	GetParent()->Translate(-m_Direction * 5.f);
 	GenerateUnusedDirection();
 }
 

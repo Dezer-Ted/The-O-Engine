@@ -20,7 +20,7 @@ void dae::WallComponent::StartDestruction()
 	m_IsDestroyed = true;
 }
 
-void dae::WallComponent::Notify(Utils::GameEvent event, ObserverEventData* eventData)
+void dae::WallComponent::Notify(Utils::GameEvent event, ObserverEventData* )
 {
 	switch(event)
 	{
@@ -38,6 +38,11 @@ void dae::WallComponent::SetPowerUp(PowerUps powerUp)
 {
 	m_PowerUp = powerUp;
 	m_HoldsItem = true;
+}
+
+bool dae::WallComponent::HasPowerUp()
+{
+	return m_HoldsItem;
 }
 
 void dae::WallComponent::DropItem() const

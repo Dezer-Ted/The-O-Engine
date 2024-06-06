@@ -88,6 +88,11 @@ void Scene::RemoveCollider(ColliderComponent* collider)
 	m_pCollisionCheck->RemoveCollider(collider);
 }
 
+std::string Scene::GetSceneName() const
+{
+	return m_name;
+}
+
 bool Scene::GetDestructionFlag() const
 {
 	return m_DestructionFlag;

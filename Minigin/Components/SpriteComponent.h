@@ -36,7 +36,7 @@ namespace dae
 		std::map<std::string, std::unique_ptr<Sprite>> m_SpriteMap;
 		float                                          m_Scale{1};
 		Sprite*                                        m_pCurrentSprite;
-		const float                                    m_RefreshRate{1.f / 6.f};
+		const float                                    m_RefreshRate{1.f / 10.f};
 		float                                          m_CurrentTime{0};
 	};
 }

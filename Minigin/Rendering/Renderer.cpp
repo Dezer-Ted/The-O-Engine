@@ -2,7 +2,7 @@
 #include "Renderer.h"
 
 #include <iostream>
-
+#include "../SceneObjects/Scene.h"
 #include "../imgui-1.89.5/imgui.h"
 #include "../imgui-1.89.5/imgui_internal.h"
 #include "../SceneObjects/SceneManager.h"

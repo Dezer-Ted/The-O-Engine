@@ -10,6 +10,7 @@
 #include <thread>
 
 #include "../Input/InputManager.h"
+#include "../SceneObjects/Scene.h"
 #include "../SceneObjects/SceneManager.h"
 #include "../Rendering/Renderer.h"
 #include "ResourceManager.h"

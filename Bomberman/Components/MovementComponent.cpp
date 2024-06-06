@@ -8,6 +8,7 @@
 dae::MovementComponent::MovementComponent(GameObject* pParent) :
 	BaseComponent{pParent}
 {
+	m_pOwnCollider = pParent->GetComponentByClass<ColliderComponent>();
 }
 
 void dae::MovementComponent::CheckMovementState(const glm::vec2& input)
@@ -40,6 +41,25 @@ void dae::MovementComponent::ExecuteMovement(const glm::vec2& input)
 	}
 }
 
+void dae::MovementComponent::DisableWalkThroughBombs()
+{
+	m_pBombCollider = nullptr;
+	m_CanPassBombs = false;
+}
+
+void dae::MovementComponent::CheckIfExitedBomb()
+{
+	if(!m_CanPassBombs || m_pBombCollider == nullptr)
+		return;
+	SDL_Rect ownCollider{m_pOwnCollider->GetBounds()};
+	SDL_Rect bombCollider{m_pBombCollider->GetBounds()};
+
+	if(SDL_HasIntersection(&ownCollider, &bombCollider) == SDL_TRUE)
+		return;
+
+	DisableWalkThroughBombs();
+}
+
 void dae::MovementComponent::ApplyMovement(const glm::vec2& input)
 {
 
@@ -50,6 +70,7 @@ void dae::MovementComponent::ApplyMovement(const glm::vec2& input)
 	{
 		return;
 	}
+	m_VecDirection = input;
 	m_IsMoving = true;
 	const auto lastPos = GetParent()->GetTransform().GetLocalPosition();
 	if(m_LastPosition != lastPos)
@@ -60,6 +81,7 @@ void dae::MovementComponent::ApplyMovement(const glm::vec2& input)
 		m_Direction = newDirection;
 		NotifyObservers(Utils::GameEvent::DirectionChanged, std::make_unique<ObserverEventData>(this));
 	}
+	CheckIfExitedBomb();
 }
 
 dae::MovementComponent::MovementDirection dae::MovementComponent::GetDirection() const
@@ -70,6 +92,7 @@ dae::MovementComponent::MovementDirection dae::MovementComponent::GetDirection()
 void dae::MovementComponent::UndoMovement() const
 {
 	GetParent()->GetTransform().SetLocalPosition(m_LastPosition);
+	GetParent()->Translate(-m_VecDirection * Singleton<DeltaTime>::GetInstance().GetDeltaTime());
 }
 
 void dae::MovementComponent::Update()
@@ -172,13 +195,19 @@ void dae::MovementComponent::HandleCollision(dae::ObserverEventData* eventData)
 		}
 	}
 	else if(pCollisionEvent->m_OtherCollider->GetParentTag() == "Wall"
-		|| pCollisionEvent->m_OtherCollider->GetParentTag() == "BorderWall"
-		|| pCollisionEvent->m_OtherCollider->GetParentTag() == "Bomb")
+		|| pCollisionEvent->m_OtherCollider->GetParentTag() == "BorderWall")
 	{
 		UndoMovement();
 	}
-
-
+	else if(pCollisionEvent->m_OtherCollider->GetParentTag() == "Bomb")
+	{
+		if(!m_CanPassBombs)
+		{
+			UndoMovement();
+			return;
+		}
+		m_pBombCollider = pCollisionEvent->m_OtherCollider;
+	}
 }
 
 void dae::MovementComponent::Notify(Utils::GameEvent event, ObserverEventData* eventData)
@@ -187,4 +216,13 @@ void dae::MovementComponent::Notify(Utils::GameEvent event, ObserverEventData* e
 	{
 		HandleCollision(eventData);
 	}
+	else if(event == Utils::GameEvent::Explosion)
+	{
+		DisableWalkThroughBombs();
+	}
+}
+
+void dae::MovementComponent::EnableWalkThroughBombs()
+{
+	m_CanPassBombs = true;
 }
