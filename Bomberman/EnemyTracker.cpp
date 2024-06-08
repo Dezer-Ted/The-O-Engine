@@ -34,6 +34,11 @@ void dae::EnemyTracker::RegisterScoreComp(ScoreComponent* pScoreComp)
 	}
 }
 
+void dae::EnemyTracker::ResetEnemies()
+{
+	m_Enemies.clear();
+}
+
 void dae::EnemyTracker::UnregisterEnemy(EnemyComponent* pEnemyComp)
 {
 	m_Enemies.erase(std::remove(m_Enemies.begin(), m_Enemies.end(), pEnemyComp), m_Enemies.end());

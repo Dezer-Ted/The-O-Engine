@@ -15,7 +15,6 @@ dae::TextComponent::TextComponent(GameObject* pParent):
 
 dae::TextComponent::~TextComponent()
 {
-	GetParent()->RemoveComponentByClass<TextureComponent>();
 }
 
 void dae::TextComponent::SetText(const std::string& text, std::shared_ptr<Font> font, const SDL_Color& color)

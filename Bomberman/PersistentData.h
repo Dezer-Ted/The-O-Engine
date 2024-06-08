@@ -25,8 +25,8 @@ namespace dae
 		UpgradeDataHolder GetUpgradeData(const std::string& key) const;
 		bool              CheckIfKeyExists(const std::string& key) const;
 		void              PlayerDied();
-		void SetScore(int score);
-		int GetScore() const;
+		void              SetScore(int score);
+		int               GetScore() const;
 
 	private:
 		friend class Singleton<PersistentData>;

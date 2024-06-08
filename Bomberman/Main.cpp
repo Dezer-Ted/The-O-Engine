@@ -27,10 +27,9 @@ void load()
 	#else
 	dae::ServiceLocator::RegisterSoundSystem(std::make_unique<dae::DebugSoundSystem>(std::make_unique<dae::SDLSoundSystem>()));
 	#endif
-
+	
 	//dae::LevelLoader::LoadLevel("LevelData/Level0.json");
-	//dae::MenuLoader::LoadStartScreen();
-	dae::MenuLoader::LoadEndScreen();
+	dae::MenuLoader::LoadStartScreen();
 
 }
 

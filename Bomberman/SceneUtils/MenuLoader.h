@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "SceneObjects/Scene.h"
+#include "../HighScoreListComponent.h"
 
 namespace dae
 {
@@ -9,8 +10,8 @@ namespace dae
 		static void LoadEndScreen();
 
 	private:
-		static void LoadLogo(dae::Scene* pScene);
-		static void LoadModes(dae::Scene* pScene);
-		static void LoadHighScoreList(Scene* pScene);
+		static void                    LoadLogo(dae::Scene* pScene);
+		static void                    LoadModes(dae::Scene* pScene);
+		static void                    CreateNameSelection(Scene* pScene);
 	};
 }

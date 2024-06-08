@@ -18,6 +18,7 @@ namespace dae
 		void Notify(Utils::GameEvent event, dae::ObserverEventData* eventData) override;
 		bool NoEnemiesLeft() const;
 		void RegisterScoreComp(ScoreComponent* pScoreComp);
+		void ResetEnemies();
 	private:
 		void UnregisterEnemy(EnemyComponent* pEnemyComp);
 		friend class Singleton<EnemyTracker>;
