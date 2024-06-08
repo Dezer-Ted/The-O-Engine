@@ -26,12 +26,12 @@ void dae::SceneManager::LateUpdate()
 
 void dae::SceneManager::CleanUp()
 {
-	for(int i = 0; i < m_scenes.size(); ++i)
+	for(size_t i = 0; i < m_scenes.size(); ++i)
 	{
 		m_scenes[i]->CleanUp();
 		if(m_scenes[i]->GetDestructionFlag())
 		{
-			m_scenes.erase(m_scenes.begin() + i);
+			m_scenes.erase(m_scenes.begin() + static_cast<int>(i));
 		}
 		SceneNavigator::LoadStage();
 	}
@@ -60,7 +60,7 @@ void dae::SceneManager::LoadScene(const std::string& name)
 
 void dae::SceneManager::RemoveScene(const std::string& name)
 {
-	for(int i = 0; i < m_scenes.size(); ++i)
+	for(size_t i = 0; i < m_scenes.size(); ++i)
 	{
 		if(m_scenes[i]->GetSceneName() == name)
 			m_scenes[i]->DestroyScene();
