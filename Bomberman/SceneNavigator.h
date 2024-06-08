@@ -12,6 +12,6 @@ namespace dae
 
 	private:
 		inline static bool m_IsUnloaded{false};
-		inline static int  m_LevelIndex{0};
+		inline static int  m_LevelIndex{-1};
 	};
 }

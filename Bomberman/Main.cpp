@@ -18,6 +18,7 @@
 #include "Engine/Sound/SDLSoundSystem.h"
 #include "Rendering/Renderer.h"
 #include "SceneUtils/LevelLoader.h"
+#include "SceneUtils/MenuLoader.h"
 
 void load()
 {
@@ -27,9 +28,10 @@ void load()
 	dae::ServiceLocator::RegisterSoundSystem(std::make_unique<dae::DebugSoundSystem>(std::make_unique<dae::SDLSoundSystem>()));
 	#endif
 
-	dae::LevelLoader::LoadLevel("LevelData/Level0.json");
+	//dae::LevelLoader::LoadLevel("LevelData/Level0.json");
+	//dae::MenuLoader::LoadStartScreen();
+	dae::MenuLoader::LoadEndScreen();
 
-	dae::Renderer::GetInstance().SetBackgroundColor(SDL_Color{57, 132, 0, 1});
 }
 
 int main(int, char*[])

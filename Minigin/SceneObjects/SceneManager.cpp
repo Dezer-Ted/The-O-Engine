@@ -58,7 +58,7 @@ void dae::SceneManager::LoadScene(const std::string& name)
 	}
 }
 
-void dae::SceneManager::RemoveScene(const std::string& name)
+void dae::SceneManager::RemoveScene(const std::string& name) const
 {
 	for(size_t i = 0; i < m_scenes.size(); ++i)
 	{

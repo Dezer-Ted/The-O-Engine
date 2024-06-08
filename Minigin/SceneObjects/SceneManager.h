@@ -11,7 +11,7 @@ namespace dae
 	public:
 		Scene* CreateScene(const std::string& name);
 		void   LoadScene(const std::string& name);
-		void   RemoveScene(const std::string& name);
+		void   RemoveScene(const std::string& name) const;
 		void   FixedUpdate();
 		void   Update();
 		void   LateUpdate();

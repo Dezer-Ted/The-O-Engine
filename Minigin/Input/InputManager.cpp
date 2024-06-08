@@ -51,6 +51,7 @@ void dae::InputManager::ProcessControllerActions() const
 		{
 		case ControllerAction::ActionType::ButtonMap:
 			ControllerProcessInputType(action);
+			break;
 		case ControllerAction::ActionType::LeftAnalogStick:
 			action->GetCommand()->Execute2DAxis(m_Controller->GetLeftAnalogStick());
 			break;

@@ -8,7 +8,14 @@ void dae::SceneNavigator::UnloadStage()
 {
 	if(m_LevelIndex >= 2)
 		return;
-	SceneManager::GetInstance().RemoveScene("Level" + std::to_string(m_LevelIndex));
+	if(m_LevelIndex < 0)
+	{
+		SceneManager::GetInstance().RemoveScene("StartScreen");
+	}
+	else
+	{
+		SceneManager::GetInstance().RemoveScene("Level" + std::to_string(m_LevelIndex));
+	}
 	++m_LevelIndex;
 	InputManager::GetInstance().WipeActions();
 	m_IsUnloaded = true;
