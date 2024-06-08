@@ -62,7 +62,8 @@ void dae::MovementComponent::CheckIfExitedBomb()
 
 void dae::MovementComponent::ApplyMovement(const glm::vec2& input)
 {
-
+	if(!m_CanMove)
+		return;
 	const MovementDirection newDirection{DetermineDirection(input)};
 	CheckMovementState(input);
 	m_LastDirection = input;
@@ -225,4 +226,9 @@ void dae::MovementComponent::Notify(Utils::GameEvent event, ObserverEventData* e
 void dae::MovementComponent::EnableWalkThroughBombs()
 {
 	m_CanPassBombs = true;
+}
+
+void dae::MovementComponent::CanWalk(bool canWalk)
+{
+	m_CanMove = canWalk;
 }

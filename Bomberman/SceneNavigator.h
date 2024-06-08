@@ -6,6 +6,9 @@ namespace dae
 	public:
 		static void UnloadStage();
 		static void LoadStage();
+		static void ReloadStage();
+
+		inline static bool m_LevelCompleted{false};
 
 	private:
 		inline static bool m_IsUnloaded{false};

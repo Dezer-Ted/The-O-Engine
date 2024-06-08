@@ -31,6 +31,7 @@ namespace dae
 		void              SetSpeed(float movementSpeed);
 		void              Notify(Utils::GameEvent event, ObserverEventData* eventData) override;
 		void              EnableWalkThroughBombs();
+		void CanWalk(bool canWalk);
 
 	private:
 		MovementDirection DetermineDirection(const glm::vec2& input);
@@ -55,5 +56,6 @@ namespace dae
 		bool               m_CanPassBombs{false};
 		ColliderComponent* m_pBombCollider{nullptr};
 		ColliderComponent* m_pOwnCollider{nullptr};
+		bool               m_CanMove{true};
 	};
 }

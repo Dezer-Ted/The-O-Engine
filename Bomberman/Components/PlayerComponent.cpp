@@ -5,12 +5,14 @@
 #include "Components/ColliderComponent.h"
 #include "Components/SpriteComponent.h"
 #include "../GridComponent.h"
+#include "../SceneNavigator.h"
 #include "Rendering/Sprite.h"
 
 dae::PlayerComponent::PlayerComponent(GameObject* pParent)
 	: BaseComponent(pParent)
 {
 	m_pSpriteComponent = GetParent()->GetComponentByClass<SpriteComponent>();
+	m_pSpriteComponent->AddObserver(this);
 	m_pMoveComp = GetParent()->GetComponentByClass<MovementComponent>();
 	m_pPowerUpComp = GetParent()->GetComponentByClass<PowerUpComponent>();
 }
@@ -40,10 +42,20 @@ void dae::PlayerComponent::Notify(Utils::GameEvent event, ObserverEventData* eve
 
 			if(pCollisionEvent->m_OtherCollider->GetParentTag() == "Explosion")
 			{
-				#ifdef _DEBUG
-				std::cout << "Player got hit\n";
-				#endif
+				m_IsDead = true;
+				m_pSpriteComponent->SwitchToSprite("DeathAnimation");
+				m_pSpriteComponent->ShouldUpdate(true);
+				m_pMoveComp->CanWalk(false);
+				PersistentData::GetInstance().PlayerDied();
 			}
+			break;
+		}
+	case Utils::GameEvent::AnimationEnded:
+		{
+			if(!m_IsDead)
+				return;
+			SceneNavigator::ReloadStage();
+			break;
 		}
 	}
 }

@@ -15,6 +15,8 @@
 #include "SceneObjects/GameObject.h"
 #include "json.hpp"
 #include "../Commands/SkipLevelCommand.h"
+#include "../Components/ScoreComponent.h"
+#include "Components/TextComponent.h"
 #include "Engine/ResourceManager.h"
 #include "Input/InputManager.h"
 
@@ -31,6 +33,14 @@ void dae::LevelLoader::LoadLevel(const std::string& levelPath)
 	auto go = std::make_shared<GameObject>(scene);
 	InputManager::GetInstance().AddKeyBoardActionMapping<SkipLevelCommand>(KeyboardAction::ActionType::ButtonMap,
 	                                                                       KeyboardAction::InputType::OnButtonUp, go.get(), SDL_SCANCODE_F1);
+	scene->Add(go);
+	go = std::make_shared<GameObject>(scene);
+	auto textComp = go->AddComponent<TextComponent>();
+	auto font = ResourceManager::GetInstance().LoadFont("nes.otf", 20);
+	textComp->SetText("0", font, SDL_Color{0, 0, 0, 0});
+	go->SetPosition(500, 20);
+	go->AddComponent<ScoreComponent>();
+	go->AddToUI();
 	scene->Add(go);
 	InitEnemies(scene, pPlayer, levelData, gridComp);
 	dae::SceneManager::GetInstance().LoadScene(levelName);

@@ -154,6 +154,16 @@ void dae::GameObject::SetName(const std::string& name)
 	m_Name = name;
 }
 
+void dae::GameObject::AddToUI()
+{
+	m_IsUI = true;
+}
+
+bool dae::GameObject::IsUi() const
+{
+	return m_IsUI;
+}
+
 
 void dae::GameObject::SetPosition(float x, float y)
 {

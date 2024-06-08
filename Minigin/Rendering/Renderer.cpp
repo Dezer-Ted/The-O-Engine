@@ -69,12 +69,20 @@ void dae::Renderer::Destroy()
 
 }
 
-void dae::Renderer::RenderTexture(const Texture2D& texture, float x, float y, double angle) const
+void dae::Renderer::RenderTexture(const Texture2D& texture, float x, float y, double angle, bool isUI) const
 {
-	SDL_Rect        dst{};
-	const glm::vec2 offSet{m_pCurrentCamera->GetOffSet()};
-	dst.x = static_cast<int>(x - offSet.x);
-	dst.y = static_cast<int>(y - offSet.y);
+	SDL_Rect dst{};
+	if(!isUI)
+	{
+		const glm::vec2 offSet{m_pCurrentCamera->GetOffSet()};
+		dst.x = static_cast<int>(x - offSet.x);
+		dst.y = static_cast<int>(y - offSet.y);
+	}
+	else
+	{
+		dst.x = static_cast<int>(x);
+		dst.y = static_cast<int>(y);
+	}
 
 
 	SDL_Point point{(dst.w / 2), (dst.h / 2)};
@@ -83,12 +91,20 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, float x, float y, do
 	SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst, angle, &point, SDL_RendererFlip::SDL_FLIP_NONE);
 }
 
-void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y, double angle, const SDL_Rect* sourceRect) const
+void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y, double angle, const SDL_Rect* sourceRect, bool isUI) const
 {
-	SDL_Rect        dst{};
-	const glm::vec2 offSet{m_pCurrentCamera->GetOffSet()};
-	dst.x = static_cast<int>(x - offSet.x);
-	dst.y = static_cast<int>(y - offSet.y);
+	SDL_Rect dst{};
+	if(!isUI)
+	{
+		const glm::vec2 offSet{m_pCurrentCamera->GetOffSet()};
+		dst.x = static_cast<int>(x - offSet.x);
+		dst.y = static_cast<int>(y - offSet.y);
+	}
+	else
+	{
+		dst.x = static_cast<int>(x);
+		dst.y = static_cast<int>(y);
+	}
 	dst.h = sourceRect->h;
 	dst.w = sourceRect->w;
 
@@ -97,18 +113,27 @@ void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const
 	SDL_RenderCopyEx(GetSDLRenderer(), texture.GetSDLTexture(), sourceRect, &dst, angle, &point, SDL_RendererFlip::SDL_FLIP_NONE);
 }
 
-void dae::Renderer::RenderTexture(const Texture2D& texture, float x, float y, double angle, float width, float height) const
+void dae::Renderer::RenderTexture(const Texture2D& texture, float x, float y, double angle, float width, float height, bool isUI) const
 {
-	RenderTexture(texture, x, y, angle, width, height, nullptr);
+	RenderTexture(texture, x, y, angle, width, height, nullptr, isUI);
 }
 
 void dae::Renderer::RenderTexture(const Texture2D& texture, const float x, const float y, double angle, const float width, const float height,
-                                  const SDL_Rect*  sourceRect) const
+                                  const SDL_Rect*  sourceRect, bool     isUI) const
 {
-	SDL_Rect        dst{};
-	const glm::vec2 offSet{m_pCurrentCamera->GetOffSet()};
-	dst.x = static_cast<int>(x - offSet.x);
-	dst.y = static_cast<int>(y - offSet.y);
+	SDL_Rect dst{};
+	if(!isUI)
+	{
+		const glm::vec2 offSet{m_pCurrentCamera->GetOffSet()};
+		dst.x = static_cast<int>(x - offSet.x);
+		dst.y = static_cast<int>(y - offSet.y);
+	}
+	else
+	{
+		dst.x = static_cast<int>(x);
+		dst.y = static_cast<int>(y);
+	}
+
 	dst.w = static_cast<int>(width);
 	dst.h = static_cast<int>(height);
 	SDL_Point point{(dst.w / 2), (dst.h / 2)};

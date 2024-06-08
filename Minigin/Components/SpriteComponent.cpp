@@ -26,7 +26,8 @@ void dae::SpriteComponent::Render()
 	const auto& pos{GetParent()->GetTransform().GetWorldPosition()};
 	Renderer::GetInstance().RenderTexture(*m_pCurrentSprite->GetTexture(), pos.x, pos.y, GetParent()->GetTransform().GetAngle(),
 	                                      static_cast<float>(m_pCurrentSprite->m_SpriteWidth) * m_Scale,
-	                                      static_cast<float>(m_pCurrentSprite->m_SpriteHeight) * m_Scale, &m_pCurrentSprite->m_SrcRect);
+	                                      static_cast<float>(m_pCurrentSprite->m_SpriteHeight) * m_Scale, &m_pCurrentSprite->m_SrcRect,
+	                                      GetParent()->IsUi());
 }
 
 void dae::SpriteComponent::Update()

@@ -34,7 +34,7 @@ void dae::TextureComponent::Render()
 	if(m_Texture == nullptr)
 		return;
 	const auto& pos{GetParent()->GetTransform().GetWorldPosition()};
-	Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y, GetParent()->GetTransform().GetAngle());
+	Renderer::GetInstance().RenderTexture(*m_Texture, pos.x, pos.y, GetParent()->GetTransform().GetAngle(), GetParent()->IsUi());
 }
 
 dae::TextureComponent::~TextureComponent()

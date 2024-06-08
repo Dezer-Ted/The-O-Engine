@@ -23,12 +23,17 @@ namespace dae
 		~PersistentData() override = default;
 		void              UpdateUpgrades(const UpgradeDataHolder& UpgradeData, const std::string& key);
 		UpgradeDataHolder GetUpgradeData(const std::string& key) const;
-		bool CheckIfKeyExists(const std::string& key) const;
+		bool              CheckIfKeyExists(const std::string& key) const;
+		void              PlayerDied();
+		void SetScore(int score);
+		int GetScore() const;
 
 	private:
 		friend class Singleton<PersistentData>;
 		PersistentData() = default;
 
 		std::unordered_map<std::string, UpgradeDataHolder> m_UpgradeNameMap;
+		int                                                m_PlayerLifes{3};
+		int                                                m_Score{0};
 	};
 }

@@ -21,10 +21,10 @@ namespace dae
 		void Render() const;
 		void Destroy();
 
-		void RenderTexture(const Texture2D& texture, float x, float y, double angle) const;
-		void RenderTexture(const Texture2D& texture, float x, float y, double angle, const SDL_Rect* sourceRect) const;
-		void RenderTexture(const Texture2D& texture, float x, float y, double angle, float width, float height) const;
-		void RenderTexture(const Texture2D& texture, float x, float y, double angle, float width, float height, const SDL_Rect* sourceRect) const;
+		void RenderTexture(const Texture2D& texture, float x, float y, double angle, bool isUI) const;
+		void RenderTexture(const Texture2D& texture, float x, float y, double angle, const SDL_Rect* sourceRect, bool isUI) const;
+		void RenderTexture(const Texture2D& texture, float x, float y, double angle, float width, float height, bool isUI) const;
+		void RenderTexture(const Texture2D& texture, float x, float y, double angle, float width, float height, const SDL_Rect* sourceRect, bool isUI) const;
 		void SetCamera(CameraComponent* cam);
 		SDL_Renderer* GetSDLRenderer() const;
 

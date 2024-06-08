@@ -26,12 +26,13 @@ namespace dae
 		void RemoveExplodedBomb(GameObject* toBeRemoved);
 
 	private:
-		void               ChangeAnimation(MovementComponent::MovementDirection direction) const;
-		GridComponent*     m_pGrid{nullptr};
-		MovementComponent* m_pMoveComp{nullptr};
-		SpriteComponent*   m_pSpriteComponent{nullptr};
+		void ChangeAnimation(MovementComponent::MovementDirection direction) const;
 
+		GridComponent*           m_pGrid{nullptr};
+		MovementComponent*       m_pMoveComp{nullptr};
+		SpriteComponent*         m_pSpriteComponent{nullptr};
 		PowerUpComponent*        m_pPowerUpComp{nullptr};
 		std::vector<GameObject*> m_Bombs;
+		bool                     m_IsDead{false};
 	};
 }

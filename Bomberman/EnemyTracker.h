@@ -4,6 +4,7 @@
 
 namespace dae
 {
+	class ScoreComponent;
 	class EnemyComponent;
 
 	class EnemyTracker final : public dae::Singleton<EnemyTracker>, public dae::Observer {
@@ -16,10 +17,12 @@ namespace dae
 		void RegisterEnemy(dae::EnemyComponent* pEnemyComp);
 		void Notify(Utils::GameEvent event, dae::ObserverEventData* eventData) override;
 		bool NoEnemiesLeft() const;
+		void RegisterScoreComp(ScoreComponent* pScoreComp);
 	private:
 		void UnregisterEnemy(EnemyComponent* pEnemyComp);
 		friend class Singleton<EnemyTracker>;
 		EnemyTracker() = default;
 		std::vector<EnemyComponent*> m_Enemies;
+		ScoreComponent*              m_pScoreComp{nullptr};
 	};
 }

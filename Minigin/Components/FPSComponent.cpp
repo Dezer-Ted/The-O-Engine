@@ -7,7 +7,7 @@
 dae::FPSComponent::FPSComponent(GameObject* pParent) : BaseComponent(pParent)
 {
 	m_TextComponent = pParent->AddComponent<TextComponent>();
-	auto font = dae::ResourceManager::GetInstance().LoadFont("Lingua.otf",36);
+	auto font = dae::ResourceManager::GetInstance().LoadFont("nes.otf",36);
 	m_TextComponent->SetText("1",font,{255,255,255,255});
 }
 

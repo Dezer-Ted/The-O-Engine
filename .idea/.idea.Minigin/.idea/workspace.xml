@@ -901,7 +901,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "C++ Project.Bomberman.executor": "Debug",
+    "C++ Project.Bomberman.executor": "Run",
     "C++ Project.Minigin.executor": "Debug",
     "C++ Project.RebuildEngine.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
@@ -1239,7 +1239,7 @@
       <workItem from="1717748859310" duration="7442000" />
       <workItem from="1717789413799" duration="601000" />
       <workItem from="1717790624046" duration="2165000" />
-      <workItem from="1717845071352" duration="8102000" />
+      <workItem from="1717845071352" duration="12466000" />
     </task>
     <servers />
   </component>

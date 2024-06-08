@@ -98,6 +98,8 @@ namespace dae
 		void                            SetLayer(const std::string& layer);
 		std::string                     GetName() const;
 		void                            SetName(const std::string& name);
+		void                            AddToUI();
+		bool                            IsUi() const;
 
 	private:
 		std::vector<GameObject*>                    m_Children;
@@ -109,5 +111,6 @@ namespace dae
 		std::string                                 m_Tag{"untagged"};
 		std::string                                 m_Layer{"Base"};
 		std::string                                 m_Name{"Unnamed"};
+		bool                                        m_IsUI{false};
 	};
 }
