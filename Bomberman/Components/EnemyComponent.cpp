@@ -1,6 +1,7 @@
 ﻿#include "EnemyComponent.h"
 
 #include "MovementComponent.h"
+#include "../EnemyTracker.h"
 #include "../EnemyStates/RandomWalkState.h"
 #include "Components/ColliderComponent.h"
 #include "Components/SpriteComponent.h"
@@ -15,6 +16,7 @@ dae::EnemyComponent::EnemyComponent(GameObject* pParent) : BaseComponent(pParent
 {
 	m_pMoveComp = pParent->GetComponentByClass<MovementComponent>();
 	m_pSpriteComp = pParent->GetComponentByClass<SpriteComponent>();
+	EnemyTracker::GetInstance().RegisterEnemy(this);
 }
 
 void dae::EnemyComponent::Notify(Utils::GameEvent event, ObserverEventData* eventData)
@@ -50,7 +52,7 @@ void dae::EnemyComponent::Notify(Utils::GameEvent event, ObserverEventData* even
 			if(!m_IsDying)
 				return;
 			GetParent()->DestroyObject();
-			NotifyObservers(Utils::GameEvent::EnemyDied, std::make_unique<EnemyDiedEvent>(nullptr, m_Type));
+			NotifyObservers(Utils::GameEvent::EnemyDied, std::make_unique<EnemyDiedEvent>(this, m_Type));
 		}
 	}
 }

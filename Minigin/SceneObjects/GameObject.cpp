@@ -3,7 +3,10 @@
 #include "../Engine/DesignPatterns/Singleton.h"
 #include "Time.h"
 #include "Scene.h"
-dae::GameObject::~GameObject() = default;
+
+dae::GameObject::~GameObject()
+{
+}
 
 dae::Transform& dae::GameObject::GetTransform()
 {
@@ -136,9 +139,19 @@ std::string dae::GameObject::GetLayer() const
 	return m_Layer;
 }
 
-void dae::GameObject::SetLayer(const std::string& layer) 
+void dae::GameObject::SetLayer(const std::string& layer)
 {
 	m_Layer = layer;
+}
+
+std::string dae::GameObject::GetName() const
+{
+	return m_Name;
+}
+
+void dae::GameObject::SetName(const std::string& name)
+{
+	m_Name = name;
 }
 
 

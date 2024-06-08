@@ -1,5 +1,6 @@
 ﻿#include "PlayerLoader.h"
 
+#include "../PersistentData.h"
 #include "Components/SpriteComponent.h"
 #include "../Components/PowerUpComponent.h"
 #include "../Components/MovementComponent.h"
@@ -12,12 +13,14 @@
 #include "Components/CameraComponent.h"
 
 
-dae::GameObject* dae::PlayerLoader::LoadPlayer(Scene* pScene, const SDL_Rect& levelBounds, GridComponent* pGrid)
+dae::GameObject* dae::PlayerLoader::LoadPlayer(Scene* pScene, const SDL_Rect& levelBounds, GridComponent* pGrid, const std::string& playerName)
 {
 	auto go = std::make_shared<dae::GameObject>(pScene);
-	auto powerUpComp = go->AddComponent<dae::PowerUpComponent>();
-	auto sprite = go->AddComponent<dae::SpriteComponent>();
 	go->SetTag("Player");
+	go->SetName(playerName);
+	auto powerUpComp = LoadUpgrades(go.get());
+	auto sprite = go->AddComponent<dae::SpriteComponent>();
+
 	sprite->AddSprite(3, 1, "Character/LeftWalkCycle.png", "WalkLeft");
 	sprite->AddSprite(3, 1, "Character/DownWalkCycle.png", "WalkDown");
 	sprite->AddSprite(3, 1, "Character/UpWalkCycle.png", "WalkUp");
@@ -61,4 +64,14 @@ dae::GameObject* dae::PlayerLoader::LoadPlayer(Scene* pScene, const SDL_Rect& le
 	cam->SetBounds(levelBounds);
 	pScene->Add(go);
 	return go.get();
+}
+
+dae::PowerUpComponent* dae::PlayerLoader::LoadUpgrades(GameObject* pPlayer)
+{
+	auto powerUpComp = pPlayer->AddComponent<PowerUpComponent>();
+	if(!PersistentData::GetInstance().CheckIfKeyExists(pPlayer->GetName()))
+		return powerUpComp;
+	UpgradeDataHolder upgradeHolder{PersistentData::GetInstance().GetUpgradeData(pPlayer->GetName())};
+	powerUpComp->LoadExistingUpgrades(upgradeHolder);
+	return powerUpComp;
 }

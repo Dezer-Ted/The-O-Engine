@@ -3,10 +3,12 @@
 
 #include "../../Engine/DesignPatterns/Command.h"
 #include "Controller.h"
+#include "../../Engine/DesignPatterns/Observable.h"
+#include "../../Engine/DesignPatterns/Observer.h"
 
 namespace dae
 {
-	class ControllerAction {
+	class ControllerAction final{
 	public:
 		enum class ActionType {
 			ButtonMap,

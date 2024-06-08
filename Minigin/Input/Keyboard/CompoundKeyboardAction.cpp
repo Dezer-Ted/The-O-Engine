@@ -1,11 +1,16 @@
 ﻿#include "CompoundKeyboardAction.h"
+#include "../InputManager.h"
 
 void dae::CompoundKeyboardAction::HandleKeyDown(SDL_Event e)
 {
-	if(e.key.keysym.scancode == m_UpButton) m_UpIspressed = true;
-	if(e.key.keysym.scancode == m_DownButton) m_DownIsPressed = true;
-	if(e.key.keysym.scancode == m_LeftButton) m_LeftIsPressed = true;
-	if(e.key.keysym.scancode == m_RightButton) m_RightIsPressed = true;
+	if(e.key.keysym.scancode == m_UpButton)
+		m_UpIspressed = true;
+	if(e.key.keysym.scancode == m_DownButton)
+		m_DownIsPressed = true;
+	if(e.key.keysym.scancode == m_LeftButton)
+		m_LeftIsPressed = true;
+	if(e.key.keysym.scancode == m_RightButton)
+		m_RightIsPressed = true;
 }
 
 void dae::CompoundKeyboardAction::ExecuteCommand()
@@ -16,14 +21,17 @@ void dae::CompoundKeyboardAction::ExecuteCommand()
 glm::vec2 dae::CompoundKeyboardAction::ConvertTo2DVector()
 {
 	glm::vec2 result{};
-	if(m_UpIspressed) result.y -= 1;
-	if(m_DownIsPressed) result.y += 1;
-	if(m_RightIsPressed) result.x += 1;
-	if(m_LeftIsPressed) result.x -= 1;
+	if(m_UpIspressed)
+		result.y -= 1;
+	if(m_DownIsPressed)
+		result.y += 1;
+	if(m_RightIsPressed)
+		result.x += 1;
+	if(m_LeftIsPressed)
+		result.x -= 1;
 	return result;
 
 }
-
 SDL_Scancode dae::CompoundKeyboardAction::GetUpButton() const
 {
 	return m_UpButton;
@@ -55,10 +63,19 @@ dae::CompoundKeyboardAction::CompoundKeyboardAction(SDL_Scancode                
 
 }
 
+dae::CompoundKeyboardAction::~CompoundKeyboardAction()
+{
+
+}
+
 void dae::CompoundKeyboardAction::HandleKeyUp(SDL_Event e)
 {
-	if(e.key.keysym.scancode == m_UpButton) m_UpIspressed = false;
-	if(e.key.keysym.scancode == m_DownButton) m_DownIsPressed = false;
-	if(e.key.keysym.scancode == m_LeftButton) m_LeftIsPressed = false;
-	if(e.key.keysym.scancode == m_RightButton) m_RightIsPressed = false;
+	if(e.key.keysym.scancode == m_UpButton)
+		m_UpIspressed = false;
+	if(e.key.keysym.scancode == m_DownButton)
+		m_DownIsPressed = false;
+	if(e.key.keysym.scancode == m_LeftButton)
+		m_LeftIsPressed = false;
+	if(e.key.keysym.scancode == m_RightButton)
+		m_RightIsPressed = false;
 }

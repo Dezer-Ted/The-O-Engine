@@ -96,6 +96,8 @@ namespace dae
 		std::string                     GetTag() const;
 		std::string                     GetLayer() const;
 		void                            SetLayer(const std::string& layer);
+		std::string                     GetName() const;
+		void                            SetName(const std::string& name);
 
 	private:
 		std::vector<GameObject*>                    m_Children;
@@ -106,5 +108,6 @@ namespace dae
 		Scene*                                      m_pParentScene{nullptr};
 		std::string                                 m_Tag{"untagged"};
 		std::string                                 m_Layer{"Base"};
+		std::string                                 m_Name{"Unnamed"};
 	};
 }

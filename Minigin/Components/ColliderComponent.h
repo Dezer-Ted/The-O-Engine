@@ -1,8 +1,8 @@
 ﻿#pragma once
 #include <SDL_rect.h>
 
-#include "BaseComponent.h"
 #include "../Engine/DesignPatterns/Observable.h"
+#include "BaseComponent.h"
 
 namespace dae
 {

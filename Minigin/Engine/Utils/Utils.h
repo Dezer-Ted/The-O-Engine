@@ -19,7 +19,9 @@ namespace Utils
 		PlayerSighted,
 		TransitionState,
 		EnemyDied,
-		Explosion
+		Explosion,
+		InputDisconnected,
+		ObjectDestroyed
 	};
 
 

@@ -109,6 +109,28 @@ void dae::GridComponent::GenerateUpgrades(int amount)
 
 }
 
+void dae::GridComponent::GenerateExit()
+{
+	std::vector<Cell*> wallCells;
+	for(auto& row : m_Grid)
+	{
+		for(auto& cell : row)
+		{
+			if(cell.m_WallState == WallState::Wall)
+				wallCells.push_back(&cell);
+		}
+	}
+	for(int i = 0; i < 1;)
+	{
+		int  randNum{static_cast<int>(rand() % wallCells.size())};
+		auto wallComp{wallCells[randNum]->m_CellObject->GetComponentByClass<WallComponent>()};
+		if(wallComp->HasPowerUp())
+			continue;
+		wallComp->SetExit();
+		++i;
+	}
+}
+
 void dae::GridComponent::CreateWallObjects(Scene& scene, float fillAmount)
 {
 	m_FillPercentage = fillAmount;

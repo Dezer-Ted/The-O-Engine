@@ -1,14 +1,16 @@
 ﻿#include "ControllerAction.h"
 
+#include "../InputManager.h"
+
 
 #pragma comment(lib, "XInput.lib")
-dae::ControllerAction::ControllerAction(ActionType type, std::unique_ptr<dae::Command> command,Controller::ButtonInputs button,InputType inputType ) :
+dae::ControllerAction::ControllerAction(ActionType type, std::unique_ptr<dae::Command> command, Controller::ButtonInputs button, InputType inputType) :
 	m_Command{std::move(command)},
 	m_InputType(inputType),
 	m_ButtonMap{button},
 	m_Type{type}
 {
-	
+
 }
 
 dae::ControllerAction::ControllerAction(ActionType type, std::unique_ptr<dae::Command> command) :
@@ -19,7 +21,7 @@ dae::ControllerAction::ControllerAction(ActionType type, std::unique_ptr<dae::Co
 
 dae::ControllerAction::~ControllerAction()
 {
-	
+
 }
 
 dae::Command* dae::ControllerAction::GetCommand() const

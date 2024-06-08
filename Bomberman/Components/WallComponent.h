@@ -19,13 +19,16 @@ namespace dae
 		void StartDestruction();
 		void Notify(Utils::GameEvent event, ObserverEventData* eventData) override;
 		void SetPowerUp(PowerUps powerUp);
-		bool HasPowerUp();
+		void SetExit();
+		bool HasPowerUp() const;
 
 	private:
+		void DropExit();
 		void             DropItem() const;
 		SpriteComponent* m_pSpriteComponent;
 		bool             m_IsDestroyed{false};
 		bool             m_HoldsItem{false};
+		bool             m_HoldsExit{false};
 		PowerUps         m_PowerUp{PowerUps::FireUp};
 	};
 }

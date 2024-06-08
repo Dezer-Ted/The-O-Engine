@@ -2,6 +2,8 @@
 #include <memory>
 #include <vector>
 
+#include "../Engine/ObserverEventData.h"
+#include "../Engine/DesignPatterns/Observer.h"
 #include "Keyboard/CompoundKeyboardAction.h"
 #include "Controller/ControllerAction.h"
 #include "../SceneObjects/GameObject.h"
@@ -12,6 +14,8 @@
 namespace dae
 {
 	class Controller;
+
+
 
 	class InputManager final : public Singleton<InputManager> {
 	private:
@@ -24,45 +28,30 @@ namespace dae
 	public:
 		template <typename T>
 		void AddControllerCompoundAction(Controller::ButtonInputs upInput, Controller::ButtonInputs   downInput,
-		                                                    Controller::ButtonInputs leftInput, Controller::ButtonInputs rightInput, GameObject* go)
+		                                 Controller::ButtonInputs leftInput, Controller::ButtonInputs rightInput, GameObject* go)
 		{
-			m_CompoundControllerActions.push_back(
-				std::make_unique<ControllerCompoundAction>(upInput, downInput, leftInput, rightInput, std::move(std::make_unique<T>(go)),
-				                                           m_Controller.get()));
+			auto inputAction{std::make_unique<ControllerCompoundAction>(upInput, downInput, leftInput, rightInput, std::move(std::make_unique<T>(go)),
+			                                                            m_Controller.get())};
+			m_CompoundControllerActions.push_back(std::move(inputAction));
 		}
 
 		template <typename T>
 		void AddControllerActionMapping(ControllerAction::ActionType type, GameObject* gameObject, Controller::ButtonInputs buttonMap,
 		                                ControllerAction::InputType  inputType)
 		{
-			m_ControllerActions.push_back(std::make_unique<ControllerAction>(type, std::move(std::make_unique<T>(gameObject)), buttonMap, inputType));
+			auto inputAction{std::make_unique<ControllerAction>(type, std::move(std::make_unique<T>(gameObject)), buttonMap, inputType)};
+			m_ControllerActions.push_back(std::move(inputAction));
 		}
 
 		template <typename T>
 		void AddKeyBoardActionMapping(KeyboardAction::ActionType type, KeyboardAction::InputType inputType, GameObject* gameObject,
 		                              SDL_Scancode               button = SDL_SCANCODE_F)
 		{
-			m_KeyBoardActions.push_back(std::make_unique<KeyboardAction>(inputType, type, std::move(std::make_unique<T>(gameObject)), button));
+			auto inputAction{std::make_unique<KeyboardAction>(inputType, type, std::move(std::make_unique<T>(gameObject)), button)};
+			m_KeyBoardActions.push_back(std::move(inputAction));
 		}
 
-		template <typename T>
-		void RemoveKeyboardActionMapping()
-		{
-			try
-			{
-				for(int i = 0; i < m_KeyBoardActions.size(); ++i)
-				{
-					T* castedAction = dynamic_cast<T*>(m_KeyBoardActions[i].get());
-					if(castedAction != nullptr)
-						m_KeyBoardActions.erase(m_KeyBoardActions.begin() + i);
-				}
-			}
-			catch(...)
-			{
-				std::cout << "No Keyboard Action of this type could be found \n";
-			}
-
-		}
+		void WipeActions();
 
 		template <typename T>
 		void RemoveControllerActionMapping()
@@ -86,7 +75,8 @@ namespace dae
 		template <typename T>
 		void AddCompoundKeyboardAction(SDL_Scancode up, SDL_Scancode down, SDL_Scancode left, SDL_Scancode right, GameObject* pOwner)
 		{
-			m_CompoundKeyboardActions.push_back(std::make_unique<CompoundKeyboardAction>(up, down, right, left, std::move(std::make_unique<T>(pOwner))));
+			auto inputAction{std::make_unique<CompoundKeyboardAction>(up, down, right, left, std::move(std::make_unique<T>(pOwner)))};
+			m_CompoundKeyboardActions.push_back(std::move(inputAction));
 		}
 
 		bool ProcessInput();

@@ -6,7 +6,13 @@
 #include "../imgui-1.89.5/backends/imgui_impl_sdl2.h"
 
 
-
+void dae::InputManager::WipeActions()
+{
+	m_ControllerActions.clear();
+	m_KeyBoardActions.clear();
+	m_CompoundKeyboardActions.clear();
+	m_CompoundControllerActions.clear();
+}
 
 bool dae::InputManager::ProcessInput()
 {
@@ -23,13 +29,16 @@ void dae::InputManager::ControllerProcessInputType(const std::vector<std::unique
 	switch(action->GetInpuType())
 	{
 	case ControllerAction::InputType::ButtonDown:
-		if(m_Controller->IsDownThisFrame(action->GetButtonMapping())) action->GetCommand()->Execute();
+		if(m_Controller->IsDownThisFrame(action->GetButtonMapping()))
+			action->GetCommand()->Execute();
 		break;
 	case ControllerAction::InputType::ButtonUp:
-		if(m_Controller->IsUpThisFrame(action->GetButtonMapping())) action->GetCommand()->Execute();
+		if(m_Controller->IsUpThisFrame(action->GetButtonMapping()))
+			action->GetCommand()->Execute();
 		break;
 	case ControllerAction::InputType::ButtonPressed:
-		if(m_Controller->IsPressed(action->GetButtonMapping())) action->GetCommand()->Execute();
+		if(m_Controller->IsPressed(action->GetButtonMapping()))
+			action->GetCommand()->Execute();
 		break;
 	}
 }
@@ -51,22 +60,26 @@ void dae::InputManager::ProcessControllerActions() const
 		}
 	}
 }
+
 void dae::InputManager::HandlKeyboardButtonActions(const SDL_Event& e, dae::KeyboardAction::InputType input)
 {
 	for(auto& action : m_KeyBoardActions)
 	{
-		if(action->GetInputType() != input) continue;
-		if(action->GetActionType() != KeyboardAction::ActionType::ButtonMap) continue;
+		if(action->GetInputType() != input)
+			continue;
+		if(action->GetActionType() != KeyboardAction::ActionType::ButtonMap)
+			continue;
 		if(e.key.keysym.scancode == action->GetButtonMap())
 		{
+			if(action->GetIsPressed())
+				continue;
+			action->SetIsPressed(true);
 
 			action->GetCommand()->Execute();
 		}
 
 	}
 }
-
-
 
 
 bool dae::InputManager::ProcessKeyboardActions()
@@ -80,7 +93,6 @@ bool dae::InputManager::ProcessKeyboardActions()
 		}
 		if(e.type == SDL_KEYDOWN)
 		{
-			HandlKeyboardButtonActions(e, KeyboardAction::InputType::OnButtonDown);
 			HandleIsPressedInputs(true, e);
 			for(auto& compoundkeyboardAction : m_CompoundKeyboardActions)
 			{
@@ -93,15 +105,33 @@ bool dae::InputManager::ProcessKeyboardActions()
 			{
 				compoundkeyboardAction->HandleKeyUp(e);
 			}
-			HandlKeyboardButtonActions(e, KeyboardAction::InputType::OnButtonDown);
 			HandleIsPressedInputs(false, e);
 		}
 		if(e.type == SDL_MOUSEBUTTONDOWN)
 		{
 
 		}
-		// etc...
 		ImGui_ImplSDL2_ProcessEvent(&e);
+	}
+	for(auto& keyAction : m_KeyBoardActions)
+	{
+		switch(keyAction->GetInputType())
+		{
+		case KeyboardAction::InputType::OnButtonDown:
+			if(!keyAction->GetLastState() && keyAction->GetIsPressed())
+				keyAction->GetCommand()->Execute();
+			break;
+		case KeyboardAction::InputType::OnButtonUp:
+			if(keyAction->GetLastState() && !keyAction->GetIsPressed())
+				keyAction->GetCommand()->Execute();
+			break;
+		case KeyboardAction::InputType::WhilePressed:
+			if(keyAction->GetIsPressed())
+				keyAction->GetCommand()->Execute();
+			break;
+		}
+
+
 	}
 	for(auto& compoundkeyboardAction : m_CompoundKeyboardActions)
 	{
@@ -125,7 +155,6 @@ void dae::InputManager::HandleIsPressedInputs(bool IsButtonDown, const SDL_Event
 {
 	for(auto& action : m_KeyBoardActions)
 	{
-		if(action->GetInputType() != KeyboardAction::InputType::WhilePressed) continue;
 		if(e.key.keysym.scancode == action->GetButtonMap())
 		{
 			if(IsButtonDown)
@@ -144,7 +173,8 @@ void dae::InputManager::ExecuteIsPressedInputs()
 {
 	for(auto& action : m_KeyBoardActions)
 	{
-		if(action->GetInputType() != KeyboardAction::InputType::WhilePressed) continue;
+		if(action->GetInputType() != KeyboardAction::InputType::WhilePressed)
+			continue;
 		if(action->GetIsPressed())
 		{
 			action->GetCommand()->Execute();

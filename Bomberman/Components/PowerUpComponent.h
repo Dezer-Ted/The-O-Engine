@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "../PersistentData.h"
 #include "Components/BaseComponent.h"
 #include "Engine/DesignPatterns/Observer.h"
 
@@ -23,7 +24,7 @@ namespace dae
 		int  GetFireUpgrade() const;
 		bool GetDetonatorUpgrade() const;
 		void Notify(Utils::GameEvent event, ObserverEventData* eventData) override;
-
+		void LoadExistingUpgrades(const UpgradeDataHolder& data);
 	private:
 		void ProcessUpgrade(PowerUps powerUp);
 		bool m_HasDetonator{false};

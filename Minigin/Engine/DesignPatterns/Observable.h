@@ -11,14 +11,17 @@ namespace dae
 	class Observer;
 	class BaseComponent;
 	class Blackboard;
+
 	class Observable {
 	public:
 		virtual ~Observable();
 
 		virtual void AddObserver(Observer* pObserver);
-		void RemoveObserver(Observer* pObserver);
+		void         RemoveObserver(Observer* pObserver);
+
 	protected:
-		void NotifyObservers(Utils::GameEvent event,std::unique_ptr<ObserverEventData> eventData) const;
+		void NotifyObservers(Utils::GameEvent event, std::unique_ptr<ObserverEventData> eventData) const;
+
 	private:
 		std::vector<Observer*> m_Observers;
 	};

@@ -1,4 +1,5 @@
 ﻿#include "ControllerCompoundAction.h"
+#include "../InputManager.h"
 
 dae::ControllerCompoundAction::ControllerCompoundAction(Controller::ButtonInputs upInput, Controller::ButtonInputs   downInput,
                                                         Controller::ButtonInputs leftInput, Controller::ButtonInputs rightInput,
@@ -12,13 +13,22 @@ dae::ControllerCompoundAction::ControllerCompoundAction(Controller::ButtonInputs
 {
 }
 
+dae::ControllerCompoundAction::~ControllerCompoundAction()
+{
+
+}
+
 void dae::ControllerCompoundAction::HandleButtonInput() const
 {
 	glm::vec2 directionInput{};
-	if(m_pController->IsPressed(m_UpInput))directionInput.y-=1;
-	if(m_pController->IsPressed(m_DownInput))directionInput.y+=1;
-	if(m_pController->IsPressed(m_LeftInput))directionInput.x-=1;
-	if(m_pController->IsPressed(m_RightInput))directionInput.x+=1;
+	if(m_pController->IsPressed(m_UpInput))
+		directionInput.y -= 1;
+	if(m_pController->IsPressed(m_DownInput))
+		directionInput.y += 1;
+	if(m_pController->IsPressed(m_LeftInput))
+		directionInput.x -= 1;
+	if(m_pController->IsPressed(m_RightInput))
+		directionInput.x += 1;
 	m_pCommand->Execute2DAxis(directionInput);
 
 }

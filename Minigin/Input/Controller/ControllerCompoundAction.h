@@ -1,10 +1,12 @@
 ﻿#pragma once
 #include "../../Engine/DesignPatterns/Command.h"
 #include "Controller.h"
+#include "../../Engine/DesignPatterns/Observable.h"
+#include "../../Engine/DesignPatterns/Observer.h"
 
 namespace dae
 {
-	class ControllerCompoundAction {
+	class ControllerCompoundAction final {
 	public:
 		ControllerCompoundAction(Controller::ButtonInputs upInput, Controller::ButtonInputs    downInput, Controller::ButtonInputs leftInput,
 		                         Controller::ButtonInputs rightInput, std::unique_ptr<Command> pCommand, Controller*               pController);
@@ -12,7 +14,7 @@ namespace dae
 		ControllerCompoundAction(ControllerCompoundAction&&) = delete;
 		ControllerCompoundAction& operator=(const ControllerCompoundAction&) = delete;
 		ControllerCompoundAction& operator=(ControllerCompoundAction&&) = delete;
-		~ControllerCompoundAction() = default;
+		~ControllerCompoundAction() ;
 		void HandleButtonInput() const;
 
 	private:

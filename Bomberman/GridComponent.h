@@ -52,6 +52,7 @@ namespace dae
 		void                  MarkAsDestroyed(const CellCoordinate& currentPos);
 		glm::vec2             GetRandomOpenCellPosition();
 		void                  GenerateUpgrades(int amount);
+		void GenerateExit();
 
 	private:
 		void CreateBorderWall(dae::Scene& scene, Cell& cell);

@@ -1,4 +1,5 @@
 ﻿#include "KeyboardAction.h"
+#include "../InputManager.h"
 
 dae::KeyboardAction::KeyboardAction(InputType inputType, ActionType type, std::unique_ptr<Command> command, SDL_Scancode buttonMap) :
 	m_Command{std::move(command)},
@@ -12,6 +13,11 @@ dae::KeyboardAction::KeyboardAction(InputType inputType, ActionType type, std::u
 	m_Command(std::move(command)),
 	m_ActionType(type),
 	m_InputType(inputType)
+{
+
+}
+
+dae::KeyboardAction::~KeyboardAction()
 {
 
 }
@@ -38,8 +44,15 @@ bool dae::KeyboardAction::GetIsPressed() const
 
 void dae::KeyboardAction::SetIsPressed(bool isPressed)
 {
+	m_LastState = m_IsPressed;
 	m_IsPressed = isPressed;
 }
+
+bool dae::KeyboardAction::GetLastState() const
+{
+	return m_LastState;
+}
+
 
 SDL_Scancode dae::KeyboardAction::GetButtonMap() const
 {

@@ -14,21 +14,26 @@
 #include "Rendering/Renderer.h"
 #include "SceneObjects/GameObject.h"
 #include "json.hpp"
+#include "../Commands/SkipLevelCommand.h"
 #include "Engine/ResourceManager.h"
+#include "Input/InputManager.h"
 
 void dae::LevelLoader::LoadLevel(const std::string& levelPath)
 {
-	LevelData levelData{LoadLevelFromJson(levelPath)};
-
-	auto     scene = dae::SceneManager::GetInstance().CreateScene("Level");
+	LevelData   levelData{LoadLevelFromJson(levelPath)};
+	std::string levelName{levelPath.substr(levelPath.find('/') + 1)};
+	levelName = levelName.substr(0, levelName.find('.'));
+	auto     scene = dae::SceneManager::GetInstance().CreateScene(levelName);
 	SDL_Rect levelBounds{0, 0, 1395, 624};
-	auto     go = std::make_shared<dae::GameObject>(scene);
 	auto     gridComp{InitGrid(scene, levelBounds, levelData.m_NumberOfPowerUps, levelData.m_WallFillAmount)};
-	auto     pPlayer = dae::PlayerLoader::LoadPlayer(scene, levelBounds, gridComp);
+	auto     pPlayer = dae::PlayerLoader::LoadPlayer(scene, levelBounds, gridComp, "Player1");
 
+	auto go = std::make_shared<GameObject>(scene);
+	InputManager::GetInstance().AddKeyBoardActionMapping<SkipLevelCommand>(KeyboardAction::ActionType::ButtonMap,
+	                                                                       KeyboardAction::InputType::OnButtonUp, go.get(), SDL_SCANCODE_F1);
+	scene->Add(go);
 	InitEnemies(scene, pPlayer, levelData, gridComp);
-
-	dae::SceneManager::GetInstance().LoadScene("Level");
+	dae::SceneManager::GetInstance().LoadScene(levelName);
 	dae::Renderer::GetInstance().SetBackgroundColor(SDL_Color{57, 132, 0, 1});
 }
 
@@ -51,6 +56,7 @@ dae::GridComponent* dae::LevelLoader::InitGrid(Scene* pScene, const SDL_Rect& bo
 	gridComp->InitGrid(bounds.w, bounds.h, 31, 13);
 	gridComp->CreateWallObjects(*pScene, fillAmount);
 	gridComp->GenerateUpgrades(itemAmount);
+	gridComp->GenerateExit();
 	pScene->Add(go);
 	return gridComp;
 }

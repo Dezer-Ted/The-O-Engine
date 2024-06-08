@@ -1,27 +1,39 @@
 #include "SceneManager.h"
 #include "Scene.h"
 #include "Time.h"
+#include "../../Bomberman/SceneNavigator.h"
 
 void dae::SceneManager::Update()
 {
+	if(m_pCurrentScene == nullptr)
+		return;
 	m_pCurrentScene->Update();
 }
 
 void dae::SceneManager::Render()
 {
+	if(m_pCurrentScene == nullptr)
+		return;
 	m_pCurrentScene->Render();
 }
 
 void dae::SceneManager::LateUpdate()
 {
+	if(m_pCurrentScene == nullptr)
+		return;
 	m_pCurrentScene->LateUpdate();
 }
 
 void dae::SceneManager::CleanUp()
 {
-	for(const auto& scene : m_scenes)
+	for(int i = 0; i < m_scenes.size(); ++i)
 	{
-		scene->CleanUp();
+		m_scenes[i]->CleanUp();
+		if(m_scenes[i]->GetDestructionFlag())
+		{
+			m_scenes.erase(m_scenes.begin() + i);
+		}
+		SceneNavigator::LoadStage();
 	}
 }
 
@@ -46,7 +58,18 @@ void dae::SceneManager::LoadScene(const std::string& name)
 	}
 }
 
+void dae::SceneManager::RemoveScene(const std::string& name)
+{
+	for(int i = 0; i < m_scenes.size(); ++i)
+	{
+		if(m_scenes[i]->GetSceneName() == name)
+			m_scenes[i]->DestroyScene();
+	}
+}
+
 void dae::SceneManager::FixedUpdate()
 {
+	if(m_pCurrentScene == nullptr)
+		return;
 	m_pCurrentScene->FixedUpdate();
 }

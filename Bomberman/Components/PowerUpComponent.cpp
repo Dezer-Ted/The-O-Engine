@@ -1,6 +1,7 @@
 ﻿#include "PowerUpComponent.h"
 
 #include "PowerUpPickUpComponent.h"
+#include "../PersistentData.h"
 #include "Components/ColliderComponent.h"
 
 dae::PowerUpComponent::PowerUpComponent(GameObject* pOwner) : BaseComponent(pOwner)
@@ -40,6 +41,13 @@ void dae::PowerUpComponent::Notify(Utils::GameEvent event, ObserverEventData* ev
 
 }
 
+void dae::PowerUpComponent::LoadExistingUpgrades(const UpgradeDataHolder& data)
+{
+	m_BombUpgrade = data.m_BombUp;
+	m_FireUpgrade = data.m_FireUp;
+	m_HasDetonator = data.m_Detonator;
+}
+
 void dae::PowerUpComponent::ProcessUpgrade(PowerUps powerUp)
 {
 	switch(powerUp)
@@ -54,4 +62,5 @@ void dae::PowerUpComponent::ProcessUpgrade(PowerUps powerUp)
 		m_HasDetonator = true;
 		break;
 	}
+	PersistentData::GetInstance().UpdateUpgrades(UpgradeDataHolder{m_FireUpgrade, m_BombUpgrade, m_HasDetonator}, GetParent()->GetName());
 }

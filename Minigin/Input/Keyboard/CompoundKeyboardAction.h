@@ -3,17 +3,19 @@
 #include <SDL.h>
 
 #include "../../Engine/DesignPatterns/Command.h"
+#include "../../Engine/DesignPatterns/Observable.h"
+#include "../../Engine/DesignPatterns/Observer.h"
 
 namespace dae
 {
-	class CompoundKeyboardAction {
+	class CompoundKeyboardAction final{
 	public:
 		CompoundKeyboardAction(SDL_Scancode up, SDL_Scancode down, SDL_Scancode right, SDL_Scancode left, std::unique_ptr<dae::Command> pCommand);
 		CompoundKeyboardAction(const CompoundKeyboardAction&) = delete;
 		CompoundKeyboardAction(CompoundKeyboardAction&&) = delete;
 		CompoundKeyboardAction& operator=(const CompoundKeyboardAction&) = delete;
 		CompoundKeyboardAction& operator=(CompoundKeyboardAction&&) = delete;
-		~CompoundKeyboardAction() = default;
+		~CompoundKeyboardAction() ;
 		void         HandleKeyUp(SDL_Event e);
 		void         HandleKeyDown(SDL_Event e);
 		void         ExecuteCommand();

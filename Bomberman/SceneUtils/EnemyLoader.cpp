@@ -1,5 +1,6 @@
 ﻿#include "EnemyLoader.h"
 
+#include "../EnemyTracker.h"
 #include "Components/SpriteComponent.h"
 #include "Components/ColliderComponent.h"
 #include "../Components/MovementComponent.h"
@@ -40,6 +41,7 @@ dae::GameObject* dae::EnemyLoader::LoadOneal(Scene* pScene, GameObject* pPlayer,
 	sightedTransition = std::make_unique<dae::SightedTransition>(pHuntState, pHuntState, pPlayer, go.get(), pGrid, false);
 	enemyComp->AddTransition(std::move(sightedTransition));
 	enemyComp->SetState(startState);
+	enemyComp->AddObserver(&EnemyTracker::GetInstance());
 	pScene->Add(go);
 	return go.get();
 }
@@ -66,6 +68,7 @@ dae::GameObject* dae::EnemyLoader::LoadBalloom(Scene* pScene, const glm::vec2& p
 	collider->AddObserver(walkState.get());
 	auto startState = enemyComp->AddState(std::move(walkState));
 	enemyComp->SetState(startState);
+	enemyComp->AddObserver(&EnemyTracker::GetInstance());
 	pScene->Add(go);
 	return go.get();
 }
@@ -91,6 +94,7 @@ dae::GameObject* dae::EnemyLoader::LoadDoll(Scene* pScene, const glm::vec2& posi
 	collider->AddObserver(walkState.get());
 	auto startState = enemyComp->AddState(std::move(walkState));
 	enemyComp->SetState(startState);
+	enemyComp->AddObserver(&EnemyTracker::GetInstance());
 	pScene->Add(go);
 	return go.get();
 }
@@ -126,6 +130,7 @@ dae::GameObject* dae::EnemyLoader::LoadMinvo(Scene* pScene, GameObject* pPlayer,
 	sightedTransition = std::make_unique<dae::SightedTransition>(pHuntState, pHuntState, pPlayer, go.get(), pGrid, false);
 	enemyComp->AddTransition(std::move(sightedTransition));
 	enemyComp->SetState(startState);
+	enemyComp->AddObserver(&EnemyTracker::GetInstance());
 	pScene->Add(go);
 	return go.get();
 }
