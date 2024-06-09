@@ -166,6 +166,7 @@
     <ClCompile Include="Commands\MenuNavigateCommand.cpp" />
     <ClCompile Include="Commands\MenuSelectCommand.cpp" />
     <ClCompile Include="Commands\MovementCommand.cpp" />
+    <ClCompile Include="Commands\MuteCommand.cpp" />
     <ClCompile Include="Commands\NameSelectionAction.cpp" />
     <ClCompile Include="Commands\SaveScoreCommand.cpp" />
     <ClCompile Include="Commands\SkipLevelCommand.cpp" />
@@ -206,6 +207,7 @@
     <ClInclude Include="Commands\MenuNavigateCommand.h" />
     <ClInclude Include="Commands\MenuSelectCommand.h" />
     <ClInclude Include="Commands\MovementCommand.h" />
+    <ClInclude Include="Commands\MuteCommand.h" />
     <ClInclude Include="Commands\NameSelectionAction.h" />
     <ClInclude Include="Commands\SaveScoreCommand.h" />
     <ClInclude Include="Commands\SkipLevelCommand.h" />

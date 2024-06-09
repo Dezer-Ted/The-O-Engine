@@ -217,9 +217,9 @@ glm::vec2 dae::GridComponent::GetRandomOpenCellPosition()
 glm::vec2 dae::GridComponent::GetRandomOpenCellPosition(int lowerBound, int upperBound)
 {
 	std::vector<Cell*> openCells;
-	for(size_t i = lowerBound; i < upperBound; ++i)
+	for(size_t i = lowerBound; i < static_cast<size_t>(upperBound); ++i)
 	{
-		for(size_t j = lowerBound; j < upperBound; ++j)
+		for(size_t j = lowerBound; j < static_cast<size_t>(upperBound); ++j)
 		{
 			if(m_Grid[i][j].m_WallState != WallState::open)
 				continue;

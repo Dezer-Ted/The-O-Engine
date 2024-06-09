@@ -9,6 +9,8 @@ namespace dae
 	public:
 		virtual      ~SoundSystem() = default;
 		virtual void Play(const std::string& soundName, int volume = 64) = 0;
+		virtual void PlayMusic(const std::string& soundName) = 0;
+		virtual void MuteSoundSystem() = 0;
 	};
 
 	class DefaultSoundSystem final : public SoundSystem {
@@ -20,8 +22,15 @@ namespace dae
 		DefaultSoundSystem& operator=(DefaultSoundSystem&& other) noexcept = delete;
 		virtual             ~DefaultSoundSystem() override = default;
 
-	private:
-		virtual void Play(const std::string&, int = 64) override
+		void PlayMusic(const std::string&) override
+		{
+		}
+
+		void Play(const std::string&, int = 64) override
+		{
+		}
+
+		void MuteSoundSystem() override
 		{
 		}
 	};

@@ -1,5 +1,6 @@
 ﻿#include "PlayerLoader.h"
 
+#include "LevelLoader.h"
 #include "../PersistentData.h"
 #include "Components/SpriteComponent.h"
 #include "../Components/PowerUpComponent.h"
@@ -99,12 +100,7 @@ dae::GameObject* dae::PlayerLoader::LoadCoopPlayer(Scene* pScene, const SDL_Rect
 		KeyboardAction::ActionType::ButtonMap, KeyboardAction::InputType::OnButtonDown, go.get(), SDL_SCANCODE_X);
 	dae::Singleton<dae::InputManager>::GetInstance().AddKeyBoardActionMapping<dae::DetonateCommand>(
 		KeyboardAction::ActionType::ButtonMap, KeyboardAction::InputType::OnButtonDown, go.get(), SDL_SCANCODE_C);
-	dae::Singleton<dae::InputManager>::GetInstance().AddControllerActionMapping<dae::DetonateCommand>(
-		dae::ControllerAction::ActionType::ButtonMap,
-		go.get(),
-		dae::Controller::ButtonInputs::BButton,
-		dae::ControllerAction::InputType::ButtonDown
-	);
+
 	moveComp->AddObserver(playerComp);
 	collider->AddObserver(playerComp);
 	collider->AdjustBoundsToSpriteSize();

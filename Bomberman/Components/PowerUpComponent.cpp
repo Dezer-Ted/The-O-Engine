@@ -3,6 +3,7 @@
 #include "PowerUpPickUpComponent.h"
 #include "../PersistentData.h"
 #include "Components/ColliderComponent.h"
+#include "Engine/DesignPatterns/ServiceLocator.h"
 
 dae::PowerUpComponent::PowerUpComponent(GameObject* pOwner) : BaseComponent(pOwner)
 {
@@ -36,6 +37,8 @@ void dae::PowerUpComponent::Notify(Utils::GameEvent event, ObserverEventData* ev
 		if(pCollisionEvent->m_OtherCollider->GetParentTag() != "PowerUp")
 			return;
 		PowerUps pu = pCollisionEvent->m_OtherCollider->GetParentObject()->GetComponentByClass<PowerUpPickUpComponent>()->GetPowerUp();
+
+		ServiceLocator::GetSoundSystem()->Play("PickUp");
 		ProcessUpgrade(pu);
 	}
 

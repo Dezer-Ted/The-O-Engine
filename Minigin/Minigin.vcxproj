@@ -224,6 +224,7 @@
     <ClInclude Include="Engine\ObserverEventData.h" />
     <ClInclude Include="Engine\ResourceManager.h" />
     <ClInclude Include="Engine\Sound\DebugSoundSystem.h" />
+    <ClInclude Include="Engine\Sound\MusicTrack.h" />
     <ClInclude Include="Engine\Sound\SDLSoundSystem.h" />
     <ClInclude Include="Engine\Sound\SoundEffect.h" />
     <ClInclude Include="Engine\Sound\SoundSystem.h" />
@@ -271,6 +272,7 @@
     <ClCompile Include="Engine\ObserverEventData.cpp" />
     <ClCompile Include="Engine\ResourceManager.cpp" />
     <ClCompile Include="Engine\Sound\DebugSoundSystem.cpp" />
+    <ClCompile Include="Engine\Sound\MusicTrack.cpp" />
     <ClCompile Include="Engine\Sound\SDLSoundSystem.cpp" />
     <ClCompile Include="Engine\Sound\SoundEffect.cpp" />
     <ClCompile Include="Engine\Sound\SoundSystem.cpp" />

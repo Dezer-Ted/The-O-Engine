@@ -16,6 +16,7 @@
 #include "json.hpp"
 #include "../PersistentData.h"
 #include "../SceneNavigator.h"
+#include "../Commands/MuteCommand.h"
 #include "../Commands/SkipLevelCommand.h"
 #include "../Components/ScoreComponent.h"
 #include "../Components/VersusPlayerComponent.h"
@@ -72,8 +73,13 @@ void dae::LevelLoader::LoadLevel(const std::string& levelPath)
 	go->SetPosition(20, 20);
 	scene->Add(go);
 	InitEnemies(scene, players, levelData, gridComp);
+	go = std::make_shared<GameObject>(scene);
+	InputManager::GetInstance().AddKeyBoardActionMapping<MuteCommand>(KeyboardAction::ActionType::ButtonMap, KeyboardAction::InputType::OnButtonUp,
+	                                                                  go.get(), SDL_SCANCODE_F2);
+	scene->Add(go);
 	dae::SceneManager::GetInstance().LoadScene(levelName);
 	dae::Renderer::GetInstance().SetBackgroundColor(SDL_Color{57, 132, 0, 1});
+	ServiceLocator::GetSoundSystem()->PlayMusic("MainTheme");
 }
 
 LevelData dae::LevelLoader::LoadLevelFromJson(const std::string levelPath)

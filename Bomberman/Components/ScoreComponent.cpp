@@ -31,6 +31,6 @@ void dae::ScoreComponent::Notify(Utils::GameEvent event, ObserverEventData* even
 
 dae::ScoreComponent::~ScoreComponent()
 {
-	if(SceneNavigator::m_LevelCompleted)
+	if(SceneNavigator::m_LevelCompleted || PersistentData::GetInstance().GetLifes() == 0)
 		PersistentData::GetInstance().SetScore(m_Score);
 }

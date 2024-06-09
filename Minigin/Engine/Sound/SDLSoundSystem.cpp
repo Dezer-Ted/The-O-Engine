@@ -46,6 +46,33 @@ void dae::SDLSoundSystem::Update()
 
 }
 
+void dae::SDLSoundSystem::PlayMusic(const std::string& soundName)
+{
+	if(m_MusicMap.contains(soundName))
+		Mix_PlayMusic(m_MusicMap[soundName]->GetMusic(), -1);
+	else
+	{
+		std::string copy{soundName};
+		m_MusicMap.insert(std::make_pair(copy, ResourceManager::GetInstance().LoadMusic(soundName)));
+		if(Mix_PlayMusic(m_MusicMap[soundName]->GetMusic(), -1) == -1)
+		{
+			std::cout << "Could not Play music\n";
+		}
+	}
+}
+
+void dae::SDLSoundSystem::MuteSoundSystem()
+{
+	std::lock_guard lock{m_MuteMutex};
+	if(!m_IsMuted)
+	{
+		Mix_Volume(-1, 0);
+		Mix_VolumeMusic(0);
+		m_IsMuted = true;
+	}
+
+}
+
 void dae::SDLSoundSystem::ExecuteSound(std::string soundName, std::unique_lock<std::mutex>& lock, int volume)
 {
 

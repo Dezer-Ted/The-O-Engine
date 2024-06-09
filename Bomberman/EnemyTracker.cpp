@@ -2,6 +2,7 @@
 
 #include "Components/EnemyComponent.h"
 #include "Components/ScoreComponent.h"
+#include "Engine/DesignPatterns/ServiceLocator.h"
 
 void dae::EnemyTracker::RegisterEnemy(dae::EnemyComponent* pEnemyComp)
 {
@@ -17,7 +18,9 @@ void dae::EnemyTracker::Notify(Utils::GameEvent event, dae::ObserverEventData* e
 
 	auto pEnemyDiedData{dynamic_cast<EnemyDiedEvent*>(eventData)};
 	UnregisterEnemy(dynamic_cast<EnemyComponent*>(pEnemyDiedData->m_Component));
-
+	if(!m_Enemies.empty())
+		return;
+	ServiceLocator::GetSoundSystem()->Play("NoEnemies");
 }
 
 bool dae::EnemyTracker::NoEnemiesLeft() const

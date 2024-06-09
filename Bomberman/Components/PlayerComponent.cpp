@@ -6,6 +6,7 @@
 #include "Components/SpriteComponent.h"
 #include "../GridComponent.h"
 #include "../SceneNavigator.h"
+#include "Engine/DesignPatterns/ServiceLocator.h"
 #include "Rendering/Sprite.h"
 
 dae::PlayerComponent::PlayerComponent(GameObject* pParent)
@@ -65,6 +66,7 @@ void dae::PlayerComponent::DropBomb()
 	if(static_cast<int>(m_Bombs.size()) >= m_pPowerUpComp->GetBombUpgrade() + 1)
 		return;
 
+	ServiceLocator::GetSoundSystem()->Play("DropBomb");
 	glm::vec2 pos = GetParent()->GetTransform().GetWorldPosition();
 	pos.x += static_cast<float>(m_pSpriteComponent->GetCurrentSprite()->m_TargetWidth);
 	pos.y += static_cast<float>(m_pSpriteComponent->GetCurrentSprite()->m_TargetHeight);

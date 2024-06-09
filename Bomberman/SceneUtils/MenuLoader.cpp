@@ -17,7 +17,9 @@
 #include "SceneObjects/SceneManager.h"
 #include "SceneObjects/GameObject.h"
 #include "../Commands/SkipLevelCommand.h"
+#include "Engine/DesignPatterns/ServiceLocator.h"
 #include "Rendering/Renderer.h"
+#include "../Commands/MuteCommand.h"
 
 void dae::MenuLoader::LoadLogo(dae::Scene* pScene)
 {
@@ -145,6 +147,11 @@ void dae::MenuLoader::LoadStartScreen()
 	LoadLogo(pScene);
 	LoadModes(pScene);
 
+	auto go{std::make_shared<GameObject>(pScene)};
+	InputManager::GetInstance().AddKeyBoardActionMapping<MuteCommand>(KeyboardAction::ActionType::ButtonMap, KeyboardAction::InputType::OnButtonUp,
+	                                                                  go.get(), SDL_SCANCODE_F2);
+	pScene->Add(go);
+	dae::ServiceLocator::GetSoundSystem()->PlayMusic("TitleTheme");
 	SceneManager::GetInstance().LoadScene("StartScreen");
 
 }
@@ -153,7 +160,7 @@ void dae::MenuLoader::LoadEndScreen()
 {
 	auto pScene = dae::SceneManager::GetInstance().CreateScene("EndScreen");
 	CreateNameSelection(pScene);
-
+	dae::ServiceLocator::GetSoundSystem()->PlayMusic("EndTheme");
 	const auto font{ResourceManager::GetInstance().LoadFont("nes.otf", 20)};
 	const auto fontSmall{ResourceManager::GetInstance().LoadFont("nes.otf", 15)};
 	auto       go{std::make_shared<GameObject>(pScene)};
@@ -167,7 +174,10 @@ void dae::MenuLoader::LoadEndScreen()
 	go->SetPosition(200, 430);
 	textComp = go->AddComponent<TextComponent>();
 	textComp->SetText("Press B to return", fontSmall, SDL_Color{255, 255, 255, 255});
-
+	go = std::make_shared<GameObject>(pScene);
+	InputManager::GetInstance().AddKeyBoardActionMapping<MuteCommand>(KeyboardAction::ActionType::ButtonMap, KeyboardAction::InputType::OnButtonUp,
+	                                                                  go.get(), SDL_SCANCODE_F2);
+	pScene->Add(go);
 	InputManager::GetInstance().AddControllerActionMapping<SkipLevelCommand>(ControllerAction::ActionType::ButtonMap, go.get(),
 	                                                                         Controller::ButtonInputs::BButton, ControllerAction::InputType::ButtonDown);
 	pScene->Add(go);

@@ -43,6 +43,12 @@ std::unique_ptr<dae::SoundEffect> dae::ResourceManager::LoadSound(const std::str
 	return std::make_unique<SoundEffect>(Mix_LoadWAV(fullFile.c_str()));
 }
 
+std::unique_ptr<MusicTrack> dae::ResourceManager::LoadMusic(const std::string& file) const
+{
+	std::string fullFile{m_dataPath + "Sound/" + file + ".wav"};
+	return std::make_unique<MusicTrack>(Mix_LoadMUS(fullFile.c_str()));
+}
+
 std::string dae::ResourceManager::LoadJson(const std::string& file) const
 {
 	std::string   fullPath{m_dataPath + file};

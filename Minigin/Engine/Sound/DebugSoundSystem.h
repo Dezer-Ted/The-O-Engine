@@ -15,6 +15,8 @@ namespace dae
 		DebugSoundSystem& operator=(DebugSoundSystem&& other) noexcept = delete;
 
 		void Play(const std::string& soundName, int volume) override;
+		void PlayMusic(const std::string& soundName) override;
+		void MuteSoundSystem() override;
 
 	private:
 		std::unique_ptr<SoundSystem> m_SoundSystem;
