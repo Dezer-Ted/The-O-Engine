@@ -11,7 +11,7 @@
 #include "../EnemyStates/EnemyTransitions/SightedTransition.h"
 
 
-dae::GameObject* dae::EnemyLoader::LoadOneal(Scene* pScene, GameObject* pPlayer, GridComponent* pGrid, const glm::vec2& position)
+dae::GameObject* dae::EnemyLoader::LoadOneal(Scene* pScene, const std::vector<GameObject*>& players, GridComponent* pGrid, const glm::vec2& position)
 {
 	auto go = std::make_shared<dae::GameObject>(pScene);
 	go->SetTag("Enemy");
@@ -32,13 +32,14 @@ dae::GameObject* dae::EnemyLoader::LoadOneal(Scene* pScene, GameObject* pPlayer,
 	collider->AddObserver(walkState.get());
 	auto startState = enemyComp->AddState(std::move(walkState));
 
-	auto huntState{std::make_unique<dae::HuntingState>(pPlayer, pGrid, go.get())};
+	auto huntState{std::make_unique<dae::HuntingState>(pGrid, go.get())};
 	auto pHuntState = enemyComp->AddState(std::move(huntState));
-	auto sightedTransition{std::make_unique<dae::SightedTransition>(startState, pHuntState, pPlayer, go.get(), pGrid, false)};
+	auto sightedTransition{std::make_unique<dae::SightedTransition>(startState, pHuntState, players, go.get(), pGrid, false)};
+	sightedTransition->AddObserver(dynamic_cast<HuntingState*>(pHuntState));
 	enemyComp->AddTransition(std::move(sightedTransition));
 	auto cooldownTransition{std::make_unique<dae::CooldownTransition>(pHuntState, startState, 2.f)};
 	enemyComp->AddTransition(std::move(cooldownTransition));
-	sightedTransition = std::make_unique<dae::SightedTransition>(pHuntState, pHuntState, pPlayer, go.get(), pGrid, false);
+	sightedTransition = std::make_unique<dae::SightedTransition>(pHuntState, pHuntState, players, go.get(), pGrid, false);
 	enemyComp->AddTransition(std::move(sightedTransition));
 	enemyComp->SetState(startState);
 	enemyComp->AddObserver(&EnemyTracker::GetInstance());
@@ -99,7 +100,7 @@ dae::GameObject* dae::EnemyLoader::LoadDoll(Scene* pScene, const glm::vec2& posi
 	return go.get();
 }
 
-dae::GameObject* dae::EnemyLoader::LoadMinvo(Scene* pScene, GameObject* pPlayer, GridComponent* pGrid, const glm::vec2& position)
+dae::GameObject* dae::EnemyLoader::LoadMinvo(Scene* pScene, const std::vector<GameObject*>& players, GridComponent* pGrid, const glm::vec2& position)
 {
 	auto go = std::make_shared<dae::GameObject>(pScene);
 	go->SetTag("Enemy");
@@ -121,13 +122,14 @@ dae::GameObject* dae::EnemyLoader::LoadMinvo(Scene* pScene, GameObject* pPlayer,
 	collider->AddObserver(walkState.get());
 	auto startState = enemyComp->AddState(std::move(walkState));
 
-	auto huntState{std::make_unique<dae::HuntingState>(pPlayer, pGrid, go.get())};
+	auto huntState{std::make_unique<dae::HuntingState>(pGrid, go.get())};
 	auto pHuntState = enemyComp->AddState(std::move(huntState));
-	auto sightedTransition{std::make_unique<dae::SightedTransition>(startState, pHuntState, pPlayer, go.get(), pGrid, false)};
+	auto sightedTransition{std::make_unique<dae::SightedTransition>(startState, pHuntState, players, go.get(), pGrid, false)};
+	sightedTransition->AddObserver(dynamic_cast<HuntingState*>(pHuntState));
 	enemyComp->AddTransition(std::move(sightedTransition));
 	auto cooldownTransition{std::make_unique<dae::CooldownTransition>(pHuntState, startState, 2.f)};
 	enemyComp->AddTransition(std::move(cooldownTransition));
-	sightedTransition = std::make_unique<dae::SightedTransition>(pHuntState, pHuntState, pPlayer, go.get(), pGrid, false);
+	sightedTransition = std::make_unique<dae::SightedTransition>(pHuntState, pHuntState, players, go.get(), pGrid, false);
 	enemyComp->AddTransition(std::move(sightedTransition));
 	enemyComp->SetState(startState);
 	enemyComp->AddObserver(&EnemyTracker::GetInstance());

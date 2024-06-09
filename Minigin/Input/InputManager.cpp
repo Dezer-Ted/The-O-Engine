@@ -190,3 +190,35 @@ void dae::InputManager::ProcessControllerCompoundActions() const
 		compoundAction->HandleButtonInput();
 	}
 }
+
+void dae::InputManager::RemoveActionsByGameObject(GameObject* pObject)
+{
+	for(size_t i = 0; i < m_ControllerActions.size(); ++i)
+	{
+		if(dynamic_cast<GameObjectCommand*>(m_ControllerActions[i]->GetCommand())->GetGameObject() == pObject)
+		{
+			m_ControllerActions.erase(m_ControllerActions.begin() + i);
+		}
+	}
+	for(size_t i = 0; i < m_KeyBoardActions.size(); ++i)
+	{
+		if(dynamic_cast<GameObjectCommand*>(m_KeyBoardActions[i]->GetCommand())->GetGameObject() == pObject)
+		{
+			m_KeyBoardActions.erase(m_KeyBoardActions.begin() + i);
+		}
+	}
+	for(size_t i = 0; i < m_CompoundKeyboardActions.size(); ++i)
+	{
+		if(dynamic_cast<GameObjectCommand*>(m_CompoundKeyboardActions[i]->GetCommand())->GetGameObject() == pObject)
+		{
+			m_CompoundKeyboardActions.erase(m_CompoundKeyboardActions.begin() + i);
+		}
+	}
+	for(size_t i = 0; i < m_CompoundControllerActions.size(); ++i)
+	{
+		if(dynamic_cast<GameObjectCommand*>(m_CompoundControllerActions[i]->GetCommand())->GetGameObject() == pObject)
+		{
+			m_CompoundControllerActions.erase(m_CompoundControllerActions.begin() + i);
+		}
+	}
+}

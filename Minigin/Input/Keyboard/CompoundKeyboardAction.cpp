@@ -32,6 +32,12 @@ glm::vec2 dae::CompoundKeyboardAction::ConvertTo2DVector()
 	return result;
 
 }
+
+dae::Command* dae::CompoundKeyboardAction::GetCommand() const
+{
+	return m_pCommand.get();
+}
+
 SDL_Scancode dae::CompoundKeyboardAction::GetUpButton() const
 {
 	return m_UpButton;

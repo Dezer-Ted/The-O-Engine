@@ -16,6 +16,8 @@ namespace dae
 		ControllerCompoundAction& operator=(ControllerCompoundAction&&) = delete;
 		~ControllerCompoundAction() ;
 		void HandleButtonInput() const;
+		Command* GetCommand() const;
+		
 
 	private:
 		Controller*                   m_pController;

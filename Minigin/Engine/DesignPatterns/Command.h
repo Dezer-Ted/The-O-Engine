@@ -27,14 +27,11 @@ namespace dae
 	private:
 		GameObject* m_Owner;
 
-	protected:
-		GameObject* GetGameObject() const;
-
 	public:
+		GameObject* GetGameObject() const;
 		GameObjectCommand(GameObject* gameObject);
 		virtual ~GameObjectCommand() override = default;
 	};
-
 
 
 	class PlayerComponent;

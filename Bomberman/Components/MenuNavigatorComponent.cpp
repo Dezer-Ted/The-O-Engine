@@ -1,6 +1,7 @@
 ﻿#include "MenuNavigatorComponent.h"
 
 #include "../SceneNavigator.h"
+#include "../SceneUtils/LevelLoader.h"
 #include "Engine/DeltaTime.h"
 #include "Engine/DesignPatterns/Singleton.h"
 #include "SceneObjects/GameObject.h"
@@ -41,17 +42,22 @@ void dae::MenuNavigatorComponent::ExecuteCurrentlySelected() const
 	switch(m_CurrentlySelectedItem)
 	{
 	case 0:
-		SceneNavigator::UnloadStage();
+		LevelLoader::m_GameMode = GameMode::Single;
 		break;
 	case 1:
 		//TODO start versus mode
+
+		LevelLoader::m_GameMode = GameMode::Versus;
 		break;
 	case 2:
 		//TODO start Coop mode
+
+		LevelLoader::m_GameMode = GameMode::Coop;
 		break;
 	default:
 		break;
 	}
+	SceneNavigator::UnloadStage();
 }
 
 void dae::MenuNavigatorComponent::RegisterMenuItem(GameObject* pMenuItem)

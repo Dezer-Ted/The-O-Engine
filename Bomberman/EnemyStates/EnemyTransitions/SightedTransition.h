@@ -11,9 +11,21 @@ namespace dae
 		Vertical
 	};
 
+	class PlayerSightedEventData final : public ObserverEventData {
+	public:
+		PlayerSightedEventData(GameObject* pPlayer);
+		PlayerSightedEventData(const PlayerSightedEventData& other) = delete;
+		PlayerSightedEventData(PlayerSightedEventData&& other) noexcept = delete;
+		PlayerSightedEventData& operator=(const PlayerSightedEventData& other) = delete;
+		PlayerSightedEventData& operator=(PlayerSightedEventData&& other) noexcept = delete;
+
+		GameObject* m_pPlayer{nullptr};
+		~PlayerSightedEventData() override = default;
+	};
+
 	class SightedTransition final : public dae::BaseTransition {
 	public:
-		SightedTransition(BaseState* pFromState, BaseState* pToState, GameObject* pPlayer, GameObject* pParent, GridComponent* pGrid,
+		SightedTransition(BaseState* pFromState, BaseState* pToState, const std::vector<GameObject*>& players, GameObject* pParent, GridComponent* pGrid,
 		                  bool       invertCondition);
 		SightedTransition(const SightedTransition& other) = delete;
 		SightedTransition(SightedTransition&& other) noexcept = delete;
@@ -24,13 +36,13 @@ namespace dae
 		void CheckExitCondition() override;
 
 	private:
-		void DetectPlayerAlignment();
-		void DetermineDirection(Alignment alignment, int start, int end, int alignedLine);
+		void DetectPlayerAlignment(GameObject* pPlayer);
+		void DetermineDirection(Alignment alignment, int start, int end, int alignedLine, GameObject* pPlayer);
 		bool CheckIfObscured(Alignment alignment, int alignedLine, int offset, int start, bool isPositiv);
 
-		GameObject*    m_pPlayer{nullptr};
-		GameObject*    m_pParent{nullptr};
-		GridComponent* m_pGrid{nullptr};
-		bool           m_ConditionInverted{false};
+		std::vector<GameObject*> m_Players;
+		GameObject*              m_pParent{nullptr};
+		GridComponent*           m_pGrid{nullptr};
+		bool                     m_ConditionInverted{false};
 	};
 }

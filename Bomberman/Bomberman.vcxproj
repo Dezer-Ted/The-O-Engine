@@ -181,6 +181,7 @@
     <ClCompile Include="Components\PowerUpComponent.cpp" />
     <ClCompile Include="Components\PowerUpPickUpComponent.cpp" />
     <ClCompile Include="Components\ScoreComponent.cpp" />
+    <ClCompile Include="Components\VersusPlayerComponent.cpp" />
     <ClCompile Include="Components\WallComponent.cpp" />
     <ClCompile Include="EnemyStates\BaseState.cpp" />
     <ClCompile Include="EnemyStates\EnemyTransitions\BaseTransition.cpp" />
@@ -220,6 +221,7 @@
     <ClInclude Include="Components\PowerUpComponent.h" />
     <ClInclude Include="Components\PowerUpPickUpComponent.h" />
     <ClInclude Include="Components\ScoreComponent.h" />
+    <ClInclude Include="Components\VersusPlayerComponent.h" />
     <ClInclude Include="Components\WallComponent.h" />
     <ClInclude Include="EnemyStates\EnemyTransitions\BaseTransition.h" />
     <ClInclude Include="EnemyStates\EnemyTransitions\CooldownTransition.h" />

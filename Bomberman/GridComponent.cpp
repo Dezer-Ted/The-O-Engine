@@ -213,3 +213,19 @@ glm::vec2 dae::GridComponent::GetRandomOpenCellPosition()
 	int randomNum{static_cast<int>(rand() % openCells.size())};
 	return openCells[randomNum]->m_Position;
 }
+
+glm::vec2 dae::GridComponent::GetRandomOpenCellPosition(int lowerBound, int upperBound)
+{
+	std::vector<Cell*> openCells;
+	for(size_t i = lowerBound; i < upperBound; ++i)
+	{
+		for(size_t j = lowerBound; j < upperBound; ++j)
+		{
+			if(m_Grid[i][j].m_WallState != WallState::open)
+				continue;
+			openCells.push_back(&m_Grid[i][j]);
+		}
+	}
+	int randomNum{static_cast<int>(rand() % openCells.size())};
+	return openCells[randomNum]->m_Position;
+}

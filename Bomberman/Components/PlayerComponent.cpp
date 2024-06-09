@@ -40,7 +40,7 @@ void dae::PlayerComponent::Notify(Utils::GameEvent event, ObserverEventData* eve
 		{
 			const auto pCollisionEvent{dynamic_cast<CollisionEventData*>(eventData)};
 
-			if(pCollisionEvent->m_OtherCollider->GetParentTag() == "Explosion")
+			if(pCollisionEvent->m_OtherCollider->GetParentTag() == "Explosion" || pCollisionEvent->m_OtherCollider->GetParentTag() == "Enemy")
 			{
 				m_IsDead = true;
 				m_pSpriteComponent->SwitchToSprite("DeathAnimation");

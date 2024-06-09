@@ -51,6 +51,7 @@ namespace dae
 		GameObject*           GetCellObject(const CellCoordinate& currentPos) const;
 		void                  MarkAsDestroyed(const CellCoordinate& currentPos);
 		glm::vec2             GetRandomOpenCellPosition();
+		glm::vec2             GetRandomOpenCellPosition(int lowerBound, int upperBound);
 		void                  GenerateUpgrades(int amount);
 		void GenerateExit();
 

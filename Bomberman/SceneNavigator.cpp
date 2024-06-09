@@ -1,6 +1,7 @@
 ﻿#include "SceneNavigator.h"
 
 #include "EnemyTracker.h"
+#include "PersistentData.h"
 #include "Input/InputManager.h"
 #include "SceneObjects/SceneManager.h"
 #include "SceneUtils/LevelLoader.h"
@@ -50,7 +51,13 @@ void dae::SceneNavigator::LoadStage()
 
 void dae::SceneNavigator::ReloadStage()
 {
+	EnemyTracker::GetInstance().ResetEnemies();
 	SceneManager::GetInstance().RemoveScene("Level" + std::to_string(m_LevelIndex));
 	InputManager::GetInstance().WipeActions();
+	PersistentData::GetInstance().RenableLives();
+	if(PersistentData::GetInstance().GetLifes() <= 0)
+	{
+		m_LevelIndex = 3;
+	}
 	m_IsUnloaded = true;
 }

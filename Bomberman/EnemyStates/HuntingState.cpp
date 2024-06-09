@@ -1,11 +1,11 @@
 ﻿#include "HuntingState.h"
 
 #include "../GridComponent.h"
+#include "EnemyTransitions/SightedTransition.h"
 
-dae::HuntingState::HuntingState(GameObject* pPlayer, GridComponent* pGrid, GameObject* pParent)
+dae::HuntingState::HuntingState(GridComponent* pGrid, GameObject* pParent)
 	: BaseState(pParent),
-	  m_pGridComp(pGrid),
-	  m_pPlayer(pPlayer)
+	  m_pGridComp(pGrid)
 {
 }
 
@@ -44,4 +44,13 @@ void dae::HuntingState::DetermineWalkDirection(const glm::vec2& playerPos)
 	}
 	NotifyObservers(Utils::GameEvent::DirectionChanged, std::make_unique<DirectionChangeEvent>(nullptr, walkDirection));
 	m_Direction = walkDirection;
+}
+
+void dae::HuntingState::Notify(Utils::GameEvent event, ObserverEventData* eventData)
+{
+	if(event == Utils::GameEvent::PlayerSighted)
+	{
+		auto pPlayerSightedEventData{dynamic_cast<PlayerSightedEventData*>(eventData)};
+		m_pPlayer = pPlayerSightedEventData->m_pPlayer;
+	}
 }

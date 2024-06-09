@@ -27,6 +27,8 @@ namespace dae
 		void              PlayerDied();
 		void              SetScore(int score);
 		int               GetScore() const;
+		int               GetLifes() const;
+		void RenableLives();
 
 	private:
 		friend class Singleton<PersistentData>;
@@ -35,5 +37,6 @@ namespace dae
 		std::unordered_map<std::string, UpgradeDataHolder> m_UpgradeNameMap;
 		int                                                m_PlayerLifes{3};
 		int                                                m_Score{0};
+		bool                                               m_PlayerDied{false};
 	};
 }

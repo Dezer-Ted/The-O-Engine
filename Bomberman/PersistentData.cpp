@@ -18,6 +18,9 @@ bool dae::PersistentData::CheckIfKeyExists(const std::string& key) const
 
 void dae::PersistentData::PlayerDied()
 {
+	if(m_PlayerDied)
+		return;
+	m_PlayerDied = true;
 	--m_PlayerLifes;
 }
 
@@ -29,4 +32,14 @@ void dae::PersistentData::SetScore(int score)
 int dae::PersistentData::GetScore() const
 {
 	return m_Score;
+}
+
+int dae::PersistentData::GetLifes() const
+{
+	return m_PlayerLifes;
+}
+
+void dae::PersistentData::RenableLives()
+{
+	m_PlayerDied = false;
 }

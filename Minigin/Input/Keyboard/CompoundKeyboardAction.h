@@ -24,6 +24,7 @@ namespace dae
 		SDL_Scancode GetDownButton() const;
 		SDL_Scancode GetLeftButton() const;
 		SDL_Scancode GetRightButton() const;
+		Command* GetCommand() const;
 
 	private:
 		std::unique_ptr<dae::Command> m_pCommand;

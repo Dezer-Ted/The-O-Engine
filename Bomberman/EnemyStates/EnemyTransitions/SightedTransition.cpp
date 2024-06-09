@@ -2,10 +2,16 @@
 
 #include "../../GridComponent.h"
 
-dae::SightedTransition::SightedTransition(BaseState* pFromState, BaseState* pToState, GameObject* pPlayer, GameObject* pParent, GridComponent* pGrid,
-                                          bool       invertCondition)
+dae::PlayerSightedEventData::PlayerSightedEventData(GameObject* pPlayer) : ObserverEventData(nullptr)
+{
+	m_pPlayer = pPlayer;
+}
+
+dae::SightedTransition::SightedTransition(BaseState*     pFromState, BaseState* pToState, const std::vector<GameObject*>& players, GameObject* pParent,
+                                          GridComponent* pGrid,
+                                          bool           invertCondition)
 	: BaseTransition(pFromState, pToState),
-	  m_pPlayer(pPlayer),
+	  m_Players(players),
 	  m_pParent(pParent),
 	  m_pGrid(pGrid),
 	  m_ConditionInverted(invertCondition)
@@ -14,24 +20,27 @@ dae::SightedTransition::SightedTransition(BaseState* pFromState, BaseState* pToS
 
 void dae::SightedTransition::CheckExitCondition()
 {
-	DetectPlayerAlignment();
+	for(const auto& player : m_Players)
+	{
+		DetectPlayerAlignment(player);
+	}
 }
 
-void dae::SightedTransition::DetectPlayerAlignment()
+void dae::SightedTransition::DetectPlayerAlignment(dae::GameObject* pPlayer)
 {
-	const CellCoordinate playerGridPos{m_pGrid->GetGridCoordinate(m_pPlayer->GetTransform().GetWorldPosition())};
+	const CellCoordinate playerGridPos{m_pGrid->GetGridCoordinate(pPlayer->GetTransform().GetWorldPosition())};
 	const CellCoordinate parentGridPos{m_pGrid->GetGridCoordinate(m_pParent->GetTransform().GetWorldPosition())};
 	if(playerGridPos.x == parentGridPos.x)
 	{
-		DetermineDirection(Alignment::Horizontal, parentGridPos.y, playerGridPos.y, playerGridPos.x);
+		DetermineDirection(Alignment::Horizontal, parentGridPos.y, playerGridPos.y, playerGridPos.x, pPlayer);
 	}
 	else if(playerGridPos.y == parentGridPos.y)
 	{
-		DetermineDirection(Alignment::Vertical, parentGridPos.x, playerGridPos.x, playerGridPos.y);
+		DetermineDirection(Alignment::Vertical, parentGridPos.x, playerGridPos.x, playerGridPos.y, pPlayer);
 	}
 }
 
-void dae::SightedTransition::DetermineDirection(Alignment alignment, int start, int end, int alignedLine)
+void dae::SightedTransition::DetermineDirection(Alignment alignment, int start, int end, int alignedLine, dae::GameObject* pPlayer)
 {
 	for(int i = 0; i < abs(start - end); ++i)
 	{
@@ -41,6 +50,8 @@ void dae::SightedTransition::DetermineDirection(Alignment alignment, int start, 
 			{
 				if(!m_ConditionInverted)
 					return;
+
+				NotifyObservers(Utils::GameEvent::PlayerSighted, std::make_unique<PlayerSightedEventData>(pPlayer));
 				NotifyObservers(Utils::GameEvent::TransitionState, std::make_unique<StateTransitionEvent>(nullptr, GetToState()));
 			}
 		}
@@ -50,12 +61,16 @@ void dae::SightedTransition::DetermineDirection(Alignment alignment, int start, 
 			{
 				if(!m_ConditionInverted)
 					return;
+				NotifyObservers(Utils::GameEvent::PlayerSighted, std::make_unique<PlayerSightedEventData>(pPlayer));
 				NotifyObservers(Utils::GameEvent::TransitionState, std::make_unique<StateTransitionEvent>(nullptr, GetToState()));
 			}
 		}
 	}
 	if(!m_ConditionInverted)
+	{
+		NotifyObservers(Utils::GameEvent::PlayerSighted, std::make_unique<PlayerSightedEventData>(pPlayer));
 		NotifyObservers(Utils::GameEvent::TransitionState, std::make_unique<StateTransitionEvent>(nullptr, GetToState()));
+	}
 }
 
 bool dae::SightedTransition::CheckIfObscured(Alignment alignment, int alignedLine, int offset, int start, bool isPositiv)

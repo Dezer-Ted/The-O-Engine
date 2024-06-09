@@ -34,7 +34,14 @@ void dae::CameraComponent::CheckInBoundsY(glm::vec2& pos2D) const
 void dae::CameraComponent::Update()
 {
 	const auto currentWorldPosition = GetParent()->GetTransform().GetWorldPosition();
-	glm::vec2  pos2D{currentWorldPosition.x, currentWorldPosition.y};
+
+	glm::vec2 pos2D{currentWorldPosition.x, currentWorldPosition.y};
+	if(m_AdditionalTarget != nullptr)
+	{
+		const auto otherWorldPos{m_AdditionalTarget->GetTransform().GetWorldPosition()};
+		pos2D = glm::vec2{(otherWorldPos.x + currentWorldPosition.x) / 2, (otherWorldPos.y + currentWorldPosition.y) / 2};
+	}
+
 	if(m_LastPosition != pos2D)
 	{
 		CheckInBoundsX(pos2D);
@@ -47,4 +54,17 @@ void dae::CameraComponent::Update()
 void dae::CameraComponent::SetBounds(const SDL_Rect& bounds)
 {
 	m_Bounds = bounds;
+}
+
+void dae::CameraComponent::SetAdditionalTarget(GameObject* pOther)
+{
+	m_AdditionalTarget = pOther;
+}
+
+void dae::CameraComponent::Notify(Utils::GameEvent event, ObserverEventData* )
+{
+	if(event == Utils::GameEvent::PlayerDied)
+	{
+		m_AdditionalTarget = nullptr;
+	}
 }

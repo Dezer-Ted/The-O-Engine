@@ -16,7 +16,6 @@ namespace dae
 	class Controller;
 
 
-
 	class InputManager final : public Singleton<InputManager> {
 	private:
 		std::unique_ptr<Controller>                            m_Controller;
@@ -26,6 +25,11 @@ namespace dae
 		std::vector<std::unique_ptr<ControllerCompoundAction>> m_CompoundControllerActions;
 
 	public:
+		InputManager(const InputManager& other) = delete;
+		InputManager(InputManager&& other) noexcept = delete;
+		InputManager& operator=(const InputManager& other) = delete;
+		InputManager& operator=(InputManager&& other) noexcept = delete;
+
 		template <typename T>
 		void AddControllerCompoundAction(Controller::ButtonInputs upInput, Controller::ButtonInputs   downInput,
 		                                 Controller::ButtonInputs leftInput, Controller::ButtonInputs rightInput, GameObject* go)
@@ -89,5 +93,6 @@ namespace dae
 		void HandleIsPressedInputs(bool IsButtonDown, const SDL_Event& e) const;
 		void ExecuteIsPressedInputs();
 		void ProcessControllerCompoundActions() const;
+		void RemoveActionsByGameObject(GameObject* pObject);
 	};
 }

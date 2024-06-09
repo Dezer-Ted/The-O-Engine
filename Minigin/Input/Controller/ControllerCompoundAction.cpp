@@ -32,3 +32,8 @@ void dae::ControllerCompoundAction::HandleButtonInput() const
 	m_pCommand->Execute2DAxis(directionInput);
 
 }
+
+dae::Command* dae::ControllerCompoundAction::GetCommand() const
+{
+	return m_pCommand.get();
+}
